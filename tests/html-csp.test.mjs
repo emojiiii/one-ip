@@ -74,7 +74,15 @@ test("generated 404 document preserves its existing security headers", async () 
         }),
     },
   };
-  for (const path of ["/404", "/404.html"]) {
+  for (const path of [
+    "/404",
+    "/404.html",
+    "/404/",
+    "//404",
+    "/404//",
+    "//404.html",
+    "/404/?source=test",
+  ]) {
     const response = await worker.fetch(
       new Request(`https://example.com${path}`),
       env,
@@ -87,7 +95,10 @@ test("generated 404 document preserves its existing security headers", async () 
     );
     assert.equal(response.headers.get("X-Content-Type-Options"), "nosniff");
     const head = await worker.fetch(
-      new Request(`https://example.com${path}`, { method: "HEAD" }),
+      new Request(`https://example.com${path}`, {
+        method: "HEAD",
+        headers: { "Content-Length": "0" },
+      }),
       env,
     );
     assert.equal(head.status, 200);
@@ -97,10 +108,12 @@ test("generated 404 document preserves its existing security headers", async () 
       "frame-ancestors 'none'",
     );
   }
-  await assert.rejects(
-    worker.fetch(new Request("https://example.com/unexpected"), env),
-    /missing its CSP meta tag/,
-  );
+  for (const path of ["/unexpected", "/404/other", "/not404", "/nested/404"]) {
+    await assert.rejects(
+      worker.fetch(new Request(`https://example.com${path}`), env),
+      /missing its CSP meta tag/,
+    );
+  }
 });
 
 test("HEAD with a body-bearing request fetches the document and fallback without forwarding a body", async () => {

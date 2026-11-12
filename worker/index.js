@@ -62,7 +62,7 @@ export default {
       return documentResponse(
         response,
         request.method,
-        url.pathname === "/404" || url.pathname === "/404.html",
+        /^\/+404(?:\.html)?\/*$/.test(url.pathname),
       );
     }
     try {
