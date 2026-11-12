@@ -2,9 +2,31 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { bundledModuleUrl } from "./compile.mjs";
 
-const { dnsTypes, normalizeDomain, queryDns } = await import(
+const { dnsTypes, hasNoRecords, normalizeDomain, queryDns } = await import(
   bundledModuleUrl("migration/sveltekit/src/lib/dns-records.ts")
 );
+
+test("missing requested records remain visible alongside CNAME answers", () => {
+  const cname = {
+    name: "www.github.com.",
+    type: 5,
+    ttl: 60,
+    data: "github.com.",
+  };
+  const a = { name: "github.com.", type: 1, ttl: 60, data: "192.0.2.1" };
+  const result = {
+    status: 0,
+    truncated: false,
+    checkedAt: 0,
+    answers: [cname],
+  };
+  assert.equal(hasNoRecords(result, "AAAA"), true);
+  assert.equal(hasNoRecords(result, "CNAME"), false);
+  assert.equal(hasNoRecords({ ...result, answers: [cname, a] }, "A"), false);
+  assert.equal(hasNoRecords({ ...result, answers: [] }, "TXT"), true);
+  assert.equal(hasNoRecords({ ...result, truncated: true }, "AAAA"), false);
+  assert.equal(hasNoRecords({ ...result, status: 3 }, "AAAA"), false);
+});
 
 test("DNS domain input normalizes names and rejects URLs and malformed labels", () => {
   assert.equal(normalizeDomain("  Example.COM. "), "example.com");

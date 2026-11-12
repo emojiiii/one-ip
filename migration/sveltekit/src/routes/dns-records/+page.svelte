@@ -11,6 +11,7 @@
   import { localeFromPath } from "../../lib/i18n";
   import {
     dnsTypes,
+    hasNoRecords,
     normalizeDomain,
     queryDns,
     type DnsProvider,
@@ -183,7 +184,8 @@
                             </li>
                           {/each}
                         </ul>
-                      {:else if cell.result.status === 0 && !cell.result.truncated}
+                      {/if}
+                      {#if hasNoRecords(cell.result, type)}
                         <span class="muted">{t("noRecords")}</span>
                       {/if}
                     {/if}

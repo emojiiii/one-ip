@@ -15,6 +15,7 @@ test("document CSP is moved to a per-response header with a fresh nonce", async 
     ASSETS: {
       fetch: async (request) => {
         seen.push(request);
+        assert.equal(request.headers.has("Content-Length"), false);
         return new Response(html, {
           headers: {
             "Content-Type": "text/html; charset=utf-8",
@@ -46,12 +47,60 @@ test("document CSP is moved to a per-response header with a fresh nonce", async 
   assert.doesNotMatch(body, /http-equiv="content-security-policy"/i);
   assert.ok(body.includes("__sveltekit_"));
   const head = await worker.fetch(
-    new Request(request.url, { method: "HEAD" }),
+    new Request(request.url, {
+      method: "HEAD",
+      headers: { "Content-Length": "0" },
+    }),
     env,
   );
   assert.equal(seen.at(-1).method, "GET");
+  assert.equal(seen.at(-1).headers.has("Content-Length"), false);
   assert.equal(await head.text(), "");
   assert.match(head.headers.get("Content-Security-Policy"), /'nonce-/);
+});
+
+test("generated 404 document preserves its existing security headers", async () => {
+  const notFound = await readFile("dist/404.html", "utf8");
+  assert.doesNotMatch(notFound, /http-equiv="content-security-policy"/i);
+  const env = {
+    ASSETS: {
+      fetch: async () =>
+        new Response(notFound, {
+          headers: {
+            "Content-Type": "text/html; charset=utf-8",
+            "Content-Security-Policy": "frame-ancestors 'none'",
+            "X-Content-Type-Options": "nosniff",
+          },
+        }),
+    },
+  };
+  for (const path of ["/404", "/404.html"]) {
+    const response = await worker.fetch(
+      new Request(`https://example.com${path}`),
+      env,
+    );
+    assert.equal(response.status, 200);
+    assert.equal(await response.text(), notFound);
+    assert.equal(
+      response.headers.get("Content-Security-Policy"),
+      "frame-ancestors 'none'",
+    );
+    assert.equal(response.headers.get("X-Content-Type-Options"), "nosniff");
+    const head = await worker.fetch(
+      new Request(`https://example.com${path}`, { method: "HEAD" }),
+      env,
+    );
+    assert.equal(head.status, 200);
+    assert.equal(await head.text(), "");
+    assert.equal(
+      head.headers.get("Content-Security-Policy"),
+      "frame-ancestors 'none'",
+    );
+  }
+  await assert.rejects(
+    worker.fetch(new Request("https://example.com/unexpected"), env),
+    /missing its CSP meta tag/,
+  );
 });
 
 test("non-HTML assets keep their original cache headers and body", async () => {

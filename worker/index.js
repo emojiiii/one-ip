@@ -38,6 +38,7 @@ export default {
           "If-Unmodified-Since",
           "Range",
           "If-Range",
+          "Content-Length",
         ])
           headers.delete(name);
       const assetRequest = isDocument
@@ -54,7 +55,11 @@ export default {
         const fallback = await env.ASSETS.fetch(new Request(url, assetRequest));
         if (fallback.ok) return documentResponse(fallback, request.method);
       }
-      return documentResponse(response, request.method);
+      return documentResponse(
+        response,
+        request.method,
+        url.pathname === "/404" || url.pathname === "/404.html",
+      );
     }
     try {
       const origin = request.headers.get("Origin");

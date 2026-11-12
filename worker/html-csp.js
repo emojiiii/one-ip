@@ -1,6 +1,6 @@
 // SvelteKit prerenders a per-page script hash in a meta CSP. Cloudflare's
 // JavaScript Detections needs a per-response nonce in an HTTP CSP header.
-export async function documentResponse(response, method) {
+export async function documentResponse(response, method, isStatic404 = false) {
   if (
     !response.ok ||
     !response.headers.get("Content-Type")?.startsWith("text/html")
@@ -12,7 +12,18 @@ export async function documentResponse(response, method) {
   const meta = html.match(
     /<meta http-equiv="content-security-policy" content="([^"]+)">/i,
   );
-  if (!meta) throw new Error("Prerendered HTML is missing its CSP meta tag");
+  if (!meta) {
+    if (!isStatic404)
+      throw new Error("Prerendered HTML is missing its CSP meta tag");
+    const headers = new Headers(response.headers);
+    headers.delete("Content-Length");
+    headers.delete("Content-Encoding");
+    return new Response(method === "HEAD" ? null : html, {
+      status: response.status,
+      statusText: response.statusText,
+      headers,
+    });
+  }
   const bytes = crypto.getRandomValues(new Uint8Array(16));
   const nonce = btoa(String.fromCharCode(...bytes));
   const policy = meta[1].replace(

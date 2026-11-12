@@ -32,6 +32,22 @@ export type DnsResult = {
   checkedAt: number;
 };
 
+const typeCodes: Record<DnsType, number> = {
+  A: 1,
+  AAAA: 28,
+  CNAME: 5,
+  MX: 15,
+  TXT: 16,
+};
+
+export function hasNoRecords(result: DnsResult, type: DnsType): boolean {
+  return (
+    result.status === 0 &&
+    !result.truncated &&
+    !result.answers.some((answer) => answer.type === typeCodes[type])
+  );
+}
+
 export function normalizeDomain(value: string): string | null {
   const input = value.trim().replace(/\.$/, "");
   if (!input || /[\s/:?#@\\]/u.test(input)) return null;
