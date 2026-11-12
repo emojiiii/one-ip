@@ -17,11 +17,11 @@ The default map requires no account or API key. OpenStreetMap's public tiles are
 
 ## Language URLs and SEO
 
-Unprefixed paths such as `/status` default to English. Each public page has static HTML for English (`/en`), Simplified Chinese (`/zh`), Latin American Spanish (`/es`), Brazilian Portuguese (`/pt-br`), French (`/fr`), German (`/de`), Japanese (`/ja`), Korean (`/ko`), Arabic (`/ar`), and Hindi (`/hi`). Results for individual IP addresses load in the browser.
+Unprefixed paths such as `/status` default to Simplified Chinese. Each public page has static HTML for English (`/en`), Simplified Chinese (`/zh`), Latin American Spanish (`/es`), Brazilian Portuguese (`/pt-br`), French (`/fr`), German (`/de`), Japanese (`/ja`), Korean (`/ko`), Arabic (`/ar`), and Hindi (`/hi`). Results for individual IP addresses load in the browser.
 
 Production builds use `https://ip.kitt.tools` by default for canonical URLs, hreflang and the sitemap. To deploy to another domain, set the build variable `VITE_SITE_ORIGIN` under the Worker's **Settings → Build**. For Docker Compose, set the environment variable of the same name. For `docker build`, use `--build-arg VITE_SITE_ORIGIN=https://ip.example.com`.
 
-`/robots.txt` advertises the absolute URL of `/sitemap.xml`. The sitemap lists the public canonical URLs and hreflang alternates for all 10 languages. English canonicals use `/en` paths, and `x-default` points to the unprefixed path.
+`/robots.txt` advertises the absolute URL of `/sitemap.xml`. The sitemap lists the public canonical URLs and hreflang alternates for all 10 languages. Simplified Chinese canonicals use `/zh` paths, and English canonicals use `/en` paths. `x-default` points to the unprefixed Simplified Chinese path.
 
 ## Docker deployment
 

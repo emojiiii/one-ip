@@ -3,7 +3,8 @@ import { localeForPath as prefixedLocaleForPath, locales, unlocalizedPath } from
 export { locales, unlocalizedPath };
 
 export type Locale = (typeof locales)[number]["id"];
-export const defaultLocale = locales[0].id;
+export const defaultLocale = "zh-CN" satisfies Locale;
+const defaultLocaleDefinition = localeDefinition(defaultLocale);
 
 export const publicPages = [
   "/", "/ip", "/whois", "/status", "/ping", "/speedtest",
@@ -13,7 +14,7 @@ export const publicPages = [
 ] as const;
 
 export function localeForPath(path: string) {
-  return prefixedLocaleForPath(path) ?? locales[0];
+  return prefixedLocaleForPath(path) ?? defaultLocaleDefinition;
 }
 
 export function localeFromPath(path: string): Locale {

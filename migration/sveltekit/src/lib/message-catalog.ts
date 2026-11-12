@@ -1,5 +1,5 @@
 import { createInstance, type i18n } from "i18next";
-import { localeFromPath, type Locale } from "./i18n";
+import { defaultLocale, localeFromPath, type Locale } from "./i18n";
 
 export type Messages = Readonly<Record<string, string>>;
 export type LocaleCatalog = Record<string, Messages>;
@@ -7,7 +7,7 @@ export type LocaleCatalog = Record<string, Messages>;
 const instances = new Map<Locale, i18n>();
 
 export function activeLocale(): Locale {
-  return typeof window === "undefined" ? "zh-CN" : localeFromPath(window.location.pathname);
+  return typeof window === "undefined" ? defaultLocale : localeFromPath(window.location.pathname);
 }
 
 export function registerLocale(locale: Locale, catalog: LocaleCatalog) {

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { test } from 'node:test';
 import { bundledModuleUrl } from './compile.mjs';
-import { locales } from '../shared/locales.js';
+import { localeFromPath, locales } from '../migration/sveltekit/src/lib/i18n.ts';
 
 const root = 'migration/sveltekit/src';
 const json = path => JSON.parse(readFileSync(path, 'utf8'));
@@ -10,13 +10,12 @@ const resources = `${root}/i18n`;
 
 test('translated catalogs contain matching keys and placeholders', () => {
   assert.equal(locales.length, 10);
-  assert.equal(locales[0].id, 'en');
   const catalogs = readdirSync(`${resources}/en`).filter(file => file.endsWith('.json')).sort();
   for (const { id } of locales)
     assert.deepEqual(readdirSync(`${resources}/${id}`).filter(file => file.endsWith('.json')).sort(), catalogs, id);
   for (const file of catalogs) {
     const en = json(`${resources}/en/${file}`);
-    for (const { id } of locales.slice(1)) {
+    for (const { id } of locales.filter(({ id }) => id !== 'en')) {
       const translated = json(`${resources}/${id}/${file}`);
       assert.deepEqual(Object.keys(translated).sort(), Object.keys(en).sort(), `${id}/${file}`);
       for (const key of Object.keys(en)) {
@@ -48,6 +47,8 @@ test('literal browser and network translation calls exist in their catalogs', ()
 });
 
 test('translations accept the page locale during prerendering and follow the URL in browser code', async () => {
+  assert.equal(localeFromPath('/'), 'zh-CN');
+  assert.equal(localeFromPath('/en'), 'en');
   const runtime = await import(bundledModuleUrl(`${root}/routes/leak/webrtc/locale.ts`));
   assert.equal(runtime.t('api.requestFailed', [503], 'en'), 'Request failed (503)');
   assert.equal(runtime.t('api.requestFailed', ['{1} <script>'], 'zh-CN'), '请求失败 ({1} <script>)');
@@ -65,7 +66,7 @@ test('translations accept the page locale during prerendering and follow the URL
     location.pathname = '/zh/leak/webrtc';
     assert.equal(runtime.t('api.requestFailed', [503]), '请求失败 (503)');
     location.pathname = '/leak/webrtc';
-    assert.equal(runtime.t('api.requestFailed', [503]), 'Request failed (503)');
+    assert.equal(runtime.t('api.requestFailed', [503]), '请求失败 (503)');
   } finally {
     if (original) Object.defineProperty(globalThis, 'window', original); else delete globalThis.window;
   }
