@@ -61,5 +61,9 @@
   "seo.browser.checks": "ブラウザが報告する情報を比較し、環境に不整合がないか確認できます。",
   "seo.browser.privacy": "ブラウザのプライバシー設定とウェブサイトが参照できる情報を確認できます。",
   "seo.terms": "One IP の IP アドレス検索やネットワーク診断ツールの利用規約を確認できます。",
-  "seo.privacy": "One IP の IP アドレス検索やネットワーク診断ツールを利用する際の情報の取り扱いを説明します。"
+  "seo.privacy": "One IP の IP アドレス検索やネットワーク診断ツールを利用する際の情報の取り扱いを説明します。",
+  "tools.batchIp": "IP を比較",
+  "seo.ip.batch": "最大 10 件の IP アドレスを比較します。",
+  "tools.dnsRecords": "DNS レコード比較",
+  "seo.dns-records": "Cloudflare と Google の DNS レコードを比較します。"
 }

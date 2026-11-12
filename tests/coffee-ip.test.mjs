@@ -39,6 +39,20 @@ test('IP lookup keeps the Net.Coffee error when the fallback also fails', async 
  globalThis.fetch=async(url)=>String(url).startsWith('https://ip.net.coffee/')?Response.json({ip:'8.8.8.8'}):new Response('{}',{status:502});
  try {await assert.rejects(lookupIp('1.1.1.1', new AbortController().signal),/不匹配|match/i);} finally {globalThis.fetch=original;}
 });
+test('fresh IP lookups bypass the same-origin cache when the primary source fails', async () => {
+ const original=globalThis.fetch;const requests=[];
+ globalThis.fetch=async(url, options)=>{
+  requests.push({url:String(url),options});
+  if(String(url).startsWith('https://ip.net.coffee/')) throw new TypeError('Failed to fetch');
+  return Response.json({geo:{ip:'1.1.1.1',source:'ipwho.is'},sources:[{ip:'1.1.1.1',source:'ipwho.is'}]});
+ };
+ try {
+  const result=await lookupIp('1.1.1.1', new AbortController().signal, true);
+  assert.equal(result.fallback,true);
+  assert.equal(requests[1].url,'/api/ip/lookup/1.1.1.1?fresh=1');
+  assert.equal(requests[1].options.cache,'no-store');
+ } finally {globalThis.fetch=original;}
+});
 test('home geo lookup falls back to the same-origin API when both providers are blocked', async () => {
  const { getGeo } = await import(bundledModuleUrl('migration/sveltekit/src/routes/leak/webrtc/home-api.ts'));
  const original=globalThis.fetch;

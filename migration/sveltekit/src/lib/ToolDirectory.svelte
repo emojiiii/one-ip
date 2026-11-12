@@ -7,6 +7,8 @@
   import Gauge from "@lucide/svelte/icons/gauge";
   import Globe from "@lucide/svelte/icons/globe";
   import LockKeyholeOpen from "@lucide/svelte/icons/lock-keyhole-open";
+  import ListFilter from "@lucide/svelte/icons/list-filter";
+  import Network from "@lucide/svelte/icons/network";
   import Radar from "@lucide/svelte/icons/radar";
   import ScanFace from "@lucide/svelte/icons/scan-face";
   import Search from "@lucide/svelte/icons/search";
@@ -28,6 +30,20 @@
       group: "lookup",
       label: "tools.ip",
       icon: Search,
+      tone: "blue",
+    },
+    {
+      path: "/ip/batch",
+      group: "lookup",
+      label: "tools.batchIp",
+      icon: ListFilter,
+      tone: "blue",
+    },
+    {
+      path: "/dns-records",
+      group: "lookup",
+      label: "tools.dnsRecords",
+      icon: Network,
       tone: "blue",
     },
     {
@@ -138,7 +154,7 @@
           {#each tools.filter((tool) => tool.group === group) as tool (tool.path)}
             {@const active =
               route === tool.path ||
-              (tool.path === "/ip" && route.startsWith("/ip/"))}
+              (tool.path === "/ip" && route.startsWith("/ip/") && route !== "/ip/batch")}
             <li>
               <a href={localizedPath(tool.path, language)} aria-current={active ? "page" : undefined}>
                 <span class="icon" data-tone={tool.tone}

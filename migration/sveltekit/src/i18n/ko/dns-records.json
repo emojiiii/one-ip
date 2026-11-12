@@ -1,0 +1,19 @@
+{
+  "dnsRecords.title": "DNS 레코드 비교",
+  "dnsRecords.description": "Cloudflare와 Google의 DNS 레코드를 비교합니다.",
+  "dnsRecords.domain": "도메인",
+  "dnsRecords.query": "조회",
+  "dnsRecords.querying": "조회 중…",
+  "dnsRecords.invalid": "올바른 도메인을 입력하세요.",
+  "dnsRecords.results": "조회 결과",
+  "dnsRecords.refresh": "다시 조회",
+  "dnsRecords.note": "두 리졸버의 현재 응답입니다. TTL은 응답의 남은 캐시 시간이며 결과 차이가 반드시 장애를 뜻하지는 않습니다.",
+  "dnsRecords.type": "유형",
+  "dnsRecords.failed": "요청 실패",
+  "dnsRecords.nxdomain": "도메인이 없습니다 (NXDOMAIN)",
+  "dnsRecords.servfail": "이름 확인 실패 (SERVFAIL)",
+  "dnsRecords.dnsError": "DNS 상태: {0}",
+  "dnsRecords.truncated": "응답이 잘려 결과가 불완전할 수 있습니다",
+  "dnsRecords.noRecords": "레코드 없음",
+  "dnsRecords.checkedAt": "조회 시각"
+}

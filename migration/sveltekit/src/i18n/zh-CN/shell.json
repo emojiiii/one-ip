@@ -61,5 +61,9 @@
   "seo.browser.checks": "对照浏览器信号，检查其报告的环境是否一致。",
   "seo.browser.privacy": "检查浏览器隐私信号，了解网站可以访问哪些信息。",
   "seo.terms": "查看 One IP 及其 IP 查询和网络诊断工具的使用条款。",
-  "seo.privacy": "了解 One IP 如何处理使用 IP 查询和网络诊断工具时产生的信息。"
+  "seo.privacy": "了解 One IP 如何处理使用 IP 查询和网络诊断工具时产生的信息。",
+  "tools.batchIp": "批量 IP 对比",
+  "seo.ip.batch": "对比最多 10 个 IP 地址。",
+  "tools.dnsRecords": "DNS 记录对照",
+  "seo.dns-records": "对比 Cloudflare 与 Google 的 DNS 记录。"
 }

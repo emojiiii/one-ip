@@ -1,0 +1,19 @@
+{
+  "dnsRecords.title": "DNS रिकॉर्ड की तुलना",
+  "dnsRecords.description": "Cloudflare और Google के DNS रिकॉर्ड की तुलना करें।",
+  "dnsRecords.domain": "डोमेन",
+  "dnsRecords.query": "जाँचें",
+  "dnsRecords.querying": "जाँच जारी है…",
+  "dnsRecords.invalid": "मान्य डोमेन दर्ज करें।",
+  "dnsRecords.results": "परिणाम",
+  "dnsRecords.refresh": "फिर जाँचें",
+  "dnsRecords.note": "दोनों रिज़ॉल्वर की वर्तमान प्रतिक्रियाएँ। TTL प्रतिक्रिया में कैश का शेष समय है; अलग परिणाम हमेशा समस्या नहीं दर्शाते।",
+  "dnsRecords.type": "प्रकार",
+  "dnsRecords.failed": "अनुरोध विफल",
+  "dnsRecords.nxdomain": "डोमेन नहीं मिला (NXDOMAIN)",
+  "dnsRecords.servfail": "रिज़ॉल्यूशन विफल (SERVFAIL)",
+  "dnsRecords.dnsError": "DNS स्थिति: {0}",
+  "dnsRecords.truncated": "प्रतिक्रिया कट गई है; परिणाम अधूरे हो सकते हैं",
+  "dnsRecords.noRecords": "कोई रिकॉर्ड नहीं",
+  "dnsRecords.checkedAt": "जाँच का समय"
+}

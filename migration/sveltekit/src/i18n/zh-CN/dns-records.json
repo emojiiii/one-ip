@@ -1,0 +1,19 @@
+{
+  "dnsRecords.title": "DNS 记录对照",
+  "dnsRecords.description": "对比 Cloudflare 与 Google 的 DNS 记录。",
+  "dnsRecords.domain": "域名",
+  "dnsRecords.query": "查询",
+  "dnsRecords.querying": "查询中…",
+  "dnsRecords.invalid": "请输入有效的域名。",
+  "dnsRecords.results": "查询结果",
+  "dnsRecords.refresh": "重新查询",
+  "dnsRecords.note": "结果来自两家解析器的实时响应。TTL 是响应中的剩余缓存时间；不同结果不一定表示故障。",
+  "dnsRecords.type": "类型",
+  "dnsRecords.failed": "请求失败",
+  "dnsRecords.nxdomain": "域名不存在 (NXDOMAIN)",
+  "dnsRecords.servfail": "解析失败 (SERVFAIL)",
+  "dnsRecords.dnsError": "DNS 状态：{0}",
+  "dnsRecords.truncated": "响应被截断，结果可能不完整",
+  "dnsRecords.noRecords": "无记录",
+  "dnsRecords.checkedAt": "查询时间"
+}

@@ -61,5 +61,9 @@
   "seo.browser.checks": "Vergleichen Sie Browsermerkmale und prüfen Sie die gemeldete Umgebung auf Widersprüche.",
   "seo.browser.privacy": "Erfahren Sie, auf welche Informationen Websites in Ihrem Browser zugreifen können.",
   "seo.terms": "Lesen Sie die Nutzungsbedingungen für die IP-Abfrage und Netzwerkdiagnose mit One IP.",
-  "seo.privacy": "Erfahren Sie, wie One IP Informationen bei der IP-Abfrage und Netzwerkdiagnose verarbeitet."
+  "seo.privacy": "Erfahren Sie, wie One IP Informationen bei der IP-Abfrage und Netzwerkdiagnose verarbeitet.",
+  "tools.batchIp": "IPs vergleichen",
+  "seo.ip.batch": "Bis zu 10 IP-Adressen vergleichen.",
+  "tools.dnsRecords": "DNS-Einträge vergleichen",
+  "seo.dns-records": "DNS-Einträge von Cloudflare und Google vergleichen."
 }

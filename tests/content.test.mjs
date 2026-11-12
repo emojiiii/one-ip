@@ -62,6 +62,14 @@ test('localized status pages render their main content before JavaScript', () =>
   assert.match(readFileSync(`${output}/zh/status.html`, 'utf8'), /<h1[^>]*>服务状态<\/h1>/);
 });
 
+test('DNS records do not shadow the legacy DNS leak shortcut', () => {
+  assert.ok(publicPages.includes('/dns-records'));
+  assert.ok(!publicPages.includes('/dns'));
+  assert.equal(existsSync(`${output}/dns.html`), false);
+  for (const { id } of locales)
+    assert.equal(existsSync(`${output}${localizedPath('/dns', id)}.html`), false, id);
+});
+
 test('crawler files list each localized canonical once', () => {
   const robots = readFileSync(`${output}/robots.txt`, 'utf8');
   assert.match(robots, /^User-agent: \*\nDisallow: \/api\/\n/);
@@ -81,7 +89,7 @@ test('crawler files list each localized canonical once', () => {
     }
   }
 
-  assert.equal(expected.size, 170);
+  assert.equal(expected.size, publicPages.length * locales.length);
   for (const [, entry] of xml.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
     const loc = entry.match(/<loc>([^<]+)<\/loc>/)?.[1];
     assert.ok(expected.has(loc), `Unexpected or duplicate sitemap URL: ${loc}`);

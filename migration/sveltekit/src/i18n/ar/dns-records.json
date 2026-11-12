@@ -1,0 +1,19 @@
+{
+  "dnsRecords.title": "مقارنة سجلات DNS",
+  "dnsRecords.description": "قارن سجلات DNS من Cloudflare وGoogle.",
+  "dnsRecords.domain": "النطاق",
+  "dnsRecords.query": "استعلام",
+  "dnsRecords.querying": "جارٍ الاستعلام…",
+  "dnsRecords.invalid": "أدخل نطاقًا صالحًا.",
+  "dnsRecords.results": "النتائج",
+  "dnsRecords.refresh": "إعادة الاستعلام",
+  "dnsRecords.note": "النتائج هي الاستجابات الحالية من المحلّلين. TTL هو الوقت المتبقي في ذاكرة التخزين المؤقت؛ اختلاف النتائج لا يعني بالضرورة وجود خلل.",
+  "dnsRecords.type": "النوع",
+  "dnsRecords.failed": "فشل الطلب",
+  "dnsRecords.nxdomain": "النطاق غير موجود (NXDOMAIN)",
+  "dnsRecords.servfail": "فشل التحليل (SERVFAIL)",
+  "dnsRecords.dnsError": "حالة DNS: {0}",
+  "dnsRecords.truncated": "تم اقتطاع الاستجابة؛ قد تكون النتائج غير مكتملة",
+  "dnsRecords.noRecords": "لا توجد سجلات",
+  "dnsRecords.checkedAt": "وقت الاستعلام"
+}

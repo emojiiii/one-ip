@@ -1,0 +1,19 @@
+{
+  "dnsRecords.title": "DNS-Einträge vergleichen",
+  "dnsRecords.description": "DNS-Einträge von Cloudflare und Google vergleichen.",
+  "dnsRecords.domain": "Domain",
+  "dnsRecords.query": "Prüfen",
+  "dnsRecords.querying": "Wird geprüft…",
+  "dnsRecords.invalid": "Geben Sie eine gültige Domain ein.",
+  "dnsRecords.results": "Ergebnisse",
+  "dnsRecords.refresh": "Erneut prüfen",
+  "dnsRecords.note": "Aktuelle Antworten beider Resolver. Die TTL ist die verbleibende Cache-Zeit; unterschiedliche Antworten bedeuten nicht zwingend einen Fehler.",
+  "dnsRecords.type": "Typ",
+  "dnsRecords.failed": "Anfrage fehlgeschlagen",
+  "dnsRecords.nxdomain": "Domain nicht gefunden (NXDOMAIN)",
+  "dnsRecords.servfail": "Auflösung fehlgeschlagen (SERVFAIL)",
+  "dnsRecords.dnsError": "DNS-Status: {0}",
+  "dnsRecords.truncated": "Antwort abgeschnitten; Ergebnisse möglicherweise unvollständig",
+  "dnsRecords.noRecords": "Keine Einträge",
+  "dnsRecords.checkedAt": "Geprüft"
+}

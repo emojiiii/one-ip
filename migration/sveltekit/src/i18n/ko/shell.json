@@ -61,5 +61,9 @@
   "seo.browser.checks": "브라우저가 보고하는 정보를 비교하고 환경에 일관성이 있는지 확인하세요.",
   "seo.browser.privacy": "브라우저의 개인정보 보호 상태와 웹사이트에서 접근할 수 있는 정보를 확인하세요.",
   "seo.terms": "One IP의 IP 주소 조회 및 네트워크 진단 도구에 적용되는 이용약관을 확인하세요.",
-  "seo.privacy": "One IP의 IP 주소 조회 및 네트워크 진단 도구를 사용할 때 정보가 어떻게 처리되는지 알아보세요."
+  "seo.privacy": "One IP의 IP 주소 조회 및 네트워크 진단 도구를 사용할 때 정보가 어떻게 처리되는지 알아보세요.",
+  "tools.batchIp": "IP 비교",
+  "seo.ip.batch": "최대 10개의 IP 주소를 비교합니다.",
+  "tools.dnsRecords": "DNS 레코드 비교",
+  "seo.dns-records": "Cloudflare와 Google의 DNS 레코드를 비교합니다."
 }

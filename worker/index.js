@@ -128,25 +128,27 @@ export default {
       }
       if (path.startsWith("/ip/lookup/")) {
         const ip = publicIp(decodeURIComponent(path.slice(11)));
+        const load = async () => {
+          const [primary, secondary, registration] = await Promise.allSettled(
+            [geoIp(ip), secondaryGeo(ip), lookupRegistration(ip)],
+          );
+          const sources = [primary, secondary].flatMap((r) =>
+            r.status === "fulfilled" ? [r.value] : [],
+          );
+          return {
+            geo: sources[0] ?? { ip },
+            sources,
+            rdap:
+              registration.status === "fulfilled"
+                ? registration.value.data
+                : undefined,
+          };
+        };
+        if (url.searchParams.get("fresh") === "1") return json(await load());
         return await cachedJson(
           new URL(`/api/ip/lookup/${encodeURIComponent(ip)}`, url.origin),
           3600,
-          async () => {
-            const [primary, secondary, registration] = await Promise.allSettled(
-              [geoIp(ip), secondaryGeo(ip), lookupRegistration(ip)],
-            );
-            const sources = [primary, secondary].flatMap((r) =>
-              r.status === "fulfilled" ? [r.value] : [],
-            );
-            return {
-              geo: sources[0] ?? { ip },
-              sources,
-              rdap:
-                registration.status === "fulfilled"
-                  ? registration.value.data
-                  : undefined,
-            };
-          },
+          load,
           (data) => data.sources.length === 2 && data.rdap !== undefined,
         );
       }

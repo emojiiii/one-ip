@@ -61,5 +61,9 @@
   "seo.browser.checks": "Comparez les signaux du navigateur pour repérer les incohérences dans l’environnement déclaré.",
   "seo.browser.privacy": "Examinez les signaux de confidentialité de votre navigateur et les informations auxquelles les sites peuvent accéder.",
   "seo.terms": "Consultez les conditions d’utilisation de One IP et de ses outils de recherche d’adresses IP et de diagnostic réseau.",
-  "seo.privacy": "Découvrez comment One IP traite les informations lorsque vous utilisez ses outils de recherche d’adresses IP et de diagnostic réseau."
+  "seo.privacy": "Découvrez comment One IP traite les informations lorsque vous utilisez ses outils de recherche d’adresses IP et de diagnostic réseau.",
+  "tools.batchIp": "Comparer les IP",
+  "seo.ip.batch": "Comparez jusqu’à 10 adresses IP.",
+  "tools.dnsRecords": "Comparer les enregistrements DNS",
+  "seo.dns-records": "Comparez les enregistrements DNS de Cloudflare et Google."
 }

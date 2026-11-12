@@ -27,6 +27,8 @@ A toolbox for IP lookups, network diagnostics, browser checks and AI service sta
 ## Features
 
 - **Current IP (home)**: IPv4 / IPv6 location, ISP, ASN, reputation score and maps; IP checks open in a new tab
+- **Batch IP comparison**: compare up to 10 addresses, add the current egress, name and filter results, and export CSV with sources and unknown values
+- **DNS record comparison**: compare A, AAAA, CNAME, MX and TXT records and their TTLs across Cloudflare and Google
 - **Leak test**: DNS leaks and WebRTC leaks
 - **Network unlock**: reachability and routed egress for AI, streaming and regional sites, plus ChatGPT and Claude diagnostics
 - **Speed test**: download, upload and latency over Cloudflare's edge network

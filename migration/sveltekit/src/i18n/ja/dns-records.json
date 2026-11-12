@@ -1,0 +1,19 @@
+{
+  "dnsRecords.title": "DNS レコード比較",
+  "dnsRecords.description": "Cloudflare と Google の DNS レコードを比較します。",
+  "dnsRecords.domain": "ドメイン",
+  "dnsRecords.query": "検索",
+  "dnsRecords.querying": "検索中…",
+  "dnsRecords.invalid": "有効なドメインを入力してください。",
+  "dnsRecords.results": "検索結果",
+  "dnsRecords.refresh": "再検索",
+  "dnsRecords.note": "両リゾルバーの現在の応答です。TTL は応答に含まれるキャッシュの残り時間です。結果の違いは必ずしも障害を意味しません。",
+  "dnsRecords.type": "種類",
+  "dnsRecords.failed": "リクエスト失敗",
+  "dnsRecords.nxdomain": "ドメインが存在しません (NXDOMAIN)",
+  "dnsRecords.servfail": "名前解決に失敗しました (SERVFAIL)",
+  "dnsRecords.dnsError": "DNS ステータス: {0}",
+  "dnsRecords.truncated": "応答が切り詰められたため、結果が不完全な可能性があります",
+  "dnsRecords.noRecords": "レコードなし",
+  "dnsRecords.checkedAt": "検索時刻"
+}

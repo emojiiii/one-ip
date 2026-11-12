@@ -61,5 +61,9 @@
   "seo.browser.checks": "Compare browser signals and check for inconsistencies in the reported environment.",
   "seo.browser.privacy": "Review browser privacy signals and see what information websites can access.",
   "seo.terms": "Read the terms for using One IP and its IP lookup and network diagnostics tools.",
-  "seo.privacy": "Learn how One IP handles information when you use its IP lookup and network diagnostics tools."
+  "seo.privacy": "Learn how One IP handles information when you use its IP lookup and network diagnostics tools.",
+  "tools.batchIp": "Compare IPs",
+  "seo.ip.batch": "Compare up to 10 IP addresses.",
+  "tools.dnsRecords": "DNS record comparison",
+  "seo.dns-records": "Compare DNS records from Cloudflare and Google."
 }

@@ -61,5 +61,9 @@
   "seo.browser.checks": "Compare as informações fornecidas pelo navegador e veja se há inconsistências.",
   "seo.browser.privacy": "Veja quais dados os sites podem acessar no seu navegador.",
   "seo.terms": "Leia os termos de uso do One IP para consulta de IP e diagnóstico de rede.",
-  "seo.privacy": "Saiba como o One IP trata as informações ao usar suas ferramentas de consulta de IP e diagnóstico de rede."
+  "seo.privacy": "Saiba como o One IP trata as informações ao usar suas ferramentas de consulta de IP e diagnóstico de rede.",
+  "tools.batchIp": "Comparar IPs",
+  "seo.ip.batch": "Compare até 10 endereços IP.",
+  "tools.dnsRecords": "Comparar registros DNS",
+  "seo.dns-records": "Compare os registros DNS da Cloudflare e do Google."
 }
