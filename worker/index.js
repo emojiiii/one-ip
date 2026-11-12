@@ -59,10 +59,14 @@ export default {
         const fallback = await env.ASSETS.fetch(new Request(url, assetRequest));
         if (fallback.ok) return documentResponse(fallback, request.method);
       }
+      // The static 404 route is ASCII; decode URL-encoded bytes for this comparison.
+      const staticPath = url.pathname.replace(/%[0-9a-f]{2}/gi, (encoded) =>
+        String.fromCharCode(parseInt(encoded.slice(1), 16)),
+      );
       return documentResponse(
         response,
         request.method,
-        /^\/+404(?:\.html)?\/*$/.test(url.pathname),
+        /^\/+404(?:\.html)?\/*$/.test(staticPath),
       );
     }
     try {

@@ -82,6 +82,13 @@ test("generated 404 document preserves its existing security headers", async () 
     "/404//",
     "//404.html",
     "/404/?source=test",
+    "/404%2f",
+    "/404%2F",
+    "/%2f404%2F",
+    "/404.html%2f",
+    "/%34%30%34",
+    "/404%2ehtml",
+    "/%34%30%34%2e%68%74%6d%6c%2f",
   ]) {
     const response = await worker.fetch(
       new Request(`https://example.com${path}`),
@@ -108,7 +115,18 @@ test("generated 404 document preserves its existing security headers", async () 
       "frame-ancestors 'none'",
     );
   }
-  for (const path of ["/unexpected", "/404/other", "/not404", "/nested/404"]) {
+  for (const path of [
+    "/unexpected",
+    "/404/other",
+    "/404%2fother",
+    "/%2f404%2fother",
+    "/404%252f",
+    "/404%2",
+    "/404%zz",
+    "/404%ff",
+    "/not404",
+    "/nested/404",
+  ]) {
     await assert.rejects(
       worker.fetch(new Request(`https://example.com${path}`), env),
       /missing its CSP meta tag/,
