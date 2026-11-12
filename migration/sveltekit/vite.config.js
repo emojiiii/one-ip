@@ -31,6 +31,10 @@ export default defineConfig({
             "self",
             "https://challenges.cloudflare.com",
             "https://static.cloudflareinsights.com",
+            "https://www.googletagmanager.com/gtag/",
+            // Inline scripts injected by the configured Google Tag Gateway.
+            "sha256-NwBB+A/we0a6Jdp1VXan4irqgtum3/5deeAurlmrHRg=",
+            "sha256-7lGaeduHe5P2drtIOROpfyLP5J4hwT8oBGemz7Se9M4=",
             "https://www.google.com/recaptcha/",
             "https://www.gstatic.com/recaptcha/",
             "https://www.recaptcha.net",

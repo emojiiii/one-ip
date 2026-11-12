@@ -2,6 +2,7 @@ import { cachedJson } from "./cache.js";
 import { challengeConfig, verifyChallenge } from "./challenges.js";
 import { documentPath } from "./document-path.js";
 import { cfGeo, geoIp, secondaryGeo } from "./geo.js";
+import { documentResponse } from "./html-csp.js";
 import { clientIp, HttpError, inputJson, json, publicIp } from "./http.js";
 import { siteIcon } from "./icons.js";
 import { ipNetwork } from "./ip-network.js";
@@ -26,7 +27,23 @@ export default {
         url.protocol = "http:";
         return fetch(new Request(url, request));
       }
-      const response = await env.ASSETS.fetch(request);
+      const isDocument =
+        ["GET", "HEAD"].includes(request.method) && documentPath(url.pathname);
+      const headers = new Headers(request.headers);
+      if (isDocument)
+        for (const name of [
+          "If-None-Match",
+          "If-Modified-Since",
+          "If-Match",
+          "If-Unmodified-Since",
+          "Range",
+          "If-Range",
+        ])
+          headers.delete(name);
+      const assetRequest = isDocument
+        ? new Request(request, { method: "GET", headers })
+        : request;
+      const response = await env.ASSETS.fetch(assetRequest);
       if (
         response.status === 404 &&
         ["GET", "HEAD"].includes(request.method) &&
@@ -34,10 +51,10 @@ export default {
       ) {
         url.pathname = "/200";
         url.search = "";
-        const fallback = await env.ASSETS.fetch(new Request(url, request));
-        if (fallback.ok) return fallback;
+        const fallback = await env.ASSETS.fetch(new Request(url, assetRequest));
+        if (fallback.ok) return documentResponse(fallback, request.method);
       }
-      return response;
+      return documentResponse(response, request.method);
     }
     try {
       const origin = request.headers.get("Origin");
@@ -129,9 +146,11 @@ export default {
       if (path.startsWith("/ip/lookup/")) {
         const ip = publicIp(decodeURIComponent(path.slice(11)));
         const load = async () => {
-          const [primary, secondary, registration] = await Promise.allSettled(
-            [geoIp(ip), secondaryGeo(ip), lookupRegistration(ip)],
-          );
+          const [primary, secondary, registration] = await Promise.allSettled([
+            geoIp(ip),
+            secondaryGeo(ip),
+            lookupRegistration(ip),
+          ]);
           const sources = [primary, secondary].flatMap((r) =>
             r.status === "fulfilled" ? [r.value] : [],
           );

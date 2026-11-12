@@ -5,13 +5,14 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { after, before, test } from "node:test";
 import { pathToFileURL } from "node:url";
-import { locales } from "../shared/locales.js";
 import { pingVerificationEnv } from "./ping-verification-fixture.mjs";
 import { memoryCache } from "../server/memory-cache.mjs";
+import { locales } from "../shared/locales.js";
 import { rateKey, rateLimit } from "../worker/rate-limit.js";
 
 let dir;
 let server;
+const csp = `<meta http-equiv="content-security-policy" content="default-src 'self'; script-src 'self' 'sha256-example'">`;
 
 before(async () => {
   dir = await mkdtemp(join(tmpdir(), "one-ip-server-"));
@@ -19,11 +20,11 @@ before(async () => {
   await mkdir(join(assets, "assets"), { recursive: true });
   await writeFile(
     join(assets, "_headers"),
-    "# comment\n/*\n  X-Frame-Options: DENY\n  Referrer-Policy: no-referrer\n/assets/*\n  X-Scoped: yes\n",
+    "# comment\n/*\n  Content-Security-Policy: frame-ancestors 'none'\n  X-Frame-Options: DENY\n  Referrer-Policy: no-referrer\n/assets/*\n  X-Scoped: yes\n",
   );
   await writeFile(
     join(assets, "index.html"),
-    "<!doctype html><title>app</title>",
+    `${csp}<!doctype html><title>app</title>`,
   );
   await writeFile(join(assets, "assets", "app.js"), "console.log(1)");
   await writeFile(join(dir, "secret.txt"), "secret");
@@ -111,6 +112,11 @@ test("standalone server serves assets, SPA fallback and hides deployment files",
   assert.equal(index.status, 200);
   assert.match(await index.text(), /<title>app/);
   assert.equal(index.headers.get("X-Frame-Options"), "DENY");
+  assert.match(
+    index.headers.get("Content-Security-Policy"),
+    /frame-ancestors 'none'/,
+  );
+  assert.match(index.headers.get("Content-Security-Policy"), /'nonce-/);
   assert.equal(index.headers.get("X-Scoped"), null);
   const asset = await call(handle, "/assets/app.js");
   assert.equal(
@@ -139,19 +145,47 @@ test("standalone server serves prerendered pages and the dynamic IP fallback", a
   const assets = join(dir, "svelte-assets");
   await mkdir(assets);
   await writeFile(join(assets, "_headers"), "/*\n  X-Frame-Options: DENY\n");
-  await writeFile(join(assets, "index.html"), "home");
-  await writeFile(join(assets, "whois.html"), "prerendered whois");
-  await writeFile(join(assets, "200.html"), "dynamic fallback");
+  await writeFile(join(assets, "index.html"), `${csp}home`);
+  await writeFile(join(assets, "whois.html"), `${csp}prerendered whois`);
+  await writeFile(join(assets, "200.html"), `${csp}dynamic fallback`);
   const { handle } = await server.createApp({ assets, config: {} });
-  assert.equal(await (await call(handle, "/whois")).text(), "prerendered whois");
-  for (const path of ["/ip/1.1.1.1", ...locales.map(({ prefix }) => `${prefix}/ip/1.1.1.1`), "/ar/ip/2001:4860:4860::8888", "/pt-br/lookup/ip/1.1.1.1", "/claude/status.html", "/unknown"]) {
+  assert.equal(
+    await (await call(handle, "/whois")).text(),
+    "prerendered whois",
+  );
+  for (const path of [
+    "/ip/1.1.1.1",
+    ...locales.map(({ prefix }) => `${prefix}/ip/1.1.1.1`),
+    "/ar/ip/2001:4860:4860::8888",
+    "/pt-br/lookup/ip/1.1.1.1",
+    "/claude/status.html",
+    "/unknown",
+  ]) {
     const response = await call(handle, path);
     assert.equal(response.status, 200);
     assert.equal(await response.text(), "dynamic fallback");
   }
-  assert.equal((await call(handle, "/_app/immutable/missing.js", { headers: { Accept: "text/html" } })).status, 404);
-  assert.equal((await call(handle, "/missing.js", { headers: { Accept: "text/html" } })).status, 404);
-  assert.equal((await call(handle, "/ar/_app/immutable/missing", { headers: { Accept: "text/html" } })).status, 404);
+  assert.equal(
+    (
+      await call(handle, "/_app/immutable/missing.js", {
+        headers: { Accept: "text/html" },
+      })
+    ).status,
+    404,
+  );
+  assert.equal(
+    (await call(handle, "/missing.js", { headers: { Accept: "text/html" } }))
+      .status,
+    404,
+  );
+  assert.equal(
+    (
+      await call(handle, "/ar/_app/immutable/missing", {
+        headers: { Accept: "text/html" },
+      })
+    ).status,
+    404,
+  );
   assert.equal(await (await call(handle, "/")).text(), "home");
 });
 

@@ -3,8 +3,8 @@ import { readFile, stat } from "node:fs/promises";
 import { BlockList, isIP } from "node:net";
 import { extname, resolve, sep } from "node:path";
 import { Readable } from "node:stream";
-import worker from "../worker/index.js";
 import { documentPath } from "../worker/document-path.js";
+import worker from "../worker/index.js";
 
 const mime = {
   ".html": "text/html; charset=utf-8",
@@ -124,7 +124,9 @@ function staticAssets(root) {
           "Content-Type": mime[extname(file)] ?? "application/octet-stream",
           "Content-Length": String(info.size),
           "Cache-Control":
-            !fallback && (pathname.startsWith("/assets/") || pathname.startsWith("/_app/immutable/"))
+            !fallback &&
+            (pathname.startsWith("/assets/") ||
+              pathname.startsWith("/_app/immutable/"))
               ? "public, max-age=31536000, immutable"
               : "no-cache",
         },
@@ -212,7 +214,10 @@ export async function createApp({
         : await worker.fetch(request, env);
     if (method === "HEAD") await response.body?.cancel();
     const merged = new Headers(securityHeaders);
-    for (const [name, value] of response.headers) merged.set(name, value);
+    for (const [name, value] of response.headers)
+      if (name === "content-security-policy" && merged.has(name))
+        merged.set(name, `${merged.get(name)}; ${value}`);
+      else merged.set(name, value);
     return new Response(method === "HEAD" ? null : response.body, {
       status: response.status,
       statusText: response.statusText,
