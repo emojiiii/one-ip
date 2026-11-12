@@ -103,6 +103,42 @@ test("generated 404 document preserves its existing security headers", async () 
   );
 });
 
+test("HEAD with a body-bearing request fetches the document and fallback without forwarding a body", async () => {
+  const seen = [];
+  const env = {
+    ASSETS: {
+      fetch: async (request) => {
+        seen.push(request);
+        assert.equal(request.method, "GET");
+        assert.equal(request.body, null);
+        assert.equal(request.headers.has("Content-Length"), false);
+        assert.equal(request.headers.get("Accept-Language"), "zh-CN");
+        return seen.length === 1
+          ? new Response("missing", { status: 404 })
+          : new Response(html, { headers: { "Content-Type": "text/html" } });
+      },
+    },
+  };
+  // Cloudflare represents an incoming HEAD with Content-Length: 0 as body-bearing.
+  const controller = new AbortController();
+  const request = new Request("https://example.com/ip/1.1.1.1?q=1", {
+    method: "POST",
+    body: "",
+    headers: { "Content-Length": "0", "Accept-Language": "zh-CN" },
+    signal: controller.signal,
+  });
+  Object.defineProperty(request, "method", { value: "HEAD" });
+  assert.notEqual(request.body, null);
+  const response = await worker.fetch(request, env);
+  assert.equal(response.status, 200);
+  assert.equal(await response.text(), "");
+  assert.equal(seen[0].url, "https://example.com/ip/1.1.1.1?q=1");
+  assert.equal(seen[1].url, "https://example.com/200");
+  controller.abort();
+  assert.equal(seen[0].signal.aborted, true);
+  assert.equal(seen[1].signal.aborted, true);
+});
+
 test("non-HTML assets keep their original cache headers and body", async () => {
   const env = {
     ASSETS: {

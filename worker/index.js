@@ -42,7 +42,11 @@ export default {
         ])
           headers.delete(name);
       const assetRequest = isDocument
-        ? new Request(request, { method: "GET", headers })
+        ? new Request(request.url, {
+            method: "GET",
+            headers,
+            signal: request.signal,
+          })
         : request;
       const response = await env.ASSETS.fetch(assetRequest);
       if (
