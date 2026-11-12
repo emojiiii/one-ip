@@ -1,8 +1,7 @@
 {
   "policy.terms": "उपयोग की शर्तें",
   "policy.privacy": "गोपनीयता नीति",
-  "policy.contactAuthor": "लेखक से संपर्क करें",
-  "policy.tsx.questionsAboutSiteUsagePrivacyContactAuthorEmail": "साइट के उपयोग या गोपनीयता के बारे में प्रश्नों के लिए, लेखक से ईमेल या वीचैट द्वारा संपर्क करें।",
+  "policy.contact": "संपर्क करें",
   "policy.tsx.serviceScope": "सेवा का दायरा",
   "policy.tsx.siteProvidesIpLookupsNetworkDiagnosticsBrowserChecks": "यह साइट आईपी लुकअप, नेटवर्क डायग्नोस्टिक्स, ब्राउज़र जांच और सेवा स्थिति क्वेरी प्रदान करती है।",
   "policy.tsx.acceptableUse": "स्वीकार्य उपयोग",
@@ -32,10 +31,5 @@
   "policy.tsx.retentionAndDeletion": "अवधारण और विलोपन",
   "policy.tsx.lookupHistoryKeepsLatest10SuccessfulQueriesResults": "लुकअप इतिहास वर्तमान ब्राउज़र में प्रति श्रेणी नवीनतम 10 सफल क्वेरीज़ और परिणाम रखता है; इसे हटाने के लिए साइट डेटा साफ़ करें। सर्वर दर सीमित करने के लिए अनुरोध आईपी का उपयोग करता है। होस्टिंग कॉन्फ़िगरेशन नमूना लॉग को सक्षम बनाता है; वास्तविक रिकॉर्ड और प्रतिधारण परिनियोजन सेटिंग्स पर निर्भर करते हैं। ब्राउज़र डेटा साफ़ करने से तृतीय-पक्ष या होस्टिंग रिकॉर्ड नहीं हटते। डेटा प्रश्नों के लिए अनुरोध समय और सुविधा के साथ लेखक से संपर्क करें।",
   "navigation.browserChecks": "ब्राउज़र जाँच करता है",
-  "common.localStorage": "स्थानीय भंडारण",
-  "sites.wechat": "WeChat",
-  "contact.weChatQrCode": "WeChat संपर्क QR कोड",
-  "contact.scanWeChatHint": "WeChat से स्कैन करें, या अपने फ़ोन पर छवि सहेजें और पहचानें।",
-  "contact.weChatRemarkHint": "जोड़ते समय, अपने अनुरोध नोट में \"oneip\" शामिल करें और संक्षेप में अपना उद्देश्य बताएं, अन्यथा इसे स्वीकार नहीं किया जा सकता है।",
-  "common.close": "बंद करें"
+  "common.localStorage": "स्थानीय भंडारण"
 }

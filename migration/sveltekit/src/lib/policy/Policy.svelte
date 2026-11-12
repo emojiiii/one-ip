@@ -7,11 +7,9 @@
 <script lang="ts">
   import { page as routePage } from '$app/state';
   import { localeFromPath } from '../i18n';
-  import X from '@lucide/svelte/icons/x';
 
   let { page }: { page: 'terms' | 'privacy' } = $props();
   const language = $derived(localeFromPath(routePage.url.pathname));
-  let contact: HTMLDialogElement;
   function t(key: string) {
     return catalog.t(key, [], language);
   }
@@ -54,25 +52,10 @@
     {/each}
   </article>
   <section class="ui-panel contact">
-    <h2>{t('policy.contactAuthor')}</h2>
-    <p>{t('policy.tsx.questionsAboutSiteUsagePrivacyContactAuthorEmail')}</p>
-    <div class="contact-links">
-      <a class="ui-button" href="mailto:ip@huzhihui.com">ip@huzhihui.com</a>
-      <button class="ui-button" type="button" onclick={() => contact.showModal()}>{t('sites.wechat')}</button>
-    </div>
+    <h2>{t('policy.contact')}</h2>
+    <a class="ui-button" href="mailto:ip@kitt.tools">ip@kitt.tools</a>
   </section>
 </div>
-
-<dialog bind:this={contact} aria-labelledby="contact-title">
-  <div class="dialog-header">
-    <h2 id="contact-title">{t('policy.contactAuthor')}</h2>
-    <button class="ui-button ghost" type="button" aria-label={t('common.close')} onclick={() => contact.close()}><X size={16} aria-hidden="true" /></button>
-  </div>
-  <img src="/contact/wechat.jpg" alt={t('contact.weChatQrCode')} width="192" />
-  <p>{t('contact.scanWeChatHint')}</p>
-  <p>{t('contact.weChatRemarkHint')}</p>
-  <a href="mailto:ip@huzhihui.com">ip@huzhihui.com</a>
-</dialog>
 
 <style>
   .policy { display: grid; gap: .75rem; }
@@ -80,23 +63,5 @@
   .document > section + section { margin-top: .8rem; padding-top: .8rem; border-top: 1px solid var(--border); }
   h2 { margin: 0 0 .28rem; font-size: .9rem; }
   p { max-width: 75ch; margin: 0; color: var(--muted-foreground); font-size: .83rem; line-height: 1.68; }
-  .contact-links { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .65rem; }
-  .contact-links a { text-decoration: none; }
-  dialog {
-    width: min(24rem, calc(100% - 2rem));
-    max-height: 85dvh;
-    padding: 1rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--card);
-    color: var(--foreground);
-    box-shadow: 0 16px 48px #0003;
-  }
-  dialog::backdrop { background: #11182770; }
-  dialog img { display: block; max-width: 100%; height: auto; margin: .7rem auto; border-radius: .5rem; }
-  dialog p { margin-bottom: .4rem; }
-  dialog a { font-size: .82rem; }
-  .dialog-header { display: flex; align-items: center; justify-content: space-between; gap: .75rem; }
-  .dialog-header h2 { margin: 0; }
-  .dialog-header button { padding-inline: .45rem; }
+  .contact a { margin-top: .4rem; text-decoration: none; }
 </style>

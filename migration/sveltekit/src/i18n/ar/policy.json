@@ -1,8 +1,7 @@
 {
   "policy.terms": "شروط الاستخدام",
   "policy.privacy": "سياسة الخصوصية",
-  "policy.contactAuthor": "اتصل بالمؤلف",
-  "policy.tsx.questionsAboutSiteUsagePrivacyContactAuthorEmail": "للأسئلة حول استخدام الموقع أو الخصوصية، اتصل بالمؤلف عبر البريد الإلكتروني أو WeChat.",
+  "policy.contact": "تواصل معنا",
   "policy.tsx.serviceScope": "نطاق الخدمة",
   "policy.tsx.siteProvidesIpLookupsNetworkDiagnosticsBrowserChecks": "يوفر هذا الموقع عمليات بحث عن IP وتشخيصات الشبكة وفحوصات المتصفح واستعلامات حالة الخدمة.",
   "policy.tsx.acceptableUse": "الاستخدام المقبول",
@@ -32,10 +31,5 @@
   "policy.tsx.retentionAndDeletion": "الاحتفاظ والحذف",
   "policy.tsx.lookupHistoryKeepsLatest10SuccessfulQueriesResults": "يحتفظ سجل البحث بأحدث 10 استعلامات ونتائج ناجحة لكل فئة في المتصفح الحالي؛ مسح بيانات الموقع لإزالتها. يستخدم الخادم عناوين IP للطلبات لتحديد المعدل. يتيح تكوين الاستضافة سجلات العينات؛ تعتمد السجلات الفعلية والاحتفاظ بها على إعدادات النشر. لا يؤدي مسح بيانات المتصفح إلى إزالة سجلات الطرف الثالث أو سجلات الاستضافة. اتصل بالمؤلف وأخبره بوقت الطلب وميزة الأسئلة المتعلقة بالبيانات.",
   "navigation.browserChecks": "الشيكات المتصفح",
-  "common.localStorage": "التخزين المحلي",
-  "sites.wechat": "وي شات",
-  "contact.weChatQrCode": "رمز QR للاتصال بـ WeChat",
-  "contact.scanWeChatHint": "قم بالمسح الضوئي باستخدام WeChat، أو احفظ الصورة وتعرف عليها على هاتفك.",
-  "contact.weChatRemarkHint": "عند الإضافة، قم بتضمين \"oneip\" في مذكرة طلبك واذكر غرضك بإيجاز، وإلا فقد لا يتم قبوله.",
-  "common.close": "إغلاق"
+  "common.localStorage": "التخزين المحلي"
 }

@@ -62,15 +62,9 @@ Net.Coffee、ip-api、Globalping、IANA / RDAP、各平台官方状态源；浏�
 
 欢迎提交 Issue。分享截图前请遮盖 IP、位置和指纹等隐私信息。
 
-## 商务合作
+## 联系我们
 
-提供闭源商业版本：企业授权、私有化部署、定制开发与 API 接入、技术支持。请通过 [ip@huzhihui.com](mailto:ip@huzhihui.com) 或微信联系，并说明使用场景与预计规模。
-
-<details>
-  <summary>微信联系（展开二维码）</summary>
-
-  <img src="migration/sveltekit/static/contact/wechat.jpg" alt="微信联系二维码" width="240" />
-</details>
+[ip@kitt.tools](mailto:ip@kitt.tools)
 
 社区友链：[LINUX DO](https://linux.do/)
 

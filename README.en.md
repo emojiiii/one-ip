@@ -62,15 +62,9 @@ Net.Coffee, ip-api, Globalping, IANA / RDAP and official platform status feeds. 
 
 Issues are welcome. Redact IPs, locations and fingerprint identifiers before sharing screenshots.
 
-## Business Cooperation
+## Contact
 
-A closed-source commercial edition is available: commercial licenses, private deployment, custom development and API access, and technical support. Contact [ip@huzhihui.com](mailto:ip@huzhihui.com) or WeChat with your use case and expected scale.
-
-<details>
-  <summary>Contact on WeChat (show QR code)</summary>
-
-  <img src="migration/sveltekit/static/contact/wechat.jpg" alt="WeChat contact QR code" width="240" />
-</details>
+[ip@kitt.tools](mailto:ip@kitt.tools)
 
 ## Star History
 

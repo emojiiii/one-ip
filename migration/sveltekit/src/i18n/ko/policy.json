@@ -1,8 +1,7 @@
 {
   "policy.terms": "이용약관",
   "policy.privacy": "개인정보 처리방침",
-  "policy.contactAuthor": "저자에게 연락하기",
-  "policy.tsx.questionsAboutSiteUsagePrivacyContactAuthorEmail": "사이트 사용이나 개인 정보 보호에 대한 질문이 있는 경우 이메일이나 WeChat으로 작성자에게 문의하세요.",
+  "policy.contact": "문의하기",
   "policy.tsx.serviceScope": "서비스 범위",
   "policy.tsx.siteProvidesIpLookupsNetworkDiagnosticsBrowserChecks": "이 사이트는 IP 조회, 네트워크 진단, 브라우저 확인 및 서비스 상태 쿼리를 제공합니다.",
   "policy.tsx.acceptableUse": "허용되는 사용",
@@ -32,10 +31,5 @@
   "policy.tsx.retentionAndDeletion": "보유 및 삭제",
   "policy.tsx.lookupHistoryKeepsLatest10SuccessfulQueriesResults": "조회 기록은 현재 브라우저에서 카테고리별로 최근 10개의 성공한 쿼리와 결과를 유지합니다. 제거하려면 사이트 데이터를 삭제하세요. 서버는 속도 제한을 위해 요청 IP를 사용합니다. 호스팅 구성을 통해 샘플링된 로그를 사용할 수 있습니다. 실제 기록 및 보존은 배포 설정에 따라 다릅니다. 브라우저 데이터를 지워도 타사 또는 호스팅 기록은 제거되지 않습니다. 데이터 질문 요청 시간 및 기능은 작성자에게 문의하세요.",
   "navigation.browserChecks": "브라우저 확인",
-  "common.localStorage": "로컬 저장소",
-  "sites.wechat": "위챗",
-  "contact.weChatQrCode": "WeChat 연락처 QR 코드",
-  "contact.scanWeChatHint": "WeChat으로 스캔하거나 휴대폰에 이미지를 저장하고 인식하세요.",
-  "contact.weChatRemarkHint": "추가시 요청사항에 \"oneip\"을 기재하시고, 목적을 간략하게 기재해주세요. 그렇지 않으면 접수가 되지 않을 수 있습니다.",
-  "common.close": "닫기"
+  "common.localStorage": "로컬 저장소"
 }

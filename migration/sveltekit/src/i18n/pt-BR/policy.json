@@ -1,8 +1,7 @@
 {
   "policy.terms": "Termos de uso",
   "policy.privacy": "Política de privacidade",
-  "policy.contactAuthor": "Entre em contato com o autor",
-  "policy.tsx.questionsAboutSiteUsagePrivacyContactAuthorEmail": "Para dúvidas sobre o uso ou privacidade do site, entre em contato com o autor por e-mail ou WeChat.",
+  "policy.contact": "Fale conosco",
   "policy.tsx.serviceScope": "Escopo do serviço",
   "policy.tsx.siteProvidesIpLookupsNetworkDiagnosticsBrowserChecks": "Este site fornece pesquisas de IP, diagnósticos de rede, verificações de navegador e consultas de status de serviço.",
   "policy.tsx.acceptableUse": "Uso aceitável",
@@ -32,10 +31,5 @@
   "policy.tsx.retentionAndDeletion": "Retenção e exclusão",
   "policy.tsx.lookupHistoryKeepsLatest10SuccessfulQueriesResults": "O histórico de pesquisa mantém as últimas 10 consultas e resultados bem-sucedidos por categoria no navegador atual; limpe os dados do site para removê-los. O servidor usa IPs de solicitação para limitação de taxa. A configuração de hospedagem permite amostras de logs; os registros e a retenção reais dependem das configurações de implantação. A limpeza dos dados do navegador não remove registros de terceiros ou de hospedagem. Entre em contato com o autor com o horário de solicitação e recurso para dúvidas sobre dados.",
   "navigation.browserChecks": "Verificações do navegador",
-  "common.localStorage": "Armazenamento local",
-  "sites.wechat": "WeChat",
-  "contact.weChatQrCode": "Código QR de contato do WeChat",
-  "contact.scanWeChatHint": "Digitalize com o WeChat ou salve e reconheça a imagem no seu telefone.",
-  "contact.weChatRemarkHint": "Ao adicionar, inclua \"oneip\" em sua nota de solicitação e indique brevemente sua finalidade, ou ela poderá não ser aceita.",
-  "common.close": "Fechar"
+  "common.localStorage": "Armazenamento local"
 }

@@ -1,8 +1,7 @@
 {
   "policy.terms": "Terms of use",
   "policy.privacy": "Privacy policy",
-  "policy.contactAuthor": "Contact the author",
-  "policy.tsx.questionsAboutSiteUsagePrivacyContactAuthorEmail": "For questions about site usage or privacy, contact the author by email or WeChat.",
+  "policy.contact": "Contact us",
   "policy.tsx.serviceScope": "Service scope",
   "policy.tsx.siteProvidesIpLookupsNetworkDiagnosticsBrowserChecks": "This site provides IP lookups, network diagnostics, browser checks and service status queries.",
   "policy.tsx.acceptableUse": "Acceptable use",
@@ -32,10 +31,5 @@
   "policy.tsx.retentionAndDeletion": "Retention and deletion",
   "policy.tsx.lookupHistoryKeepsLatest10SuccessfulQueriesResults": "Lookup history keeps the latest 10 successful queries and results per category in the current browser; clear site data to remove it. The server uses request IPs for rate limiting. Hosting configuration enables sampled logs; actual records and retention depend on deployment settings. Clearing browser data does not remove third-party or hosting records. Contact the author with the request time and feature for data questions.",
   "navigation.browserChecks": "Browser checks",
-  "common.localStorage": "Local storage",
-  "sites.wechat": "WeChat",
-  "contact.weChatQrCode": "WeChat contact QR code",
-  "contact.scanWeChatHint": "Scan with WeChat, or save and recognize the image on your phone.",
-  "contact.weChatRemarkHint": "When adding, include \"oneip\" in your request note and briefly state your purpose, or it may not be accepted.",
-  "common.close": "Close"
+  "common.localStorage": "Local storage"
 }

@@ -352,11 +352,6 @@
   <ToolDirectory {language} />
   <footer>
     <span>© {new Date().getFullYear()} One IP</span>
-    <a
-      href="https://huzhihui.com/blog/one-ip-guide"
-      target="_blank"
-      rel="noreferrer">{t("guide")}</a
-    >
     <a href={localizedPath("/terms", language)}>{t("terms")}</a>
     <a href={localizedPath("/privacy", language)}>{t("privacy")}</a>
     <a
