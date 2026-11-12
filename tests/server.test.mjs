@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { after, before, test } from "node:test";
 import { pathToFileURL } from "node:url";
+import { locales } from "../shared/locales.js";
 import { pingVerificationEnv } from "./ping-verification-fixture.mjs";
 import { memoryCache } from "../server/memory-cache.mjs";
 import { rateKey, rateLimit } from "../worker/rate-limit.js";
@@ -132,6 +133,26 @@ test("standalone server serves assets, SPA fallback and hides deployment files",
   const api = await call(handle, "/api/map/config");
   assert.equal(api.headers.get("Referrer-Policy"), "no-referrer");
   assert.equal(api.headers.get("Cache-Control"), "no-store");
+});
+
+test("standalone server serves prerendered pages and the dynamic IP fallback", async () => {
+  const assets = join(dir, "svelte-assets");
+  await mkdir(assets);
+  await writeFile(join(assets, "_headers"), "/*\n  X-Frame-Options: DENY\n");
+  await writeFile(join(assets, "index.html"), "home");
+  await writeFile(join(assets, "whois.html"), "prerendered whois");
+  await writeFile(join(assets, "200.html"), "dynamic fallback");
+  const { handle } = await server.createApp({ assets, config: {} });
+  assert.equal(await (await call(handle, "/whois")).text(), "prerendered whois");
+  for (const path of ["/ip/1.1.1.1", ...locales.map(({ prefix }) => `${prefix}/ip/1.1.1.1`), "/ar/ip/2001:4860:4860::8888", "/pt-br/lookup/ip/1.1.1.1", "/claude/status.html", "/unknown"]) {
+    const response = await call(handle, path);
+    assert.equal(response.status, 200);
+    assert.equal(await response.text(), "dynamic fallback");
+  }
+  assert.equal((await call(handle, "/_app/immutable/missing.js", { headers: { Accept: "text/html" } })).status, 404);
+  assert.equal((await call(handle, "/missing.js", { headers: { Accept: "text/html" } })).status, 404);
+  assert.equal((await call(handle, "/ar/_app/immutable/missing", { headers: { Accept: "text/html" } })).status, 404);
+  assert.equal(await (await call(handle, "/")).text(), "home");
 });
 
 test("standalone server ignores spoofed client identity headers from untrusted peers", async () => {

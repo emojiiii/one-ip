@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import {
+import { bundledModuleUrl } from "./compile.mjs";
+const {
   assessWebRtc,
   collectFromCandidates,
   isPublicCandidate,
   parseCandidate,
-} from "../src/views/webrtc/api.ts";
+} = await import(bundledModuleUrl("migration/sveltekit/src/routes/leak/webrtc/api.ts"));
 
 test("equivalent IPv6 forms preserve local and public classifications", () => {
   for (const ip of [

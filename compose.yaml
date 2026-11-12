@@ -1,6 +1,9 @@
 services:
   one-ip:
-    build: .
+    build:
+      context: .
+      args:
+        VITE_SITE_ORIGIN: ${VITE_SITE_ORIGIN:-}
     image: one-ip:local
     restart: unless-stopped
     init: true

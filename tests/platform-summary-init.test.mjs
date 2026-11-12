@@ -1,25 +1,16 @@
-import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { test } from "node:test";
-import { compile } from "./compile.mjs";
-import { t } from "../src/i18n/index.ts";
-import { localizeCatalogItem } from "../src/lib/localize-catalog.ts";
-import { aiPlatforms } from "../src/views/ai/platforms.ts";
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import { bundledModuleUrl } from './compile.mjs';
 
-test("home platform summary initializes its featured services when imported", () => {
-  const source = readFileSync("src/views/home/platform-summary.tsx", "utf8");
-  const outputText = compile(source, { format: "cjs", loader: "tsx" });
-  const module = { exports: {} };
-  const services = JSON.parse(
-    readFileSync("src/views/status/services.json", "utf8"),
-  );
-  const require = (name) => {
-    if (name === "@/views/status/services.json") return services;
-    if (name === "@/i18n") return { t };
-    if (name === "@/lib/localize-catalog") return { localizeCatalogItem };
-    if (name === "@/views/ai/platforms") return { aiPlatforms };
-    return {};
-  };
-  new Function("require", "module", outputText)(require, module);
-  assert.equal(typeof module.exports.PlatformSummary, "function");
+const { featuredServices, featuredPlatforms } = await import(bundledModuleUrl('migration/sveltekit/src/lib/ip/home-status.ts'));
+
+test('homepage initializes featured services from the actual catalog', () => {
+  assert.deepEqual(featuredServices.map(item => item.id), ['9', '4', '10', '5', '0', '19', '15', '1']);
+  assert.ok(featuredServices.every(item => item.name));
+  assert.equal(new Set(featuredServices.map(item => item.id)).size, featuredServices.length);
+});
+test('homepage AI overview contains distinct valid probe domains', () => {
+  assert.ok(featuredPlatforms.length >= 8);
+  assert.equal(new Set(featuredPlatforms.map(item => item.domain)).size, featuredPlatforms.length);
+  assert.ok(featuredPlatforms.every(item => new URL(`https://${item.domain}`).hostname === item.domain));
 });

@@ -1,7 +1,8 @@
-# <img src="public/icon.svg" alt="One IP Logo" width="32" height="32" /> One IP
+# <img src="migration/sveltekit/static/icon.svg" alt="One IP Logo" width="32" height="32" /> One IP
 
 <p align="left">
-  <img src="https://img.shields.io/badge/React-19-282C34?logo=react&amp;logoColor=61DAFB" alt="React 19" />
+  <img src="https://img.shields.io/badge/SvelteKit-3-FF3E00?logo=svelte&amp;logoColor=white" alt="SvelteKit 3" />
+  <img src="https://img.shields.io/badge/Svelte-5-FF3E00?logo=svelte&amp;logoColor=white" alt="Svelte 5" />
   <img src="https://img.shields.io/badge/Vite-8-646CFF?logo=vite&amp;logoColor=white" alt="Vite 8" />
   <img src="https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&amp;logoColor=white" alt="TypeScript 6" />
   <img src="https://img.shields.io/badge/Cloudflare_Workers-F38020?logo=cloudflareworkers&amp;logoColor=white" alt="Cloudflare Workers" />
@@ -11,7 +12,7 @@ A toolbox for IP lookups, network diagnostics, browser checks and AI service sta
 
 [中文](README.md) · **English**
 
-[Live demo](https://ip.huzhihui.com/) · [GitHub](https://github.com/zhihui-hu/one-ip)
+[Live demo](https://ip.kitt.tools/) · [GitHub](https://github.com/emojiiii/one-ip)
 
 ![Desktop overview, redacted](docs/screenshots/desktop-home-redacted.png)
 
@@ -36,11 +37,7 @@ Results rely on third-party services and may be affected by rate limits or CORS.
 
 ## Deploy
 
-One-click deploy to Cloudflare:
-
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2Fzhihui-hu%2Fone-ip)
-
-Or fork the repo and import it under Cloudflare **Workers & Pages** with build command `pnpm build` and deploy command `pnpm deploy`. Core features need no API keys.
+Create a Worker in Cloudflare and connect your Git repository directly. Use `pnpm build` as the build command and `pnpm run deploy` as the deploy command. Core features need no API keys.
 
 Self-host with Docker:
 
@@ -49,7 +46,7 @@ cp .env.docker.example .env.docker   # optional settings
 docker compose up -d --build         # open http://your-server:8080
 ```
 
-See [Deployment and configuration](docs/deploy.en.md) for Cloudflare Pages, reverse proxies, Tianditu maps, human verification, GitHub Actions and fork syncing.
+Worker domains, reverse proxies, Tianditu maps, human verification and fork syncing are covered in [Deployment and configuration](docs/deploy.en.md).
 
 ## Local development
 
@@ -72,14 +69,14 @@ A closed-source commercial edition is available: commercial licenses, private de
 <details>
   <summary>Contact on WeChat (show QR code)</summary>
 
-  <img src="public/contact/wechat.jpg" alt="WeChat contact QR code" width="240" />
+  <img src="migration/sveltekit/static/contact/wechat.jpg" alt="WeChat contact QR code" width="240" />
 </details>
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=zhihui-hu%2Fone-ip&amp;type=date">
+<a href="https://www.star-history.com/?repos=emojiiii%2Fone-ip&amp;type=date">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=zhihui-hu/one-ip&amp;type=Date&amp;theme=dark" />
-    <img src="https://api.star-history.com/svg?repos=zhihui-hu/one-ip&amp;type=Date" alt="One IP GitHub star history" width="640" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=emojiiii/one-ip&amp;type=Date&amp;theme=dark" />
+    <img src="https://api.star-history.com/svg?repos=emojiiii/one-ip&amp;type=Date" alt="One IP GitHub star history" width="640" />
   </picture>
 </a>

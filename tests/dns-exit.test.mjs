@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import {
+import { bundledModuleUrl } from "./compile.mjs";
+const {
   assessDnsLeak,
   detectDnsExits,
   parseDnsResponse,
   publicDnsProvider,
-} from "../src/views/dns-exit/api.ts";
+} = await import(bundledModuleUrl("migration/sveltekit/src/routes/leak/dns/api.ts"));
 
 test("DNS parsers keep all resolvers and exclude Fastly client IP", () => {
   assert.deepEqual(

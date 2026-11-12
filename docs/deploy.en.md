@@ -2,40 +2,26 @@
 
 [Back to README](../README.en.md) · [中文](deploy.md)
 
-## Deploy to Cloudflare
+## Deploy with Cloudflare Workers Git integration
 
-1. [Fork this project](https://github.com/zhihui-hu/one-ip/fork) into your GitHub account.
-2. Open the [Cloudflare dashboard](https://dash.cloudflare.com/), go to **Workers & Pages**, create a Worker and choose to import a Git repository.
-3. Connect GitHub, select your `one-ip` fork and set the production branch to `main`.
-4. Set the build command to `pnpm build` and the deploy command to `pnpm deploy`. Use Node.js 24 and pnpm 10.32.1. Keep the default root directory.
-5. Deploy and open the assigned `workers.dev` address. Use the Worker settings to connect a custom domain.
+1. In **Workers & Pages**, create a Worker and import your Git repository. You can use your own repository or fork this project first. [Cloudflare dashboard](https://dash.cloudflare.com/) · [Fork this project](https://github.com/emojiiii/one-ip/fork)
+2. Select a production branch such as `main`. The Worker's name in the dashboard must match `name` in the root `wrangler.toml`, which defaults to `one-ip`. [Worker name requirement](https://developers.cloudflare.com/workers/ci-cd/builds/troubleshoot/#workers-name-requirement)
+3. Use the repository root as the root directory, `pnpm build` as the build command and `pnpm run deploy` as the deploy command. The repository specifies Node.js 24 and pnpm 10.32.1. [Workers Builds settings](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/)
+4. After the first deployment, verify it at the assigned `workers.dev` address. In the Worker settings, use **Domains & Routes → Add → Custom Domain** to bind `ip.kitt.tools` or your site's domain. [Custom Domains](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/)
 
-The project uses **Cloudflare Workers with Static Assets**. The `/api/*` routes need a Worker. Core features require no application environment variables or API keys. See “Verification” for Turnstile setup.
+Workers Builds builds and deploys commits on the connected production branch. The root `wrangler.toml` deploys `worker/index.js` and the static assets in `dist` together. Core features require no application environment variables or API keys. See “Verification” for Turnstile setup.
 
 For map access from mainland China, configure `TIANDITU_TOKEN` under Worker → Settings → Variables and Secrets (or run `pnpm exec wrangler secret put TIANDITU_TOKEN`). Maps prefer Tianditu and fall back to OpenStreetMap when unavailable; without the token, OpenStreetMap remains the default.
 
 The default map requires no account or API key. OpenStreetMap's public tiles are subject to its [usage policy](https://operations.osmfoundation.org/policies/tiles/): keep attribution visible, load tiles on demand, respect browser caching, and do not offer offline downloads or bulk prefetching. Availability is not guaranteed. Tile requests send only this site's origin as the Referer, excluding page paths containing queried IPs. Failed maps can be retried independently while location text and coordinates remain available.
 
-Workers Builds builds and deploys when `main` receives a commit. The button above points to the original repository. To preserve the fork relationship and update workflow, follow the steps to import your fork.
+## Language URLs and SEO
 
-## Cloudflare Pages deployment
+Unprefixed paths such as `/status` default to English. Each public page has static HTML for English (`/en`), Simplified Chinese (`/zh`), Latin American Spanish (`/es`), Brazilian Portuguese (`/pt-br`), French (`/fr`), German (`/de`), Japanese (`/ja`), Korean (`/ko`), Arabic (`/ar`), and Hindi (`/hi`). Results for individual IP addresses load in the browser.
 
-Pages reuses the existing API through [Advanced mode](https://developers.cloudflare.com/pages/functions/advanced-mode/). The build creates `dist-pages/_worker.js` and `_routes.json`; only API and protected backend paths invoke the function. Use `dist-pages` for a complete Pages deployment.
+Production builds use `https://ip.kitt.tools` by default for canonical URLs, hreflang and the sitemap. To deploy to another domain, set the build variable `VITE_SITE_ORIGIN` under the Worker's **Settings → Build**. For Docker Compose, set the environment variable of the same name. For `docker build`, use `--build-arg VITE_SITE_ORIGIN=https://ip.example.com`.
 
-For Git integration, create a Pages project with preset **None**, repository root as the root directory, build command `pnpm build:pages`, and output directory `dist-pages`. Set build variables `NODE_VERSION=24` and `PNPM_VERSION=10.32.1`. Set the Functions compatibility date to `2026-09-09` and add `nodejs_compat` for both production and preview. The root `wrangler.toml` is for Workers; Pages CLI configuration lives in `deploy/pages/wrangler.toml`.
-
-For direct deployment:
-
-```bash
-pnpm install --frozen-lockfile
-pnpm build:pages
-pnpm exec wrangler login
-# First deployment only; skip if the project already exists
-pnpm exec wrangler pages project create one-ip --production-branch main
-pnpm deploy:pages --branch main
-```
-
-Change the project name in `deploy/pages/wrangler.toml`. Configure optional secrets separately for production and preview in Pages, or use `pnpm exec wrangler pages secret put NAME --cwd deploy/pages`. To upload an existing `.secrets.production.env`, run `node scripts/sync-worker-secrets.mjs production --pages`. After building, use `pnpm pages:dev` for local preview; its secrets file is `deploy/pages/.dev.vars`.
+`/robots.txt` advertises the absolute URL of `/sitemap.xml`. The sitemap lists the public canonical URLs and hreflang alternates for all 10 languages. English canonicals use `/en` paths, and `x-default` points to the unprefixed path.
 
 ## Docker deployment
 
@@ -75,7 +61,7 @@ When Docker sits behind the Cloudflare proxy, set `TRUST_CF_CONNECTING_IP=true` 
 
 Docker geolocation uses public providers and does not present private socket addresses as public egress. Missing Cloudflare JA3/JA4/TLS metadata remains null. Docker replaces the Cloudflare edge cache with an in-process cache (1000 entries, 32 MB) that honours each endpoint's TTL and clears on restart.
 
-Workers retains native rate limiting. Pages and Docker use per-instance memory limits: 180 ordinary requests/minute, a separate 180 icon requests/minute, and 5 POST requests/minute, counting each IPv6 /64 as one client. Counts reset on restart and are not shared across replicas. Pages spreads counts across many edge isolates, so the fallback is weak there; add a Cloudflare WAF rate limiting rule for `/api/*` when strict limits matter.
+Cloudflare Workers uses native rate limiting. Docker limits ordinary and icon requests separately to 180 per minute and POST requests to five per minute, counting each IPv6 /64 as one client. Each instance keeps its own counts in memory and resets them on restart.
 
 ## Verification (optional)
 
@@ -94,23 +80,7 @@ node scripts/sync-worker-secrets.mjs production --check
 node scripts/sync-worker-secrets.mjs production
 ```
 
-The script uploads non-empty values, preserves existing secrets and skips missing optional files. Add `--pages` for Pages; use `.env.docker` for Docker. Sensitive files are in the Git ignore list. Store secrets in server settings, not `VITE_*` variables. Check the `configured` fields at `/api/browser/challenges` to inspect the setup.
-
-## GitHub Actions deployment (optional)
-
-Choose Workers Builds or GitHub Actions to avoid duplicate deployments. Actions runs builds and tests by default. To enable deployment, add these settings to your repository's Actions configuration:
-
-| Kind     | Name                    | Purpose                                             |
-| -------- | ----------------------- | --------------------------------------------------- |
-| Variable | `ENABLE_CF_DEPLOY=true` | Enable deployment                                   |
-| Variable | `CF_DEPLOY_TARGET`      | `workers` (default) or `pages`                      |
-| Variable | `CF_DEPLOY_BRANCH`      | Branch to deploy; defaults to the default branch    |
-| Secret   | `CLOUDFLARE_API_TOKEN`  | Workers/Pages deployment credentials for the target |
-| Secret   | `CLOUDFLARE_ACCOUNT_ID` | Target Cloudflare account ID                        |
-
-Push to the deploy branch (`main` by default) or run `Build and deploy one-ip` on it. Deployment starts after the build, tests and Docker smoke test pass; other branches only build and test. Documentation-only changes do not trigger a run. Deployment uses the `production` environment, so secrets can live in the repository or that environment. External PRs run tests without deployment credentials. These credentials are used by CI.
-
-For `pages`, first create the Pages project named in `deploy/pages/wrangler.toml`. When using Pages Git integration, leave Actions deployment disabled.
+The script uploads non-empty values, preserves existing secrets and skips missing optional files. Use `.env.docker` for Docker. Sensitive files are in the Git ignore list. Store secrets in server settings, not `VITE_*` variables. Check the `configured` fields at `/api/browser/challenges` to inspect the setup.
 
 ## Update your fork
 
@@ -122,14 +92,13 @@ For scheduled updates, enable `Sync upstream`:
 2. Under Settings → Secrets and variables → Actions → **Variables**, add `AUTO_SYNC_UPSTREAM=true`.
 3. The workflow checks for updates at 04:23 UTC each day. You can run it from the Actions page.
 
-The workflow supports forks created from `zhihui-hu/one-ip` and requires no personal access token. It uses GitHub's `merge-upstream` API, stops on conflicts and preserves your commits. Use GitHub's Sync fork if you want to review updates.
+The workflow uses GitHub's `merge-upstream` API to merge updates from the upstream repository GitHub associates with the fork into its default branch. It requires no personal access token, stops on conflicts and preserves your commits. Use GitHub's Sync fork if you want to review updates.
 
-- **Workers Builds:** connect your fork's production branch and check deployment records for synchronized commits in Cloudflare's build history.
-- **GitHub Actions deployment:** the sync workflow triggers deployment when it merges updates. Pushes made with `GITHUB_TOKEN` do not trigger ordinary `push` workflows.
+- The sync workflow updates the fork. With the production branch connected, check Cloudflare's build history for deployments of synchronized commits.
 - If branch protection blocks a merge, use a PR.
 - Enable scheduled workflows in your fork. GitHub may disable schedules after 60 days of inactivity in a public repository; use the Actions page to enable them.
 
-References: [Syncing a fork](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/syncing-a-fork), [GITHUB_TOKEN triggering behavior](https://docs.github.com/en/actions/concepts/security/github_token), [Workflow disabling rules](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/disable-and-enable-workflows).
+[Syncing a fork](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/syncing-a-fork) · [Workflow disabling rules](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/disable-and-enable-workflows)
 
 ## WebMCP
 

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { challengeConfig, verifyChallenge } from "../worker/challenges.js";
-import { compareExits } from "../src/views/claude/api.ts";
+import { sameIp } from "../migration/sveltekit/src/lib/ip/ip-address.ts";
 
 test("optional non-interactive widget uses its own secret and hostname validation", async () => {
   const env = { TURNSTILE_NONINTERACTIVE_SITE_KEY: "public", TURNSTILE_NONINTERACTIVE_SECRET: "second-secret", TURNSTILE_NONINTERACTIVE_HOSTNAMES: "test.example" };
@@ -24,9 +24,9 @@ test("optional non-interactive widget uses its own secret and hostname validatio
   } finally { globalThis.fetch = original; }
 });
 
-test("exit comparisons preserve unknown and normalize equivalent IPv6 addresses", () => {
-  assert.equal(compareExits(undefined, "1.1.1.1"), "unknown");
-  assert.equal(compareExits("1.1.1.1", "8.8.8.8"), "different");
-  assert.equal(compareExits("2001:4860:4860::8888", "2001:4860:4860:0:0:0:0:8888"), "same");
+test("exit comparisons reject missing IPs and normalize equivalent IPv6 addresses", () => {
+  assert.equal(sameIp(undefined, "1.1.1.1"), false);
+  assert.equal(sameIp("1.1.1.1", "8.8.8.8"), false);
+  assert.equal(sameIp("2001:4860:4860::8888", "2001:4860:4860:0:0:0:0:8888"), true);
 });
 

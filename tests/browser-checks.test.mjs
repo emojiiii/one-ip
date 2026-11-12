@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import {
+import { bundledModuleUrl } from "./compile.mjs";
+const {
   comparePlatforms,
   compareContexts,
-} from "../src/views/browser/consistency.ts";
+} = await import(bundledModuleUrl("migration/sveltekit/src/lib/browser/consistency.ts"));
 
 test("platform comparisons account for normal Android, ChromeOS and iPad compatibility values", () => {
   assert.equal(

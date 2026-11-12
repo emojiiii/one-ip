@@ -1,24 +1,37 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { runInNewContext } from 'node:vm';
 import { test } from 'node:test';
-const source = readFileSync('public/app-update-checker.worker.js', 'utf8');
-async function check(response, build) {
-  let handler;
-  let resolve;
-  const result = new Promise(done => { resolve = done; });
-  runInNewContext(source, { URL, AbortSignal, Date, Error, Set,
-    fetch: async () => response,
-    self: { addEventListener: (_, callback) => { handler = callback; }, postMessage: value => resolve(value) },
-  });
-  handler({ data: { type: 'check', url: 'https://example.com/app-version.json', build } });
-  return result;
-}
-test('first check detects a newer deployed build without an HTTP validator baseline', async () => {
-  assert.equal((await check(Response.json({ build: 'new' }), 'old')).type, 'changed');
-  assert.equal((await check(Response.json({ build: 'same' }), 'same')).type, 'unchanged');
+import { hasValidUpdate } from '../migration/sveltekit/src/lib/update-version.ts';
+
+test('new build is confirmed with a fresh SvelteKit version manifest', async () => {
+  const original = globalThis.fetch;
+  const signal = new AbortController().signal;
+  globalThis.fetch = async (url, options) => {
+    assert.equal(url, '/_app/version.json');
+    assert.equal(options.cache, 'no-store');
+    assert.equal(options.signal, signal);
+    return Response.json({ version: 'new' });
+  };
+  try {
+    assert.equal(await hasValidUpdate('/_app/version.json', 'old', signal), true);
+    assert.equal(await hasValidUpdate('/_app/version.json', 'new', signal), false);
+  } finally { globalThis.fetch = original; }
 });
-test('missing or invalid manifests cannot trigger false update notifications', async () => {
-  assert.equal((await check(new Response('not found', {status:404}), 'old')).type, 'error');
-  assert.equal((await check(Response.json({}), 'old')).type, 'error');
+
+test('missing, invalid and unavailable manifests never raise a notice', async () => {
+  const original = globalThis.fetch;
+  try {
+    for (const response of [new Response('not found', { status: 404 }), Response.json({}), Response.json({ version: '' }), Response.json({ version: 12 }), new Response('invalid')]) {
+      globalThis.fetch = async () => response;
+      assert.equal(await hasValidUpdate('/_app/version.json', 'old', new AbortController().signal), false);
+    }
+    globalThis.fetch = async () => { throw new TypeError('offline'); };
+    assert.equal(await hasValidUpdate('/_app/version.json', 'old', new AbortController().signal), false);
+  } finally { globalThis.fetch = original; }
+});
+
+test('SvelteKit outputs its version manifest with a nonempty version', () => {
+  const data = JSON.parse(readFileSync('dist/_app/version.json', 'utf8'));
+  assert.equal(typeof data.version, 'string');
+  assert.ok(data.version.length > 0);
 });

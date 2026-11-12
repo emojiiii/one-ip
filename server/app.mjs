@@ -4,12 +4,14 @@ import { BlockList, isIP } from "node:net";
 import { extname, resolve, sep } from "node:path";
 import { Readable } from "node:stream";
 import worker from "../worker/index.js";
+import { documentPath } from "../worker/document-path.js";
 
 const mime = {
   ".html": "text/html; charset=utf-8",
   ".js": "text/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8",
   ".json": "application/json; charset=utf-8",
+  ".xml": "application/xml; charset=utf-8",
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".jpg": "image/jpeg",
@@ -93,17 +95,26 @@ function staticAssets(root) {
     let file = resolve(root, `.${pathname}`);
     if (!file.startsWith(`${root}${sep}`) && file !== root)
       return new Response("Not found", { status: 404 });
+    if (pathname === "/") file = resolve(root, "index.html");
     let info = await stat(file).catch(() => undefined);
     let fallback = false;
+    if (!info?.isFile() && !extname(pathname)) {
+      const html = `${file}.html`;
+      const htmlInfo = await stat(html).catch(() => undefined);
+      if (htmlInfo?.isFile()) {
+        file = html;
+        info = htmlInfo;
+      }
+    }
     if (!info?.isFile()) {
-      if (
-        pathname.startsWith("/assets/") ||
-        (extname(pathname) &&
-          !request.headers.get("Accept")?.includes("text/html"))
-      )
+      if (!documentPath(pathname))
         return new Response("Not found", { status: 404 });
-      file = resolve(root, "index.html");
-      info = await stat(file);
+      file = resolve(root, "200.html");
+      info = await stat(file).catch(() => undefined);
+      if (!info?.isFile()) {
+        file = resolve(root, "index.html");
+        info = await stat(file);
+      }
       fallback = true;
     }
     return new Response(
@@ -113,7 +124,7 @@ function staticAssets(root) {
           "Content-Type": mime[extname(file)] ?? "application/octet-stream",
           "Content-Length": String(info.size),
           "Cache-Control":
-            !fallback && pathname.startsWith("/assets/")
+            !fallback && (pathname.startsWith("/assets/") || pathname.startsWith("/_app/immutable/"))
               ? "public, max-age=31536000, immutable"
               : "no-cache",
         },

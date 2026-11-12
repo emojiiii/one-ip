@@ -1,130 +1,100 @@
-import assert from "node:assert/strict";
-import { existsSync, readFileSync, readdirSync } from "node:fs";
-import { test } from "node:test";
-import {
-  activeNavigationRoute,
-  navigationRoutes,
-  legacyRoutes,
-  pageTabs,
-} from "../src/layout/routes.ts";
+import assert from 'node:assert/strict';
+import { existsSync, readFileSync } from 'node:fs';
+import { test } from 'node:test';
+import { locales, localizedPath, publicPages } from '../migration/sveltekit/src/lib/i18n.ts';
 
-const json = (path) => JSON.parse(readFileSync(path, "utf8"));
+const root = 'migration/sveltekit';
+const output = 'dist';
 
-test("removed DNS and news routes have no page source or navigation entries", () => {
-  for (const path of [
-    "src/views/dns",
-    "src/views/news",
-    "src/views/claude/articles",
-    "src/views/gpt/articles",
-    "src/lib/article-paths.json",
-    "worker/dns.js",
-    "public/claude",
-  ])
-    assert.equal(existsSync(path), false, path);
-  const app = readFileSync("src/App.tsx", "utf8");
-  assert.doesNotMatch(app, /DnsPage|NewsPage|ArticlePage|articlePaths/);
-  assert.ok(navigationRoutes.every((route) => !/dns|news/.test(route.path)));
-});
-test("header navigation maps IP details and tabbed pages to their owner", () => {
-  for (const route of navigationRoutes) {
-    assert.equal(activeNavigationRoute(route.path), route.path);
-    assert.equal(activeNavigationRoute(`${route.path}/`), route.path);
-  }
-  assert.equal(activeNavigationRoute("/ip/1.1.1.1"), "");
-  assert.equal(activeNavigationRoute("/leak/webrtc"), "/leak");
-  assert.equal(activeNavigationRoute("/unlock/claude/"), "/unlock");
-  // Reachable pages outside the header highlight no link.
-  for (const path of ["/", "/ip", "/whois", "/ping", "/status", "/browser/checks"])
-    assert.equal(activeNavigationRoute(path), "", path);
-  for (const path of [
-    "/dns/",
-    "/news/",
-    "/claude/news/old.html",
-    "/claude/identity.html",
-    "/missing",
-    "/query/missing",
-    "/ping/missing",
-    "/ai/gpt/missing",
-    "/leak/missing",
-    "/browser/challenges",
-    "/ai/grok",
-  ])
-    assert.equal(activeNavigationRoute(path), "not-found", path);
-});
-test("site logos use HTTPS icon URLs rather than bundled files", () => {
-  const sites = json("src/views/home/sites.json");
-  const targets = json("src/views/link/targets.json");
-  assert.ok(sites.length > 0);
-  assert.ok(targets.length > 0);
-  for (const item of [...sites, ...targets]) {
-    const icon = new URL(item.icon);
-    assert.equal(icon.protocol, "https:");
-    if (item.slug === "douyin") {
-      assert.equal(icon.href, "https://www.douyin.com/favicon.ico");
-    } else {
-      assert.equal(icon.hostname, "icons.duckduckgo.com");
-      assert.match(icon.pathname, /^\/ip3\/[a-z\d.-]+\.ico$/i);
+test('public tool pages have prerendered HTML and IP paths have a fallback', () => {
+  assert.equal(locales.length, 10);
+  const home = readFileSync(`${output}/index.html`, 'utf8');
+  const homeCanonical = home.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
+  assert.ok(homeCanonical);
+  const origin = process.env.VITE_SITE_ORIGIN?.trim() || new URL(homeCanonical).origin;
+
+  for (const page of publicPages) {
+    const variants = [
+      { path: page, id: 'en', dir: 'ltr' },
+      ...locales.map(({ id, dir }) => ({ path: localizedPath(page, id), id, dir })),
+    ];
+    const alternates = Object.fromEntries([
+      ...locales.map(({ id, hreflang }) => [hreflang, new URL(localizedPath(page, id), origin).href]),
+      ['x-default', new URL(page, origin).href],
+    ]);
+    const results = variants.map(({ path, id, dir }) => {
+      const html = readFileSync(`${output}/${path === '/' ? 'index' : path.slice(1)}.html`, 'utf8');
+      assert.ok(html.includes(`<html lang="${id}" dir="${dir}">`), path);
+      const head = html.match(/<head>([\s\S]*?)<\/head>/)?.[1];
+      assert.ok(head, path);
+      const title = head.match(/<title>([^<]+)<\/title>/)?.[1];
+      assert.ok(title, path);
+      const main = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/)?.[1];
+      const heading = main?.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1]?.replace(/<[^>]+>/g, '').trim();
+      assert.ok(heading, path);
+      const descriptions = [...head.matchAll(/<meta name="description" content="([^"]+)"/g)];
+      assert.equal(descriptions.length, 1, path);
+      const canonical = head.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
+      assert.equal(canonical, new URL(localizedPath(page, id), origin).href, path);
+      const links = [...head.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)];
+      assert.equal(links.length, locales.length + 1, path);
+      assert.deepEqual(Object.fromEntries(links.map(([, language, href]) => [language, href])), alternates, path);
+      return { title, heading, description: descriptions[0][1] };
+    });
+    assert.deepEqual(results[0], results[1], page);
+    for (const [index, localized] of results.slice(2).entries()) {
+      const path = variants[index + 2].path;
+      assert.notEqual(localized.title, results[0].title, path);
+      assert.notEqual(localized.description, results[0].description, path);
+      assert.notEqual(localized.heading, results[0].heading, path);
     }
   }
-  assert.equal(existsSync("public/favicons"), false);
-  const fallback = readFileSync("src/components/site-logo.tsx", "utf8");
-  assert.match(fallback, /AvatarFallback/);
-  assert.match(fallback, /no-referrer/);
-});
-test("production assets exclude deleted content and backend source", () => {
-  assert.ok(existsSync("dist/index.html"));
-  assert.ok(existsSync("dist/app-update-checker.worker.js"));
-  for (const path of ["dist/worker", "dist/favicons", "dist/claude"])
-    assert.equal(existsSync(path), false);
-  assert.ok(
-    readdirSync("dist/assets").every(
-      (name) => !/^\d{8}[a-z]?\.html-|^news-/.test(name),
-    ),
-  );
+  assert.ok(existsSync(`${output}/200.html`));
 });
 
-test("routes are at most two levels deep and removed tools are gone", () => {
-  assert.deepEqual(
-    navigationRoutes.map((route) => route.path),
-    ["/leak", "/unlock", "/speedtest"],
-  );
-  const tabs = Object.values(pageTabs).flat();
-  for (const path of [
-    ...navigationRoutes.map((route) => route.path),
-    ...tabs.map((tab) => tab.path),
-  ])
-    assert.ok(path.split("/").filter(Boolean).length <= 2, path);
-  for (const path of [
-    "src/views/subdomains",
-    "src/views/cdn",
-    "src/views/browser/challenges.tsx",
-    "src/views/ai/index.tsx",
-    "worker/subdomains.js",
-  ])
-    assert.equal(existsSync(path), false, path);
+test('localized status pages render their main content before JavaScript', () => {
+  assert.match(readFileSync(`${output}/status.html`, 'utf8'), /<h1[^>]*>Service status<\/h1>/);
+  assert.match(readFileSync(`${output}/zh/status.html`, 'utf8'), /<h1[^>]*>服务状态<\/h1>/);
 });
 
-test("tabs map to one owner and legacy paths redirect to live pages", () => {
-  const paths = Object.values(pageTabs)
-    .flat()
-    .map((tab) => tab.path);
-  assert.equal(new Set(paths).size, paths.length);
-  for (const [owner, tabs] of Object.entries(pageTabs))
-    for (const tab of tabs)
-      assert.equal(activeNavigationRoute(tab.path), owner);
-  for (const to of Object.values(legacyRoutes))
-    assert.notEqual(activeNavigationRoute(to.split("?")[0]), "not-found", to);
-  assert.equal(legacyRoutes["/network/webrtc"], "/leak/webrtc");
-  assert.equal(legacyRoutes["/network/dns"], "/leak/dns");
-  assert.equal(legacyRoutes["/ai/claude"], "/unlock/claude");
-  assert.equal(legacyRoutes["/ai/gpt/status"], "/status?service=9");
-  assert.equal(legacyRoutes["/lookup/ip/:ip"], "/ip");
-  assert.equal(legacyRoutes["/network/connectivity"], "/unlock/sites");
-  assert.equal(legacyRoutes["/browser/automation"], "/browser/checks");
-  for (const from of Object.keys(legacyRoutes))
-    assert.equal(
-      activeNavigationRoute(from.replace(":ip", "1.1.1.1")),
-      "not-found",
-      from,
-    );
+test('crawler files list each localized canonical once', () => {
+  const robots = readFileSync(`${output}/robots.txt`, 'utf8');
+  assert.match(robots, /^User-agent: \*\nDisallow: \/api\/\n/);
+  const home = readFileSync(`${output}/index.html`, 'utf8');
+  const canonical = home.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
+  assert.ok(canonical);
+  assert.ok(robots.includes(`Sitemap: ${new URL('/sitemap.xml', canonical).href}\n`));
+  const xml = readFileSync(`${output}/sitemap.xml`, 'utf8');
+  const expected = new Map();
+  for (const page of publicPages) {
+    for (const { id } of locales) {
+      const html = readFileSync(`${output}${localizedPath(page, id)}.html`, 'utf8');
+      const loc = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
+      const alternates = [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)]
+        .map(([, language, href]) => [language, href]);
+      expected.set(loc, alternates);
+    }
+  }
+
+  assert.equal(expected.size, 170);
+  for (const [, entry] of xml.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
+    const loc = entry.match(/<loc>([^<]+)<\/loc>/)?.[1];
+    assert.ok(expected.has(loc), `Unexpected or duplicate sitemap URL: ${loc}`);
+    const alternates = [...entry.matchAll(/<xhtml:link rel="alternate" hreflang="([^"]+)" href="([^"]+)" \/>/g)]
+      .map(([, language, href]) => [language, href]);
+    assert.deepEqual(alternates, expected.get(loc), loc);
+    expected.delete(loc);
+  }
+  assert.equal(expected.size, 0, `Missing sitemap URLs: ${[...expected.keys()].join(', ')}`);
+});
+
+test('production assets exclude backend and retired pages', () => {
+  for (const path of ['worker', 'favicons', 'claude', 'news', 'browser/challenges.html'])
+    assert.equal(existsSync(`${output}/${path}`), false, path);
+});
+
+test('connectivity catalog icons use HTTPS', () => {
+  const targets = JSON.parse(readFileSync(`${root}/src/routes/unlock/sites/targets.json`, 'utf8'));
+  assert.ok(targets.length > 0);
+  for (const { icon } of targets) assert.equal(new URL(icon).protocol, 'https:');
 });

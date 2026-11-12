@@ -15,7 +15,7 @@ const services = JSON.parse(readFileSync("worker/services.json"));
 test("VPS and major cloud catalogs match and use official destinations", () => {
   assert.deepEqual(
     services,
-    workerCatalog(JSON.parse(readFileSync("src/views/status/services.json"))),
+    workerCatalog(JSON.parse(readFileSync("migration/sveltekit/src/routes/status/services.json"))),
   );
   assert.equal(new Set(services.map((s) => s.id)).size, services.length);
   for (const id of [

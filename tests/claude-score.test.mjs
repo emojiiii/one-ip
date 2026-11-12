@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { SIGNALS, scoreLanguages, scoreTimezone, riskBand } from '../vendor/claude-environment/signals.ts';
 import { readFileSync } from 'node:fs';
 import { moduleUrl } from './compile.mjs';
-const source = readFileSync('src/views/claude/score.ts','utf8').replace('"../../../vendor/claude-environment/signals"', JSON.stringify(new URL('../vendor/claude-environment/signals.ts', import.meta.url).href));
+const source = readFileSync('migration/sveltekit/src/routes/unlock/ai/score.ts','utf8').replace('"../../../../../../vendor/claude-environment/signals"', JSON.stringify(new URL('../vendor/claude-environment/signals.ts', import.meta.url).href));
 const { summarizeSignals, detectSignal } = await import(moduleUrl(source));
 test('upstream weights, region exceptions and risk boundaries stay intact', () => {
  assert.equal(SIGNALS.reduce((n,s)=>n+s.weight,0),100);

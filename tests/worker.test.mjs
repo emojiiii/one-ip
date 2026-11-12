@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import worker from "../.worker-test/index.js";
+import { locales } from "../shared/locales.js";
 import {
   publicIp,
   target,
@@ -106,6 +107,26 @@ test("backend source paths are never served", async () => {
     await (await worker.fetch(request("/claude/status.html"), env)).text(),
     "SPA asset",
   );
+});
+test("HTML navigation falls back to SvelteKit without masking missing assets", async () => {
+  const seen = [];
+  const assets = { fetch: async (req) => {
+    const path = new URL(req.url).pathname;
+    seen.push(path);
+    return path === "/200" ? new Response("fallback") : new Response("missing", { status: 404 });
+  } };
+  for (const path of ["/ip/1.1.1.1", ...locales.map(({ prefix }) => `${prefix}/ip/1.1.1.1`), "/pt-br/lookup/ip/1.1.1.1", "/claude/status.html", "/unknown"]) {
+    const response = await worker.fetch(request(path), { ...env, ASSETS: assets });
+    assert.equal(await response.text(), "fallback");
+  }
+  const before = seen.length;
+  const missing = await worker.fetch(request("/_app/immutable/missing.js", { headers: { Accept: "text/html" } }), { ...env, ASSETS: assets });
+  assert.equal(missing.status, 404);
+  assert.equal(seen.length, before + 1);
+  assert.equal((await worker.fetch(request("/missing.js", { headers: { Accept: "text/html" } }), { ...env, ASSETS: assets })).status, 404);
+  assert.equal((await worker.fetch(request("/ar/_app/immutable/missing", { headers: { Accept: "text/html" } }), { ...env, ASSETS: assets })).status, 404);
+  for (const path of ["/_headers", "/_redirects", "/.env"])
+    assert.equal((await worker.fetch(request(path), { ...env, ASSETS: assets })).status, 404);
 });
 test("unknown APIs return JSON 404 instead of the SPA", async () => {
   const response = await worker.fetch(request("/api/not-found"), env);

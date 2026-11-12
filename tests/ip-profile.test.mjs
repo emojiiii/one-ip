@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { ipProfileFields } from "../src/views/ip/profile-fields.ts";
-import { ipProfile } from "../src/views/ip/profile.ts";
+import { bundledModuleUrl } from "./compile.mjs";
+const { ipProfileFields } = await import(bundledModuleUrl("migration/sveltekit/src/lib/ip/profile-fields.ts"));
+const { ipProfile } = await import(bundledModuleUrl("migration/sveltekit/src/lib/ip/profile.ts"));
 
 const residential = {
   ip: "203.0.113.10",

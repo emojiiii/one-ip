@@ -1,21 +1,7 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { moduleUrl } from "./compile.mjs";
-const i18n = moduleUrl("export const t = (text) => text;");
-const network = moduleUrl(
-  readFileSync("src/lib/network.ts", "utf8").replace(
-    '"@/i18n"',
-    JSON.stringify(i18n),
-  ),
-);
-const api = await import(
-  moduleUrl(
-    readFileSync("src/views/home/api.ts", "utf8")
-      .replace('"@/i18n"', JSON.stringify(i18n))
-      .replace('"@/lib/network"', JSON.stringify(network)),
-  )
-);
+import { bundledModuleUrl } from "./compile.mjs";
+const api = await import(bundledModuleUrl("migration/sveltekit/src/lib/ip/connectivity.ts"));
 
 test("site probes use the website origin when an egress endpoint is unavailable", () => {
   assert.equal(
@@ -88,6 +74,27 @@ test("site inspection reuses a successful egress response as reachability", asyn
     assert.equal(result.reachable, true);
     assert.equal(result.geo?.ip, "1.1.1.1");
     assert.deepEqual(calls, ["https://www.example.com/cdn-cgi/trace"]);
+  } finally {
+    globalThis.fetch = original;
+  }
+});
+
+test("egress-only summaries skip requests that cannot contribute an IP", async () => {
+  const original = globalThis.fetch;
+  const calls = [];
+  globalThis.fetch = async (url) => {
+    calls.push(url);
+    return new Response(null, { status: 404 });
+  };
+  const site = { name: "Example", domain: "www.example.com", method: "cftrace" };
+  try {
+    assert.equal(await api.readSiteEgress(site), undefined);
+    assert.equal(await api.readSiteEgress({ ...site, method: "unsupported" }), undefined);
+    assert.deepEqual(calls, ["https://www.example.com/cdn-cgi/trace"]);
+
+    calls.length = 0;
+    assert.deepEqual(await api.inspectSite(site), { reachable: true });
+    assert.deepEqual(calls, ["https://www.example.com/cdn-cgi/trace", "https://www.example.com/"]);
   } finally {
     globalThis.fetch = original;
   }

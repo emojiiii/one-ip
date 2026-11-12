@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { ipScoreColor } from "../src/lib/ip-score.ts";
+import { ipScoreColor } from "../migration/sveltekit/src/lib/ip/ip-score.ts";
 
 test("IP score colors use the same boundaries and never treat missing scores as zero", () => {
   for (const score of [0, 44]) assert.equal(ipScoreColor(score), "var(--danger)");

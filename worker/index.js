@@ -1,7 +1,6 @@
-import { getAiStatus } from "./ai-status.js";
 import { cachedJson } from "./cache.js";
 import { challengeConfig, verifyChallenge } from "./challenges.js";
-import { getCloudStatus } from "./cloud-status.js";
+import { documentPath } from "./document-path.js";
 import { cfGeo, geoIp, secondaryGeo } from "./geo.js";
 import { clientIp, HttpError, inputJson, json, publicIp } from "./http.js";
 import { siteIcon } from "./icons.js";
@@ -10,8 +9,7 @@ import { ipType } from "./ip-type.js";
 import { mapConfig } from "./map.js";
 import { startPing, pingResult, pingNodes } from "./ping.js";
 import { rateLimit } from "./rate-limit.js";
-import { normalizeStatus } from "./service-status.js";
-import services from "./services.json";
+import { serviceStatus, statusSummary } from "./service-status.js";
 import { tlsFingerprint } from "./tls-fingerprint.js";
 import { lookupRegistration, registrationTarget } from "./whois.js";
 
@@ -28,7 +26,18 @@ export default {
         url.protocol = "http:";
         return fetch(new Request(url, request));
       }
-      return env.ASSETS.fetch(request);
+      const response = await env.ASSETS.fetch(request);
+      if (
+        response.status === 404 &&
+        ["GET", "HEAD"].includes(request.method) &&
+        documentPath(url.pathname)
+      ) {
+        url.pathname = "/200";
+        url.search = "";
+        const fallback = await env.ASSETS.fetch(new Request(url, request));
+        if (fallback.ok) return fallback;
+      }
+      return response;
     }
     try {
       const origin = request.headers.get("Origin");
@@ -177,39 +186,9 @@ export default {
       }
       if (path.startsWith("/ping/result/"))
         return json(await pingResult(path.slice(13)));
-      if (path.startsWith("/status/")) {
-        const service = services.find((s) => s.id === path.slice(8));
-        if (!service) throw new HttpError(404, "未知服务");
-        if (!service.url)
-          throw new HttpError(
-            503,
-            "该服务未提供已接入的公开状态接口，请查看官方状态页",
-          );
-        return await cachedJson(
-          new URL(`/api/status/${service.id}`, url.origin),
-          60,
-          async () => {
-            const data = await (service.group === "VPS" ||
-            [
-              "aws",
-              "google-cloud",
-              "oracle-cloud",
-              "34",
-              "aliyun",
-              "tencent-cloud",
-              "azure",
-            ].includes(service.id)
-              ? getCloudStatus(service)
-              : getAiStatus(service));
-            return {
-              ...normalizeStatus(data),
-              fetchedAt: new Date().toISOString(),
-              source: service.url,
-            };
-          },
-          (data) => Boolean(data.status?.indicator),
-        );
-      }
+      if (path === "/status/summary") return json(await statusSummary(url));
+      if (path.startsWith("/status/"))
+        return json(await serviceStatus(path.slice(8), url.origin));
       throw new HttpError(404, "接口不存在");
     } catch (error) {
       if (error instanceof HttpError)

@@ -2,40 +2,39 @@
 
 [返回 README](../README.md) · [English](deploy.en.md)
 
-## Cloudflare 部署教程
+## Cloudflare Workers Git 部署
 
-1. [Fork 本项目](https://github.com/zhihui-hu/one-ip/fork)到你的 GitHub 账号。
-2. 登录 [Cloudflare 控制台](https://dash.cloudflare.com/)，进入 **Workers & Pages**，创建 Worker，选择导入 Git 仓库。
-3. 连接 GitHub，选择你的 `one-ip` Fork，生产分支填 `main`。
-4. 构建命令填 `pnpm build`，部署命令填 `pnpm deploy`。使用 Node.js 24 和 pnpm 10.32.1，根目录保持默认。
-5. 点击部署，完成后打开 `workers.dev` 地址。自定义域名在 Worker 设置中绑定。
+1. 在 Cloudflare 控制台的 **Workers & Pages** 创建 Worker 并导入 Git 仓库。使用自己的仓库，或先 Fork 本项目。[Cloudflare 控制台](https://dash.cloudflare.com/) · [Fork 本项目](https://github.com/emojiiii/one-ip/fork)
+2. 选择生产分支，例如 `main`。控制台中的 Worker 名称应与根目录 `wrangler.toml` 的 `name` 一致，默认是 `one-ip`。[Worker 名称要求](https://developers.cloudflare.com/workers/ci-cd/builds/troubleshoot/#workers-name-requirement)
+3. 根目录使用仓库根目录。构建命令填 `pnpm build`，部署命令填 `pnpm run deploy`。仓库配置指定 Node.js 24 和 pnpm 10.32.1。[Workers Builds 设置](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/)
+4. 完成首次部署后，可用 `workers.dev` 地址验证。在 Worker 的 **Settings → Domains & Routes → Add → Custom Domain** 绑定 `ip.kitt.tools` 或你的站点域名。[自定义域名](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/)
 
-项目使用 **Cloudflare Workers + Static Assets**，`/api/*` 接口需要 Worker。基础功能无需应用环境变量或 API Key。Turnstile 的配置见“验证体验”。
+Workers Builds 处理所连接生产分支的构建和发布。根目录的 `wrangler.toml` 将 `worker/index.js` 与 `dist` 静态资源部署到同一个 Worker。基础功能无需应用环境变量或 API Key。Turnstile 的配置见“验证体验”。
 
 国内网络访问地图时，建议在 Worker → Settings → Variables and Secrets 配置 `TIANDITU_TOKEN`（也可以用 `pnpm exec wrangler secret put TIANDITU_TOKEN`）。配置后地图优先使用天地图，失败时回退到 OpenStreetMap；未配置时保持 OpenStreetMap。
 
 默认地图无需注册或 API Key。OpenStreetMap 公共瓦片须遵守[使用政策](https://operations.osmfoundation.org/policies/tiles/)，保留地图署名、按需加载并使用浏览器缓存，不提供离线下载或批量预取；公共服务不保证可用性。瓦片请求仅发送本站 origin 作为 Referer，不包含查询 IP 的页面路径。地图加载失败时可单独重试，位置文字和坐标仍可查看。
 
-Workers Builds 会在 `main` 收到提交时构建和部署。上方按钮使用原项目地址；需要保留 Fork 关系和更新工作流时，请按教程导入你的 Fork。
+## 多语言与 SEO
 
-## Cloudflare Pages 部署
+无语言前缀的地址默认显示英语，例如 `/status`。公开页面为以下语言前缀生成静态 HTML，具体 IP 的查询结果在浏览器加载。
 
-Pages 使用同一套 API，通过 [Advanced mode](https://developers.cloudflare.com/pages/functions/advanced-mode/) 打包为 `dist-pages/_worker.js`。`_routes.json` 只让 API 和后端保护路径进入函数，页面和静态资源直接由 Pages 提供。不要把普通 `dist` 当作完整的 Pages 部署产物。
+| 前缀 | 语言 |
+| --- | --- |
+| `/en` | 英语 |
+| `/zh` | 简体中文 |
+| `/es` | 拉美西班牙语 |
+| `/pt-br` | 巴西葡萄牙语 |
+| `/fr` | 法语 |
+| `/de` | 德语 |
+| `/ja` | 日语 |
+| `/ko` | 韩语 |
+| `/ar` | 阿拉伯语 |
+| `/hi` | 印地语 |
 
-**控制台连接 Git 仓库：** 创建 Pages 项目，框架预设选择 None，根目录保持仓库根目录；构建命令填写 `pnpm build:pages`，输出目录填写 `dist-pages`。构建环境使用 `NODE_VERSION=24`、`PNPM_VERSION=10.32.1`。在生产和预览环境的 Functions 设置中填写兼容日期 `2026-09-09`，添加 `nodejs_compat`。根目录的 `wrangler.toml` 服务于 Workers；Pages 的 CLI 配置单独位于 `deploy/pages/wrangler.toml`。
+生产构建默认使用 `https://ip.kitt.tools` 生成 canonical、hreflang 和站点地图。部署到其他域名时，在 Worker 的 **Settings → Build** 中设置构建变量 `VITE_SITE_ORIGIN`。Docker Compose 使用同名环境变量，`docker build` 使用 `--build-arg VITE_SITE_ORIGIN=https://ip.example.com`。
 
-**CLI 直接部署：**
-
-```bash
-pnpm install --frozen-lockfile
-pnpm build:pages
-pnpm exec wrangler login
-# 首次部署时创建项目；已有项目跳过此行
-pnpm exec wrangler pages project create one-ip --production-branch main
-pnpm deploy:pages --branch main
-```
-
-项目名称在 `deploy/pages/wrangler.toml` 中修改。可选密钥在 Pages 项目的生产/预览环境中分别配置，或使用 `pnpm exec wrangler pages secret put 名称 --cwd deploy/pages`。已有 `.secrets.production.env` 时，可执行 `node scripts/sync-worker-secrets.mjs production --pages`。本地预览使用 `pnpm pages:dev`，需要先执行 `pnpm build:pages`；预览用的密钥放在 `deploy/pages/.dev.vars`。
+`/robots.txt` 声明 `/sitemap.xml` 的完整地址。站点地图列出 10 种语言的公开 canonical 地址和对应的 hreflang。每个英文页面的 canonical 使用 `/en` 地址，`x-default` 指向无前缀地址。
 
 ## Docker 部署
 
@@ -75,7 +74,7 @@ Docker 前面套 Cloudflare 代理时，可设置 `TRUST_CF_CONNECTING_IP=true`�
 
 Docker 访客归属地使用公开数据源；私网连接地址不会当作公网出口。Docker 缺少 Cloudflare 的 JA3/JA4/TLS 元数据时返回空值。Docker 用进程内缓存替代 Cloudflare 边缘缓存，最多 1000 条、32 MB，按接口原有的 TTL 过期，重启后清空。
 
-Workers 使用原生限流。Pages 和 Docker 使用每个实例内的内存限流（普通查询/图标各 180 次/分钟，POST 5 次/分钟），IPv6 按 /64 计数，重启会重置，多个实例不共享计数。Pages 的计数分散在多个边缘实例中，基本不起作用；需要严格限流时，在 Cloudflare 控制台为 `/api/*` 配置 WAF 限流规则。
+Workers 使用原生限流。Docker 使用每个实例内的内存限流（普通查询和图标各 180 次/分钟，POST 5 次/分钟），IPv6 按 /64 计数，重启会重置，多个实例不共享计数。
 
 ## 验证体验（可选）
 
@@ -94,23 +93,7 @@ node scripts/sync-worker-secrets.mjs production --check
 node scripts/sync-worker-secrets.mjs production
 ```
 
-脚本上传非空项，保留已有 Secret，跳过缺失的可选文件。Pages 加 `--pages`；Docker 使用 `.env.docker`。敏感文件在 Git 忽略列表中。Secret 应放在服务端配置中，不能放进 `VITE_*`。`/api/browser/challenges` 的 `configured` 字段用于检查配置结果。
-
-## GitHub Actions 部署（可选）
-
-Workers Builds 和 GitHub Actions 选择一种部署方式，避免重复发布。Actions 默认执行构建和测试；开启部署需要在仓库的 Actions 设置中添加：
-
-| 类型     | 名称                    | 用途                              |
-| -------- | ----------------------- | --------------------------------- |
-| Variable | `ENABLE_CF_DEPLOY=true` | 开启部署                          |
-| Variable | `CF_DEPLOY_TARGET`      | `workers`（默认）或 `pages`       |
-| Variable | `CF_DEPLOY_BRANCH`      | 部署分支，默认是仓库默认分支      |
-| Secret   | `CLOUDFLARE_API_TOKEN`  | 对应目标的 Workers/Pages 部署凭证 |
-| Secret   | `CLOUDFLARE_ACCOUNT_ID` | 目标 Cloudflare 账户 ID           |
-
-推送到部署分支（默认 `main`），或在该分支上运行 `Build and deploy one-ip`。构建、测试和 Docker 冒烟测试通过后进入部署；其他分支只做构建和测试。只改文档不会触发。部署使用 `production` 环境，Secret 可以放在仓库或该环境中。外部 PR 执行测试，不获得部署凭证。这些凭证用于 CI。
-
-选择 `pages` 时先创建与 `deploy/pages/wrangler.toml` 同名的 Pages 项目。使用 Pages Git 集成时，无需开启 Actions 部署。
+脚本上传非空项，保留已有 Secret，跳过缺失的可选文件。Docker 使用 `.env.docker`。敏感文件在 Git 忽略列表中。Secret 应放在服务端配置中，不能放进 `VITE_*`。`/api/browser/challenges` 的 `configured` 字段用于检查配置结果。
 
 ## Fork 更新
 
@@ -122,14 +105,13 @@ Workers Builds 和 GitHub Actions 选择一种部署方式，避免重复发布�
 2. 在 Settings → Secrets and variables → Actions → **Variables** 添加 `AUTO_SYNC_UPSTREAM=true`。
 3. 工作流在每天 UTC 04:23 检查更新。Actions 页面提供运行入口。
 
-支持范围是从 `zhihui-hu/one-ip` 创建的 Fork，无需个人访问令牌（PAT）。工作流通过 GitHub 的 `merge-upstream` 接口合并更新，遇到冲突时停止，保留你的提交。需要审核更新时，使用 GitHub 的 Sync fork。
+工作流使用 GitHub 的 `merge-upstream` 接口，将 GitHub 为当前 Fork 关联的上游更新合并到默认分支，无需个人访问令牌（PAT）。遇到冲突时停止，保留你的提交。需要审核更新时，使用 GitHub 的 Sync fork。
 
-- **Workers Builds**：连接 Fork 的生产分支，在 Cloudflare 构建历史中检查同步提交的部署记录。
-- **GitHub Actions 部署**：同步产生更新时，工作流触发部署任务。`GITHUB_TOKEN` 产生的推送不会触发普通 `push` 工作流。
+- 同步工作流只更新 Fork。连接生产分支后，可在 Cloudflare 的构建历史中检查同步提交的部署记录。
 - 分支保护阻止合并时，通过 PR 处理。
 - Fork 的定时工作流需要启用。公开仓库 60 天无活动可能导致 GitHub 停用定时任务，恢复入口在 Actions 页面。
 
-参考：[同步 Fork](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/syncing-a-fork)、[GITHUB_TOKEN 触发规则](https://docs.github.com/en/actions/concepts/security/github_token)、[定时工作流停用规则](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/disable-and-enable-workflows)。
+[同步 Fork](https://docs.github.com/en/pull-requests/how-tos/work-with-forks/syncing-a-fork) · [定时工作流停用规则](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/disable-and-enable-workflows)
 
 ## WebMCP
 

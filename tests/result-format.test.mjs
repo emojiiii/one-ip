@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import {
+import { bundledModuleUrl } from "./compile.mjs";
+const {
   moduleReport,
   fingerprintSummary,
   parseDetail,
   valueText,
-} from "../src/views/browser/result-format.ts";
+} = await import(bundledModuleUrl("migration/sveltekit/src/lib/browser/result-format.ts"));
 
 test("unavailable data is never interpreted as a clean detection", () => {
   const result = moduleReport("canvas", null);

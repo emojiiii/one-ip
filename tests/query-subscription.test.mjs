@@ -1,50 +1,38 @@
-import assert from "node:assert/strict";
-import { test } from "node:test";
-import { QueryClient, QueryObserver, skipToken } from "@tanstack/react-query";
+import assert from 'node:assert/strict';
+import { test } from 'node:test';
+import { bundledModuleUrl } from './compile.mjs';
 
-test("cache-only progress subscriptions receive updates without starting a fetch", () => {
-  const client = new QueryClient();
-  const key = ["connectivity-progress", "https://example.com", 0];
-  const observer = new QueryObserver(client, { queryKey: key, queryFn: skipToken, enabled: false });
-  let latest;
-  const stop = observer.subscribe(result => { latest = result; });
-  client.setQueryData(key, {samples:[42], median:42});
-  assert.equal(latest.data.median, 42);
-  assert.equal(latest.fetchStatus, "idle");
-  stop(); client.clear();
-});
-test("cache-only summary observers do not prevent an active observer from refreshing", async () => {
-  const client = new QueryClient();
-  const key = ["connectivity", "https://example.com", 0];
-  let calls = 0;
-  const summary = new QueryObserver(client, {queryKey:key, queryFn:skipToken, enabled:false});
-  const stop = summary.subscribe(() => {});
-  const active = new QueryObserver(client, {queryKey:key, queryFn:async () => ++calls, retry:false});
-  await active.refetch();
-  summary.setOptions({queryKey:key, queryFn:skipToken, enabled:false});
-  await active.refetch();
-  assert.equal(summary.getCurrentResult().data, 2);
-  assert.equal(calls, 2);
-  stop(); client.clear();
-});
+const { testConnectivity } = await import(bundledModuleUrl('migration/sveltekit/src/lib/ip/connectivity.ts'));
 
-test("home reset restarts probes with a disabled summary observer attached", async () => {
-  const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  const queryKey = ["connectivity", "https://example.com", 0];
-  let calls = 0;
-  const queryFn = async () => ({ samples: [++calls], median: calls });
-  const active = new QueryObserver(client, { queryKey, queryFn });
-  const stopActive = active.subscribe(() => {});
-  await active.refetch();
-  const summary = new QueryObserver(client, { queryKey, queryFn, enabled: false });
-  const stopSummary = summary.subscribe(() => {});
+test('progress snapshots do not mutate previous results', async () => {
+  const original = globalThis.fetch;
+  globalThis.fetch = async () => new Response(null, { status: 204 });
   try {
-    for (let i = 0; i < 3; i++) {
-      summary.setOptions({ queryKey, queryFn, enabled: false });
-      await client.cancelQueries({ queryKey });
-      await client.resetQueries({ queryKey });
-      assert.equal(summary.getCurrentResult().status, "success");
-      assert.equal(summary.getCurrentResult().data.median, i + 2);
-    }
-  } finally { stopActive(); stopSummary(); client.clear(); }
+    const progress = [];
+    await testConnectivity('https://example.test', undefined, value => progress.push(value));
+    assert.deepEqual(progress.map(item => item.samples.length), [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+    assert.deepEqual(progress[0].samples, []);
+    assert.ok(progress.at(-1).median >= 0);
+  } finally { globalThis.fetch = original; }
+});
+
+test('cancelled probes do not publish stale progress after a replacement starts', async () => {
+  const original = globalThis.fetch;
+  const old = new AbortController();
+  let release;
+  const oldResponse = new Promise(resolve => { release = resolve; });
+  let count = 0;
+  globalThis.fetch = async () => ++count === 1 ? oldResponse : new Response(null, { status: 204 });
+  try {
+    const previous = [];
+    const first = testConnectivity('https://example.test', old.signal, value => previous.push(value));
+    old.abort();
+    const next = [];
+    const replacement = testConnectivity('https://example.test', undefined, value => next.push(value));
+    release(new Response(null, { status: 204 }));
+    await assert.rejects(first, { name: 'AbortError' });
+    await replacement;
+    assert.equal(previous.length, 1);
+    assert.equal(next.at(-1).samples.length, 8);
+  } finally { globalThis.fetch = original; }
 });

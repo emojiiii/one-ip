@@ -6,8 +6,8 @@ compatibility_flags = ["nodejs_compat"]
 [assets]
 directory = "./dist"
 binding = "ASSETS"
-not_found_handling = "single-page-application"
-run_worker_first = ["/api", "/api/*", "/worker", "/worker/*"]
+not_found_handling = "none"
+run_worker_first = true
 
 [observability]
 enabled = true
@@ -37,7 +37,7 @@ simple = { limit = 180, period = 60 }
 
 # Local development forwards all page and asset requests to Vite.
 [env.local.assets]
-directory = "./public"
+directory = "./migration/sveltekit/static"
 binding = "ASSETS"
 not_found_handling = "single-page-application"
 run_worker_first = true

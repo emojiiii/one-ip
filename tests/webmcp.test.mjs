@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { compile } from "./compile.mjs";
 
-const code = compile(readFileSync("src/webmcp.ts", "utf8"), {
+const code = compile(readFileSync("migration/sveltekit/src/lib/webmcp.ts", "utf8"), {
   format: "cjs",
 }).replace(
   /import\(("[^"\n]+")\)/g,
@@ -14,16 +14,11 @@ function tools() {
   const calls = [];
   const module = { exports: {} };
   const require = (name) => {
-    if (name === "@/layout/routes")
-      return {
-        navigationRoutes: [{ path: "/" }, { path: "/ip" }],
-        pageTabs: { "/browser": [{ path: "/browser/privacy" }] },
-      };
-    if (name === "@/views/ai/platforms")
+    if (name === "../routes/unlock/ai/platforms")
       return {
         aiPlatforms: [{ id: "gpt", name: "ChatGPT", domain: "chatgpt.com" }],
       };
-    if (name === "@/views/home/sites.json")
+    if (name === "../routes/unlock/sites/egress-sites.json")
       return [
         {
           name: "IP.SB",
@@ -33,34 +28,31 @@ function tools() {
           icon: "",
         },
       ];
-    if (name === "@/views/link/targets.json")
+    if (name === "../routes/unlock/sites/targets.json")
       return [{ name: "GitHub", url: "https://github.com" }];
-    if (name === "@/views/status/services.json")
+    if (name === "../routes/status/services.json")
       return [{ id: "9", name: "OpenAI" }];
-    if (name === "@/views/ip/api")
+    if (name === "./ip/lookup")
       return {
         lookupIp: async (ip, signal) => {
           calls.push(["ip", ip, signal]);
           return { ip };
         },
       };
-    if (name === "@/views/ping/api")
+    if (name === "../routes/ping/api")
       return {
         runPing: async (input, signal) => {
           calls.push(["ping", input, signal]);
           return { target: input.host };
         },
       };
-    if (name === "@/views/status/api")
-      return {
-        getStatus: async (id, signal) => {
-          calls.push(["status", id, signal]);
-          return { status: { indicator: "none" } };
-        },
-      };
-    if (name === "@/lib/network")
+    if (name === "../routes/leak/webrtc/network")
       return {
         endpoint: async (path, options) => {
+          if (path === '/status/9') {
+            calls.push(['status', '9', options.signal]);
+            return { status: { indicator: 'none' } };
+          }
           calls.push(["endpoint", path, options.signal]);
           return { path };
         },

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { request } from "../src/lib/network.ts";
+import { bundledModuleUrl } from "./compile.mjs";
+const { request } = await import(bundledModuleUrl("migration/sveltekit/src/routes/leak/webrtc/network.ts"));
 
 for (const phase of ["connection", "body"]) {
   test(`request settles on abort even when ${phase} ignores cancellation`, async () => {

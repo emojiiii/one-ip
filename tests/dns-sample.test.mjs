@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { sampleDnsExit } from "../src/views/dns-exit/api.ts";
+import { bundledModuleUrl } from "./compile.mjs";
+const { sampleDnsExit } = await import(bundledModuleUrl("migration/sveltekit/src/routes/leak/dns/api.ts"));
 
 test("DNS samples use unique hosts, bypass cache, and return resolver data", async () => {
   const original = globalThis.fetch;

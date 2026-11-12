@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import {
+import { bundledModuleUrl } from "./compile.mjs";
+const {
   AIM_VERSION,
   ACCESS_VERSION,
   accessRating,
@@ -11,12 +12,12 @@ import {
   evidenceState,
   qualityRating,
   summarizeHttp,
-} from "../src/views/ip/scenario-evidence.ts";
-import {
+} = await import(bundledModuleUrl("migration/sveltekit/src/lib/ip/scenario-evidence.ts"));
+const {
   measurePlatform,
   measurePlatforms,
   ACCESS_BUDGET_MS,
-} from "../src/views/ip/scenario-probes.ts";
+} = await import(bundledModuleUrl("migration/sveltekit/src/lib/ip/scenario-probes.ts"));
 
 const sample = (outcome) => ({ elapsedMs: 100, outcome });
 function quality() {

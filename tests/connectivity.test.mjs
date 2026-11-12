@@ -1,16 +1,29 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { moduleUrl } from "./compile.mjs";
-const network = moduleUrl(readFileSync("src/lib/network.ts", "utf8"));
-const { testConnectivity } = await import(
-  moduleUrl(
-    readFileSync("src/views/link/api.ts", "utf8").replace(
-      '"@/lib/network"',
-      JSON.stringify(network),
-    ),
-  )
-);
+import { bundledModuleUrl } from "./compile.mjs";
+import { runProbeBatch } from "../migration/sveltekit/src/lib/ip/probe-batch.ts";
+const { testConnectivity } = await import(bundledModuleUrl("migration/sveltekit/src/lib/ip/connectivity.ts"));
+
+test("site probes start at most four targets and do not dequeue after cancellation", async () => {
+  const controller = new AbortController();
+  const first = Promise.withResolvers();
+  const rest = Promise.withResolvers();
+  const fifthStarted = Promise.withResolvers();
+  const started = [];
+  const batch = runProbeBatch([0, 1, 2, 3, 4, 5], 4, controller.signal, (id) => {
+    started.push(id);
+    if (id === 4) fifthStarted.resolve();
+    return id === 0 ? first.promise : rest.promise;
+  });
+
+  assert.deepEqual(started, [0, 1, 2, 3]);
+  first.resolve();
+  await fifthStarted.promise;
+  controller.abort();
+  rest.resolve();
+  await batch;
+  assert.deepEqual(started, [0, 1, 2, 3, 4]);
+});
 
 test("each probe publishes an immutable snapshot before the batch finishes", async () => {
   const original = globalThis.fetch;
@@ -87,7 +100,7 @@ test("a successful sample resets the failure streak on a flaky connection", asyn
 
 test("single probes allow weak-network responses beyond one second and abort at three seconds", async () => {
   const original = globalThis.fetch;
-  const { probe } = await import("../src/lib/network.ts");
+  const { probe } = await import(bundledModuleUrl("migration/sveltekit/src/routes/leak/webrtc/network.ts"));
   const keepAlive = setInterval(() => {}, 100);
   try {
     globalThis.fetch = (_, { signal }) => new Promise((resolve, reject) => {

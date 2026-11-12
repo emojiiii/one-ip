@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { adaptCoffee } from '../src/views/ip/coffee.ts';
-import { lookupIp } from '../src/views/ip/api.ts';
+import { bundledModuleUrl } from './compile.mjs';
+const { adaptCoffee } = await import(bundledModuleUrl('migration/sveltekit/src/lib/ip/coffee.ts'));
+const { lookupIp } = await import(bundledModuleUrl('migration/sveltekit/src/lib/ip/lookup.ts'));
 
 test('Net.Coffee score and residential flag are preserved, null coordinates are skipped', () => {
  const result=adaptCoffee({ip:'124.127.77.179',trust_score:97,isResidential:true,is_mobile:false,isp:'China Telecom',geo_sources:[{src:'g1',lat:null,lon:null},{src:'g2',lat:39.911,lon:116.395}]});
@@ -12,14 +13,14 @@ test('Net.Coffee score and residential flag are preserved, null coordinates are 
 test('frontend requests Net.Coffee without cookies and rejects mismatched results', async () => {
  const original=globalThis.fetch;
  globalThis.fetch=async(url, options)=>{
+  if (!String(url).startsWith('https://ip.net.coffee/')) return new Response('{}', { status: 502 });
   assert.equal(url,'https://ip.net.coffee/api/ip/lookup/1.1.1.1');
-  assert.equal(options.credentials,'omit');assert.equal(options.mode,'cors');
+  assert.equal(options.credentials,'omit');assert.ok(options.mode === undefined || options.mode === 'cors');
   return Response.json({ip:'8.8.8.8'});
  };
- try {await assert.rejects(lookupIp('1.1.1.1'));} finally {globalThis.fetch=original;}
+ try {await assert.rejects(lookupIp('1.1.1.1', new AbortController().signal));} finally {globalThis.fetch=original;}
 });
 test('IP lookup falls back to the same-origin API when Net.Coffee is unreachable', async () => {
- const { lookupIpWithFallback } = await import('../src/views/ip/api.ts');
  const original=globalThis.fetch;const urls=[];
  globalThis.fetch=async(url)=>{
   urls.push(String(url));
@@ -27,20 +28,19 @@ test('IP lookup falls back to the same-origin API when Net.Coffee is unreachable
   return Response.json({geo:{ip:'1.1.1.1',country:'Australia',country_code:'AU',asn:13335,source:'ipwho.is'},sources:[{ip:'1.1.1.1',country:'Australia',source:'ipwho.is'},{ip:'9.9.9.9',source:'bad'}]});
  };
  try {
-  const result=await lookupIpWithFallback('1.1.1.1');
+  const result=await lookupIp('1.1.1.1', new AbortController().signal);
   assert.equal(result.fallback,true);assert.equal(result.coffee.countryCode,'AU');assert.equal(result.coffee.asn,13335);
   assert.equal(result.sources.length,1);assert.equal(result.risk.available,false);
   assert.match(urls[1],/\/api\/ip\/lookup\/1\.1\.1\.1$/);
  } finally {globalThis.fetch=original;}
 });
 test('IP lookup keeps the Net.Coffee error when the fallback also fails', async () => {
- const { lookupIpWithFallback } = await import('../src/views/ip/api.ts');
  const original=globalThis.fetch;
  globalThis.fetch=async(url)=>String(url).startsWith('https://ip.net.coffee/')?Response.json({ip:'8.8.8.8'}):new Response('{}',{status:502});
- try {await assert.rejects(lookupIpWithFallback('1.1.1.1'),/不匹配|match/i);} finally {globalThis.fetch=original;}
+ try {await assert.rejects(lookupIp('1.1.1.1', new AbortController().signal),/不匹配|match/i);} finally {globalThis.fetch=original;}
 });
 test('home geo lookup falls back to the same-origin API when both providers are blocked', async () => {
- const { getGeo } = await import('../src/views/home/api.ts');
+ const { getGeo } = await import(bundledModuleUrl('migration/sveltekit/src/routes/leak/webrtc/home-api.ts'));
  const original=globalThis.fetch;
  globalThis.fetch=async(url)=>{
   if(!String(url).includes('/api/geoip/')) throw new TypeError('Failed to fetch');

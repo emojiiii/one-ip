@@ -1,6 +1,6 @@
 import { isIP } from "node:net";
 
-// Pages and standalone Node have no native rate-limit bindings.
+// Standalone Node has no native rate-limit bindings.
 // This fallback is bounded and local to one isolate/process.
 const counters = new Map();
 const maxKeys = 10_000;

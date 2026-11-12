@@ -1,7 +1,8 @@
-# <img src="public/icon.svg" alt="One IP Logo" width="32" height="32" /> One IP
+# <img src="migration/sveltekit/static/icon.svg" alt="One IP Logo" width="32" height="32" /> One IP
 
 <p align="left">
-  <img src="https://img.shields.io/badge/React-19-282C34?logo=react&amp;logoColor=61DAFB" alt="React 19" />
+  <img src="https://img.shields.io/badge/SvelteKit-3-FF3E00?logo=svelte&amp;logoColor=white" alt="SvelteKit 3" />
+  <img src="https://img.shields.io/badge/Svelte-5-FF3E00?logo=svelte&amp;logoColor=white" alt="Svelte 5" />
   <img src="https://img.shields.io/badge/Vite-8-646CFF?logo=vite&amp;logoColor=white" alt="Vite 8" />
   <img src="https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&amp;logoColor=white" alt="TypeScript 6" />
   <img src="https://img.shields.io/badge/Cloudflare_Workers-F38020?logo=cloudflareworkers&amp;logoColor=white" alt="Cloudflare Workers" />
@@ -11,7 +12,7 @@ IP 查询、网络诊断、浏览器检测与 AI 服务状态工具箱。
 
 **中文** · [English](README.en.md)
 
-[在线体验](https://ip.huzhihui.com/) · [GitHub](https://github.com/zhihui-hu/one-ip)
+[在线体验](https://ip.kitt.tools/) · [GitHub](https://github.com/emojiiii/one-ip)
 
 ![桌面首页（已打码）](docs/screenshots/desktop-home-redacted.png)
 
@@ -36,11 +37,7 @@ IP 查询、网络诊断、浏览器检测与 AI 服务状态工具箱。
 
 ## 部署
 
-一键部署到 Cloudflare：
-
-[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https%3A%2F%2Fgithub.com%2Fzhihui-hu%2Fone-ip)
-
-或 Fork 后在 Cloudflare **Workers & Pages** 导入仓库，构建命令 `pnpm build`，部署命令 `pnpm deploy`。基础功能无需任何 API Key。
+在 Cloudflare 创建 Worker 并直接连接 Git 仓库。构建命令填 `pnpm build`，部署命令填 `pnpm run deploy`。基础功能无需 API Key。
 
 Docker 自托管：
 
@@ -49,7 +46,7 @@ cp .env.docker.example .env.docker   # 可选配置
 docker compose up -d --build         # 打开 http://服务器地址:8080
 ```
 
-Cloudflare Pages、反向代理、天地图、人机验证、GitHub Actions 与 Fork 同步等配置见 [部署与配置](docs/deploy.md)。
+Worker 域名、反向代理、天地图、人机验证与 Fork 同步见[部署与配置](docs/deploy.md)。
 
 ## 本地开发
 
@@ -72,16 +69,16 @@ Net.Coffee、ip-api、Globalping、IANA / RDAP、各平台官方状态源；浏�
 <details>
   <summary>微信联系（展开二维码）</summary>
 
-  <img src="public/contact/wechat.jpg" alt="微信联系二维码" width="240" />
+  <img src="migration/sveltekit/static/contact/wechat.jpg" alt="微信联系二维码" width="240" />
 </details>
 
 社区友链：[LINUX DO](https://linux.do/)
 
 ## Star History
 
-<a href="https://www.star-history.com/?repos=zhihui-hu%2Fone-ip&amp;type=date">
+<a href="https://www.star-history.com/?repos=emojiiii%2Fone-ip&amp;type=date">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=zhihui-hu/one-ip&amp;type=Date&amp;theme=dark" />
-    <img src="https://api.star-history.com/svg?repos=zhihui-hu/one-ip&amp;type=Date" alt="One IP 的 GitHub Star 历史曲线" width="640" />
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=emojiiii/one-ip&amp;type=Date&amp;theme=dark" />
+    <img src="https://api.star-history.com/svg?repos=emojiiii/one-ip&amp;type=Date" alt="One IP 的 GitHub Star 历史曲线" width="640" />
   </picture>
 </a>

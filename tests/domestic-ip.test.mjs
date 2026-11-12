@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { getDomesticIp } from "../src/views/home/api.ts";
+import { bundledModuleUrl } from "./compile.mjs";
+const { getDomesticIp } = await import(bundledModuleUrl("migration/sveltekit/src/lib/ip/home.ts"));
 
 const primary = "https://necaptcha.nosdn.127.net/ab7f4275c1744aa28e0a8f3a1c58c532.png";
 const secondary = "https://perfops.byte-test.com/500b-bench.jpg";

@@ -1,17 +1,9 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": [
-      "warn",
-      {
-        "allowConstantExport": true
-      }
-    ]
-  },
+  "plugins": ["typescript", "oxc"],
   "ignorePatterns": [
     "vendor/browser-diagnostics/**",
-    "public/browser-diagnostics.js"
+    "public/browser-diagnostics.js",
+    "migration/sveltekit/static/browser-diagnostics.js"
   ]
 }

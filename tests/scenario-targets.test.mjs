@@ -1,9 +1,8 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import {
-  accessTargets,
-  scenarioGroups,
-} from "../src/views/ip/scenario-targets.ts";
+import { bundledModuleUrl } from "./compile.mjs";
+const { getScenarioTargets } = await import(bundledModuleUrl("migration/sveltekit/src/lib/ip/scenario-targets.ts"));
+const { accessTargets, scenarioGroups } = getScenarioTargets("en");
 
 test("every scenario has diverse, distinct public targets instead of manual-only placeholders", () => {
   assert.ok(scenarioGroups.length >= 12);
@@ -38,4 +37,10 @@ test("initial work is interleaved so later scenarios do not wait for earlier gro
     accessTargets.length,
     scenarioGroups.reduce((sum, group) => sum + group.targets.length, 0),
   );
+});
+
+test("scenario labels use the selected locale without changing probe identities", () => {
+  const chinese = getScenarioTargets("zh-CN");
+  assert.notEqual(chinese.scenarioGroups[0].label, scenarioGroups[0].label);
+  assert.deepEqual(chinese.accessTargets.map(({ id }) => id), accessTargets.map(({ id }) => id));
 });

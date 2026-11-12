@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { compile } from "./compile.mjs";
-import { t } from "../src/i18n/index.ts";
+import { bundledModuleUrl, compile } from "./compile.mjs";
+const { t } = await import(bundledModuleUrl("migration/sveltekit/src/routes/ping/locale.ts"));
 
-const source = compile(readFileSync("src/views/ping/api.ts", "utf8").replace('import { t } from "@/i18n";', '').replace('import { endpoint } from "@/lib/network";', '').replace('import("./verification")', 'loadVerification()'));
+const source = compile(readFileSync("migration/sveltekit/src/routes/ping/api.ts", "utf8").replace('import { t } from "./locale";', '').replace('import { endpoint } from "../leak/webrtc/network";', '').replace('import("./verification")', 'loadVerification()'));
 const runnerFactory = new Function("t", "endpoint", "setTimeout", "loadVerification", source.replaceAll("export ", "") + "\nreturn runPing;").bind(null, t);
 const createRunner = (endpoint, timer, getPingVerification = async (signal) => {
   signal.throwIfAborted();

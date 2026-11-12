@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import {
+import { bundledModuleUrl } from "./compile.mjs";
+const {
   attachMapLayers,
   mapExternalUrl,
   mapTileLayers,
   normalizeMapConfig,
-} from "../src/lib/map.ts";
+} = await import(bundledModuleUrl("migration/sveltekit/src/lib/ip/map.ts"));
 
 test("map configuration enables Tianditu only with an explicit token", () => {
   assert.deepEqual(normalizeMapConfig({ provider: "osm", token: "x" }), {

@@ -39,7 +39,7 @@ test("Gemini reads public page identifiers and retries the status API without ex
   } finally { globalThis.fetch = original; }
 });
 test("browser and Worker share the same verified AI status sources", () => {
-  const web = JSON.parse(readFileSync('src/views/status/services.json'));
+  const web = JSON.parse(readFileSync('migration/sveltekit/src/routes/status/services.json'));
   const worker = JSON.parse(readFileSync('worker/services.json'));
   assert.deepEqual(workerCatalog(web), worker);
   for (const id of ['31','32','35']) assert.ok(web.find(s => s.id === id).url);

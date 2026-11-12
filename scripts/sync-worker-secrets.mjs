@@ -2,10 +2,9 @@ import { spawnSync } from "node:child_process";
 import { readFileSync, existsSync } from "node:fs";
 import { parseEnv } from "node:util";
 
-const environment = process.argv[2];
-const pages = process.argv.includes("--pages");
-if (environment !== "production")
-  throw new Error("Only production is supported");
+const [environment, ...options] = process.argv.slice(2);
+if (environment !== "production" || options.some((option) => option !== "--check"))
+  throw new Error("Usage: node scripts/sync-worker-secrets.mjs production [--check]");
 const filename = `.secrets.${environment}.env`;
 if (!existsSync(filename)) {
   console.log("No optional configuration; nothing to synchronize.");
@@ -47,16 +46,14 @@ if (!Object.keys(secrets).length) {
   console.log("No optional secrets configured; nothing to synchronize.");
   process.exit(0);
 }
-if (process.argv.includes("--check")) {
+if (options.includes("--check")) {
   console.log(
     `${environment}: ${Object.keys(secrets).length} secrets ready; values not displayed.`,
   );
 } else {
   const result = spawnSync(
     "pnpm",
-    pages
-      ? ["exec", "wrangler", "pages", "secret", "bulk", "--cwd", "deploy/pages"]
-      : ["exec", "wrangler", "secret", "bulk", "--env", ""],
+    ["exec", "wrangler", "secret", "bulk", "--env", ""],
     {
       input: JSON.stringify(secrets),
       encoding: "utf8",

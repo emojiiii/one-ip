@@ -1,4 +1,4 @@
-import { transformSync } from "esbuild";
+import { buildSync, transformSync } from "esbuild";
 
 export function compile(
   source,
@@ -17,4 +17,17 @@ export function moduleUrl(source, options) {
   return `data:text/javascript;base64,${Buffer.from(
     compile(source, options),
   ).toString("base64")}`;
+}
+
+export function bundledModuleUrl(entryPoint) {
+  const result = buildSync({
+    entryPoints: [entryPoint],
+    inject: ["./tests/i18n-fixture.ts"],
+    bundle: true,
+    platform: "node",
+    format: "esm",
+    target: "node24",
+    write: false,
+  });
+  return `data:text/javascript;base64,${Buffer.from(result.outputFiles[0].contents).toString("base64")}`;
 }

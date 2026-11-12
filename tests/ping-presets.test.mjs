@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
 import { compile } from "./compile.mjs";
-const code = compile(readFileSync("src/views/ping/presets.ts", "utf8"));
+const code = compile(readFileSync("migration/sveltekit/src/routes/ping/presets.ts", "utf8"));
 const { selectPingPresets } = await import(`data:text/javascript;base64,${Buffer.from(code).toString("base64")}`);
 const nodes = [
   { id: "CN:Shanghai", cc: "cn", continent: "AS", probes: 5 },

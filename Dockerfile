@@ -6,6 +6,7 @@ RUN npm install --global pnpm@10.32.1
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
+ARG VITE_SITE_ORIGIN
 RUN pnpm build:docker
 
 FROM node:24-bookworm-slim AS runtime

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { probeAiDomain } from "../src/views/ai/probe.ts";
+import { bundledModuleUrl } from "./compile.mjs";
+const { probeAiDomain } = await import(bundledModuleUrl("migration/sveltekit/src/routes/unlock/ai/probe.ts"));
 
 test("Claude and Perplexity read and validate same-domain trace responses", async () => {
   const original = globalThis.fetch;
@@ -22,7 +23,14 @@ test("Claude and Perplexity read and validate same-domain trace responses", asyn
 test("Gemini probes its cross-origin robots resource instead of the missing icon", async () => {
   const original = globalThis.fetch;
   globalThis.fetch = async (url, options) => { assert.equal(url,"https://gemini.google.com/robots.txt"); assert.equal(options.mode,"no-cors"); return new Response(""); };
-  try { assert.equal((await probeAiDomain("gemini.google.com")).status,"response"); }
+  try {
+    const en = await probeAiDomain("gemini.google.com", undefined, "en");
+    const zh = await probeAiDomain("gemini.google.com", undefined, "zh-CN");
+    assert.equal(en.status, "response");
+    assert.equal(zh.status, "response");
+    assert.match(en.description, /^Received a resource response from gemini\.google\.com\/robots\.txt/);
+    assert.match(zh.description, /^收到 gemini\.google\.com\/robots\.txt/);
+  }
   finally { globalThis.fetch = original; }
 });
 test("failed probes are skipped without retries and cancellation is preserved", async () => {

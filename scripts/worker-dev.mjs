@@ -1,9 +1,16 @@
 import { spawn } from "node:child_process";
 
+const pnpm = process.env.npm_execpath;
+const script = pnpm && /\.[cm]?js$/i.test(pnpm);
+const command = script ? process.execPath : pnpm || (process.platform === "win32" ? "pnpm.cmd" : "pnpm");
+const start = (args) => spawn(command, script ? [pnpm, ...args] : args, {
+  stdio: "inherit",
+  shell: !pnpm && process.platform === "win32",
+});
+
 const children = [
-  spawn("pnpm", ["dev"], { stdio: "inherit" }),
-  spawn(
-    "pnpm",
+  start(["dev"]),
+  start(
     [
       "exec",
       "wrangler",
@@ -13,13 +20,12 @@ const children = [
       "--var",
       "LOCAL_DEV:true",
       "--assets",
-      "./public",
+      "./migration/sveltekit/static",
       "--ip",
       "127.0.0.1",
       "--port",
       "8787",
     ],
-    { stdio: "inherit" },
   ),
 ];
 let stopping = false;

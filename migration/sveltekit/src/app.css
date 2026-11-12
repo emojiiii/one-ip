@@ -1,0 +1,214 @@
+:root {
+  color-scheme: light;
+  --background: #f4f6fa;
+  --foreground: #172338;
+  --card: #fff;
+  --muted: #eef2f7;
+  --muted-foreground: #52617a;
+  --border: #e0e7f0;
+  --primary: #244fc2;
+  --primary-foreground: #fff;
+  --primary-soft: #ebf0ff;
+  --success: #2e792f;
+  --success-soft: #eaf4e9;
+  --warning: #915b0b;
+  --warning-soft: #fff4df;
+  --danger: #b73532;
+  --danger-soft: #fceeed;
+  --radius: 16px;
+  --control-radius: 9px;
+  --shadow-panel: 0 1px 2px #172a4308, 0 6px 16px #172a4305;
+  --shadow-menu: 0 18px 46px #14274d26, 0 2px 8px #14274d12;
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+}
+
+html.dark {
+  color-scheme: dark;
+  --background: #101621;
+  --foreground: #edf2fa;
+  --card: #182232;
+  --muted: #202c3e;
+  --muted-foreground: #aab8cd;
+  --border: #2b3a50;
+  --primary: #a1baff;
+  --primary-foreground: #101d38;
+  --primary-soft: #24375d;
+  --success: #78cb77;
+  --success-soft: #213525;
+  --warning: #edbe6d;
+  --warning-soft: #372c1b;
+  --danger: #ff918c;
+  --danger-soft: #3d2629;
+  --shadow-panel: 0 1px 2px #0003, 0 6px 16px #0002;
+  --shadow-menu: 0 18px 46px #0008, 0 2px 8px #0005;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font:
+    14px/1.55 system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "Microsoft YaHei",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+summary {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: default;
+}
+a {
+  color: var(--primary);
+}
+img {
+  max-width: 100%;
+}
+::selection {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+dialog {
+  background: var(--card);
+  color: var(--foreground);
+}
+dialog::backdrop {
+  background: #0c152759;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.page-title {
+  margin: 0 0 16px;
+  font-size: clamp(1.3rem, 2vw, 1.65rem);
+  font-weight: 650;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+.ui-panel {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow-panel);
+}
+.ui-scroll {
+  overflow-x: auto;
+}
+
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--control-radius);
+  background: var(--card);
+  color: var(--foreground);
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 1.25;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.ui-button:hover {
+  background: var(--muted);
+}
+.ui-button.primary {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.ui-button.primary:hover {
+  background: color-mix(in srgb, var(--primary) 90%, var(--foreground));
+}
+.ui-button.ghost {
+  border-color: transparent;
+  background: transparent;
+}
+.ui-button.ghost:hover,
+.ui-button[aria-pressed="true"] {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+.ui-button:disabled {
+  opacity: 0.55;
+}
+
+.ui-input {
+  min-width: 0;
+  min-height: 36px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--control-radius);
+  background: var(--card);
+  color: var(--foreground);
+}
+
+.ui-input::placeholder {
+  color: var(--muted-foreground);
+}
+
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: var(--muted);
+  color: var(--muted-foreground);
+  font-size: 12px;
+  font-weight: 550;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 600px) {
+  .ui-panel {
+    padding: 14px;
+  }
+  .ui-input,
+  input:not([type="checkbox"]):not([type="radio"]) {
+    font-size: 16px;
+  }
+}

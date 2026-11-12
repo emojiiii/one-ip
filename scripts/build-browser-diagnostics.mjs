@@ -47,16 +47,16 @@ const { output } = await bundle.generate({
 });
 await bundle.close();
 const code = output[0].code;
-await writeFile("public/browser-diagnostics.js", code);
+await writeFile("migration/sveltekit/static/browser-diagnostics.js", code);
 await copyFile(
   "vendor/browser-diagnostics/LICENSE",
-  "public/browser-diagnostics.LICENSE.txt",
+  "migration/sveltekit/static/browser-diagnostics.LICENSE.txt",
 );
 const upstream = JSON.parse(
   await readFile("vendor/browser-diagnostics/upstream.json", "utf8"),
 );
 await writeFile(
-  "src/views/browser/diagnostics-version.json",
+  "migration/sveltekit/src/lib/browser/diagnostics-version.json",
   JSON.stringify(
     {
       commit: upstream.commit,
