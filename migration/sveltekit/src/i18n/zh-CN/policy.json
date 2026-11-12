@@ -31,5 +31,9 @@
   "policy.tsx.retentionAndDeletion": "保存与清除",
   "policy.tsx.lookupHistoryKeepsLatest10SuccessfulQueriesResults": "查询历史在当前浏览器按类别保留最近 10 条成功查询及结果，清除本站数据即可删除。服务端使用请求 IP 做限流；托管配置启用了采样日志，实际记录与保留时间取决于部署设置。清除浏览器数据不会删除第三方或托管服务的记录。如需咨询相关数据，请联系作者并说明请求时间和功能。",
   "navigation.browserChecks": "浏览器检测",
-  "common.localStorage": "本地存储"
+  "common.localStorage": "本地存储",
+  "policy.analyticsAndAdvertising": "访问统计与广告",
+  "policy.analyticsAndAdvertisingDetails": "本站使用 Cloudflare Web Analytics 统计访问和性能数据。Google AdSense 及其合作伙伴可能接收浏览器请求信息，并使用 Cookie 或类似技术展示和衡量广告，包括根据你之前访问本站或其他网站的情况。",
+  "policy.googlePrivacy": "Google 隐私权政策",
+  "policy.googleAdsSettings": "Google 广告设置"
 }

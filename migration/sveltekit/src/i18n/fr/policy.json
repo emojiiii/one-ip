@@ -31,5 +31,9 @@
   "policy.tsx.retentionAndDeletion": "Conservation et suppression",
   "policy.tsx.lookupHistoryKeepsLatest10SuccessfulQueriesResults": "L'historique de recherche conserve les 10 dernières requêtes et résultats réussis par catégorie dans le navigateur actuel ; effacer les données du site pour les supprimer. Le serveur utilise les adresses IP des requêtes pour limiter le débit. La configuration de l'hébergement permet d'échantillonner les journaux ; les enregistrements réels et la conservation dépendent des paramètres de déploiement. La suppression des données du navigateur ne supprime pas les enregistrements tiers ou d'hébergement. Contactez l'auteur avec l'heure de la demande et la fonctionnalité pour les questions sur les données.",
   "navigation.browserChecks": "Vérifications du navigateur",
-  "common.localStorage": "Stockage local"
+  "common.localStorage": "Stockage local",
+  "policy.analyticsAndAdvertising": "Statistiques et publicité",
+  "policy.analyticsAndAdvertisingDetails": "Ce site utilise Cloudflare Web Analytics pour mesurer les visites et les performances. Google AdSense et ses partenaires peuvent recevoir des informations sur les requêtes du navigateur et utiliser des cookies ou des technologies similaires pour afficher et mesurer les annonces, notamment selon vos visites précédentes sur ce site ou sur d’autres.",
+  "policy.googlePrivacy": "Règles de confidentialité de Google",
+  "policy.googleAdsSettings": "Paramètres des annonces Google"
 }

@@ -31,5 +31,9 @@
   "policy.tsx.retentionAndDeletion": "الاحتفاظ والحذف",
   "policy.tsx.lookupHistoryKeepsLatest10SuccessfulQueriesResults": "يحتفظ سجل البحث بأحدث 10 استعلامات ونتائج ناجحة لكل فئة في المتصفح الحالي؛ مسح بيانات الموقع لإزالتها. يستخدم الخادم عناوين IP للطلبات لتحديد المعدل. يتيح تكوين الاستضافة سجلات العينات؛ تعتمد السجلات الفعلية والاحتفاظ بها على إعدادات النشر. لا يؤدي مسح بيانات المتصفح إلى إزالة سجلات الطرف الثالث أو سجلات الاستضافة. اتصل بالمؤلف وأخبره بوقت الطلب وميزة الأسئلة المتعلقة بالبيانات.",
   "navigation.browserChecks": "الشيكات المتصفح",
-  "common.localStorage": "التخزين المحلي"
+  "common.localStorage": "التخزين المحلي",
+  "policy.analyticsAndAdvertising": "تحليلات الزيارات والإعلانات",
+  "policy.analyticsAndAdvertisingDetails": "يستخدم هذا الموقع Cloudflare Web Analytics لقياس الزيارات والأداء. قد يتلقى Google AdSense وشركاؤه معلومات طلبات المتصفح ويستخدمون ملفات تعريف الارتباط أو تقنيات مشابهة لعرض الإعلانات وقياسها، بما في ذلك استنادًا إلى زياراتك السابقة لهذا الموقع أو مواقع أخرى.",
+  "policy.googlePrivacy": "سياسة خصوصية Google",
+  "policy.googleAdsSettings": "إعدادات إعلانات Google"
 }

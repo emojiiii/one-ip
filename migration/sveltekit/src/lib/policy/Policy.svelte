@@ -31,6 +31,7 @@
       ['policy.tsx.thirdPartyServicesUsed', 'policy.tsx.ipLookupsMayContactIpwhoIpSbIpify'],
       ['policy.tsx.webrtcAndDevicePermissions', 'policy.tsx.webrtcChecksConnectGoogleCloudflareStunServicesMay'],
       ['policy.tsx.optionalCaptcha', 'policy.tsx.whenConfiguredUsedCaptchaFeaturesLoadCloudflareTurnstile'],
+      ['policy.analyticsAndAdvertising', 'policy.analyticsAndAdvertisingDetails'],
       ['policy.tsx.retentionAndDeletion', 'policy.tsx.lookupHistoryKeepsLatest10SuccessfulQueriesResults']
     ]
   } as const;
@@ -48,6 +49,9 @@
       <section>
         <h2>{t(title)}</h2>
         <p>{t(body)}</p>
+        {#if title === 'policy.analyticsAndAdvertising'}
+          <p><a href="https://policies.google.com/privacy">{t('policy.googlePrivacy')}</a> · <a href="https://myadcenter.google.com/">{t('policy.googleAdsSettings')}</a></p>
+        {/if}
       </section>
     {/each}
   </article>

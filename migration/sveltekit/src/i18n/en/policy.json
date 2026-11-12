@@ -31,5 +31,9 @@
   "policy.tsx.retentionAndDeletion": "Retention and deletion",
   "policy.tsx.lookupHistoryKeepsLatest10SuccessfulQueriesResults": "Lookup history keeps the latest 10 successful queries and results per category in the current browser; clear site data to remove it. The server uses request IPs for rate limiting. Hosting configuration enables sampled logs; actual records and retention depend on deployment settings. Clearing browser data does not remove third-party or hosting records. Contact the author with the request time and feature for data questions.",
   "navigation.browserChecks": "Browser checks",
-  "common.localStorage": "Local storage"
+  "common.localStorage": "Local storage",
+  "policy.analyticsAndAdvertising": "Analytics and advertising",
+  "policy.analyticsAndAdvertisingDetails": "This site uses Cloudflare Web Analytics to measure visits and performance. Google AdSense and its partners may receive browser request information and use cookies or similar technologies to show and measure ads, including based on your previous visits to this or other sites.",
+  "policy.googlePrivacy": "Google Privacy Policy",
+  "policy.googleAdsSettings": "Google Ads Settings"
 }

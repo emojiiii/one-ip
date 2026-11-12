@@ -31,5 +31,9 @@
   "policy.tsx.retentionAndDeletion": "保存と削除",
   "policy.tsx.lookupHistoryKeepsLatest10SuccessfulQueriesResults": "ルックアップ履歴には、現在のブラウザのカテゴリごとに最新の 10 件の成功したクエリと結果が保存されます。サイトデータを消去して削除します。サーバーはレート制限にリクエスト IP を使用します。ホスティング構成により、サンプリングされたログが有効になります。実際の記録と保持期間は展開設定によって異なります。ブラウザーのデータをクリアしても、サードパーティまたはホスティングのレコードは削除されません。データに関する質問については、リクエスト時間と機能を明記して作成者にお問い合わせください。",
   "navigation.browserChecks": "ブラウザのチェック",
-  "common.localStorage": "ローカルストレージ"
+  "common.localStorage": "ローカルストレージ",
+  "policy.analyticsAndAdvertising": "アクセス解析と広告",
+  "policy.analyticsAndAdvertisingDetails": "このサイトはアクセス数と性能の測定に Cloudflare Web Analytics を使用します。Google AdSense とそのパートナーはブラウザのリクエスト情報を受け取り、Cookie などの技術を使って、このサイトや他のサイトへの過去のアクセスに基づくものを含め、広告の表示や効果測定を行う場合があります。",
+  "policy.googlePrivacy": "Google プライバシーポリシー",
+  "policy.googleAdsSettings": "Google 広告設定"
 }

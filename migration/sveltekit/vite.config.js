@@ -20,7 +20,9 @@ export default defineConfig({
           "/sitemap.xml",
           "/robots.txt",
           ...publicPages,
-          ...locales.flatMap(({ id }) => publicPages.map((path) => localizedPath(path, id))),
+          ...locales.flatMap(({ id }) =>
+            publicPages.map((path) => localizedPath(path, id)),
+          ),
         ],
       },
       csp: {
@@ -29,6 +31,8 @@ export default defineConfig({
           "default-src": ["self"],
           "script-src": [
             "self",
+            "https:",
+            "unsafe-eval",
             "https://challenges.cloudflare.com",
             "https://static.cloudflareinsights.com",
             "https://www.googletagmanager.com/gtag/",
@@ -48,6 +52,7 @@ export default defineConfig({
           "frame-src": [
             "self",
             "about:",
+            "https:",
             "https://challenges.cloudflare.com",
             "https://www.google.com/recaptcha/",
             "https://recaptcha.google.com/recaptcha/",

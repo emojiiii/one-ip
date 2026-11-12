@@ -31,5 +31,9 @@
   "policy.tsx.retentionAndDeletion": "Retenção e exclusão",
   "policy.tsx.lookupHistoryKeepsLatest10SuccessfulQueriesResults": "O histórico de pesquisa mantém as últimas 10 consultas e resultados bem-sucedidos por categoria no navegador atual; limpe os dados do site para removê-los. O servidor usa IPs de solicitação para limitação de taxa. A configuração de hospedagem permite amostras de logs; os registros e a retenção reais dependem das configurações de implantação. A limpeza dos dados do navegador não remove registros de terceiros ou de hospedagem. Entre em contato com o autor com o horário de solicitação e recurso para dúvidas sobre dados.",
   "navigation.browserChecks": "Verificações do navegador",
-  "common.localStorage": "Armazenamento local"
+  "common.localStorage": "Armazenamento local",
+  "policy.analyticsAndAdvertising": "Estatísticas e publicidade",
+  "policy.analyticsAndAdvertisingDetails": "Este site usa o Cloudflare Web Analytics para medir visitas e desempenho. O Google AdSense e seus parceiros podem receber informações de solicitações do navegador e usar cookies ou tecnologias semelhantes para exibir e medir anúncios, inclusive com base em visitas anteriores a este ou a outros sites.",
+  "policy.googlePrivacy": "Política de Privacidade do Google",
+  "policy.googleAdsSettings": "Configurações de anúncios do Google"
 }

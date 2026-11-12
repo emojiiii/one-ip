@@ -31,5 +31,9 @@
   "policy.tsx.retentionAndDeletion": "Aufbewahrung und Löschung",
   "policy.tsx.lookupHistoryKeepsLatest10SuccessfulQueriesResults": "Der Suchverlauf speichert die letzten 10 erfolgreichen Abfragen und Ergebnisse pro Kategorie im aktuellen Browser; Löschen Sie die Site-Daten, um sie zu entfernen. Der Server verwendet Anforderungs-IPs zur Ratenbegrenzung. Die Hosting-Konfiguration ermöglicht Stichprobenprotokolle. Die tatsächlichen Aufzeichnungen und die Aufbewahrung hängen von den Bereitstellungseinstellungen ab. Durch das Löschen von Browserdaten werden keine Drittanbieter- oder Hosting-Datensätze entfernt. Bei Datenfragen kontaktieren Sie den Autor mit der gewünschten Uhrzeit und Funktion.",
   "navigation.browserChecks": "Browserprüfungen",
-  "common.localStorage": "Lokaler Speicher"
+  "common.localStorage": "Lokaler Speicher",
+  "policy.analyticsAndAdvertising": "Analyse und Werbung",
+  "policy.analyticsAndAdvertisingDetails": "Diese Website verwendet Cloudflare Web Analytics zur Messung von Besuchen und Leistung. Google AdSense und seine Partner können Browser-Anfrageinformationen erhalten und Cookies oder ähnliche Technologien zur Anzeige und Messung von Werbung verwenden, auch auf Grundlage früherer Besuche dieser oder anderer Websites.",
+  "policy.googlePrivacy": "Google-Datenschutzerklärung",
+  "policy.googleAdsSettings": "Google-Werbeeinstellungen"
 }
