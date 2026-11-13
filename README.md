@@ -64,6 +64,10 @@ Net.Coffee、ip-api、Globalping、IANA / RDAP、各平台官方状态源；浏�
 
 欢迎提交 Issue。分享截图前请遮盖 IP、位置和指纹等隐私信息。
 
+## 来源与许可证
+
+本项目基于 [zhihui-hu/one-ip](https://github.com/zhihui-hu/one-ip) 修改和开发，采用 [GNU AGPL-3.0](LICENSE) 许可证。修改记录及日期详见 Git 提交历史。
+
 ## 联系我们
 
 [ip@kitt.tools](mailto:ip@kitt.tools)

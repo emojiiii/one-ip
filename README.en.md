@@ -64,6 +64,10 @@ Net.Coffee, ip-api, Globalping, IANA / RDAP and official platform status feeds. 
 
 Issues are welcome. Redact IPs, locations and fingerprint identifiers before sharing screenshots.
 
+## Origin and license
+
+This project is based on and modified from [zhihui-hu/one-ip](https://github.com/zhihui-hu/one-ip) and is licensed under the [GNU AGPL-3.0](LICENSE). See the Git commit history for changes and their dates.
+
 ## Contact
 
 [ip@kitt.tools](mailto:ip@kitt.tools)
