@@ -16,6 +16,7 @@
   import { normalizeIp } from "../lib/ip/ip-address";
   import { localeForPath, locales, localizedPath, publicPages, unlocalizedPath } from "../lib/i18n";
   import { pageAlternates, siteOrigin } from "../lib/seo";
+  import { translateHome } from "../lib/ip/home-messages";
   import { translateShell } from "../lib/shell-messages";
   import ToolDirectory from "../lib/ToolDirectory.svelte";
   import WebMcp from "../lib/WebMcp.svelte";
@@ -23,11 +24,55 @@
 
   type Theme = "light" | "dark" | "system";
   const repositoryUrl = "https://github.com/emojiiii/one-ip";
+  const socialTitleKeys: Record<string, string> = {
+    "/ip": "tools.ip",
+    "/ip/batch": "tools.batchIp",
+    "/dns-records": "tools.dnsRecords",
+    "/whois": "tools.whois",
+    "/status": "tools.status",
+    "/ping": "tools.ping",
+    "/speedtest": "tools.speedtest",
+    "/leak/dns": "tools.dns",
+    "/leak/webrtc": "tools.webrtc",
+    "/unlock/sites": "tools.sites",
+    "/unlock/gpt": "tools.gpt",
+    "/unlock/claude": "tools.claude",
+    "/browser/environment": "tools.environment",
+    "/browser/fingerprint": "tools.fingerprint",
+    "/browser/checks": "tools.checks",
+    "/browser/privacy": "tools.browserPrivacy",
+    "/terms": "terms",
+    "/privacy": "privacy",
+  };
   let { children } = $props();
   const activeLocale = $derived(localeForPath(page.url.pathname));
   const language = $derived(activeLocale.id);
   const route = $derived(unlocalizedPath(page.url.pathname).replace(/\/$/, "") || "/");
   const indexable = $derived(publicPages.some((path) => path === route));
+  const socialTitle = $derived(route === "/"
+    ? `${translateHome("title", [], language)} · One IP`
+    : `${t(socialTitleKeys[route])} · One IP`);
+  const description = $derived(route === "/"
+    ? translateHome("description", [], language)
+    : t(`seo${route.replaceAll("/", ".")}`));
+  const canonical = $derived(siteOrigin && indexable
+    ? new URL(localizedPath(route, language), siteOrigin).href
+    : undefined);
+  const structuredData = $derived(canonical && siteOrigin ? {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    url: canonical,
+    description,
+    inLanguage: language,
+    isPartOf: {
+      "@type": "WebSite",
+      name: "One IP",
+      url: siteOrigin,
+    },
+  } : undefined);
+  const structuredDataMarkup = $derived(
+    `<script type="application/ld+json">${JSON.stringify(structuredData).replaceAll("<", "\\u003c")}</` + "script>",
+  );
   let theme = $state<Theme>("system");
   let dark = $state(false);
   let hideIp = $state(false);
@@ -141,10 +186,19 @@
 
 <svelte:head>
   {#if indexable && route !== "/"}
-    <meta name="description" content={t(`seo${route.replaceAll("/", ".")}`)} />
+    <meta name="description" content={description} />
   {/if}
-  {#if siteOrigin && indexable}
-    <link rel="canonical" href={new URL(localizedPath(route, language), siteOrigin).href} />
+  {#if siteOrigin && canonical}
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="One IP" />
+    <meta property="og:title" content={socialTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={socialTitle} />
+    <meta name="twitter:description" content={description} />
+    {@html structuredDataMarkup}
     {#each pageAlternates(route, siteOrigin) as { hreflang, href } (hreflang)}
       <link rel="alternate" {hreflang} {href} />
     {/each}
@@ -354,6 +408,7 @@
     <span>© {new Date().getFullYear()} One IP</span>
     <a href={localizedPath("/terms", language)}>{t("terms")}</a>
     <a href={localizedPath("/privacy", language)}>{t("privacy")}</a>
+    <a href="mailto:ip@kitt.tools">ip@kitt.tools</a>
     <a
       href={repositoryUrl}
       target="_blank"

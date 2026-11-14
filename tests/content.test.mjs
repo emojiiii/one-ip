@@ -36,6 +36,17 @@ test('public tool pages have prerendered HTML and IP paths have a fallback', () 
       assert.equal(descriptions.length, 1, path);
       const canonical = head.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
       assert.equal(canonical, new URL(localizedPath(page, id), origin).href, path);
+      const socialTitle = head.match(/<meta property="og:title" content="([^"]+)"/)?.[1];
+      assert.ok(socialTitle?.endsWith(' · One IP'), path);
+      assert.equal(head.match(/<meta name="twitter:title" content="([^"]+)"/)?.[1], socialTitle, path);
+      assert.equal(head.match(/<meta property="og:url" content="([^"]+)"/)?.[1], canonical, path);
+      assert.equal(head.match(/<meta property="og:description" content="([^"]+)"/)?.[1], descriptions[0][1], path);
+      const json = head.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1];
+      assert.ok(json, path);
+      const data = JSON.parse(json);
+      assert.equal(data.url, canonical, path);
+      assert.equal(data.inLanguage, id, path);
+      assert.equal(data.description.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;'), descriptions[0][1], path);
       const links = [...head.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)"/g)];
       assert.equal(links.length, locales.length + 1, path);
       assert.deepEqual(Object.fromEntries(links.map(([, language, href]) => [language, href])), alternates, path);
@@ -77,6 +88,11 @@ test('crawler files list each localized canonical once', () => {
   const canonical = home.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
   assert.ok(canonical);
   assert.ok(robots.includes(`Sitemap: ${new URL('/sitemap.xml', canonical).href}\n`));
+  const llms = readFileSync(`${output}/llms.txt`, 'utf8');
+  assert.match(llms, /^# One IP\n/);
+  for (const path of ['/', '/ip', '/dns-records', '/leak/dns', '/leak/webrtc', '/unlock/sites', '/ping', '/status', '/privacy', '/terms']) {
+    assert.ok(llms.includes(new URL(localizedPath(path, defaultLocale), canonical).href), path);
+  }
   const xml = readFileSync(`${output}/sitemap.xml`, 'utf8');
   const expected = new Map();
   for (const page of publicPages) {
