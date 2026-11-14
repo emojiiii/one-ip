@@ -1,6 +1,6 @@
 {
   "title": "Visão geral da rede",
-  "description": "Consulta de IP e diagnóstico de rede",
+  "description": "Consulte seu IP público e localização aproximada, teste vazamentos de DNS e WebRTC e verifique conectividade, velocidade, navegador e status de serviços.",
   "domestic": "Saída na China",
   "overseas": "Saída internacional",
   "loading": "Verificando…",
@@ -39,5 +39,6 @@
   "guide.latencyQuestion": "O que significa o tempo de conectividade?",
   "guide.latencyAnswer": "É o tempo de uma verificação do navegador até o destino. Rede, navegador e site afetam o resultado; ele não mede a largura de banda nem o processamento do servidor.",
   "guide.sources": "As fontes de informações e reputação de IP incluem:",
-  "guide.locationSource": "Cloudflare: precisão da geolocalização por IP"
+  "guide.locationSource": "Cloudflare: precisão da geolocalização por IP",
+  "seoTitle": "Consulta de IP e diagnóstico de rede"
 }

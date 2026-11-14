@@ -1,6 +1,6 @@
 {
   "title": "Resumen de red",
-  "description": "Consulta tu dirección IP y diagnostica tu conexión, las fugas de DNS y el acceso a sitios web.",
+  "description": "Consulta tu IP pública y ubicación aproximada, comprueba fugas de DNS y WebRTC y revisa la conectividad, la velocidad, el navegador y el estado de servicios.",
   "domestic": "Salida de red nacional",
   "overseas": "Salida de red internacional",
   "loading": "Comprobando…",
@@ -39,5 +39,6 @@
   "guide.latencyQuestion": "¿Qué significa el tiempo de conectividad?",
   "guide.latencyAnswer": "Es el tiempo de una comprobación del navegador hacia el destino. Depende de la red, el navegador y el sitio; no mide el ancho de banda ni el procesamiento del servidor.",
   "guide.sources": "Las fuentes de información y reputación de IP incluyen:",
-  "guide.locationSource": "Cloudflare: precisión de la geolocalización IP"
+  "guide.locationSource": "Cloudflare: precisión de la geolocalización IP",
+  "seoTitle": "Consulta de IP y diagnóstico de red"
 }

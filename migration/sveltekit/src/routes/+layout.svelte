@@ -51,7 +51,7 @@
   const route = $derived(unlocalizedPath(page.url.pathname).replace(/\/$/, "") || "/");
   const indexable = $derived(publicPages.some((path) => path === route));
   const socialTitle = $derived(route === "/"
-    ? `${translateHome("title", [], language)} · One IP`
+    ? `${translateHome("seoTitle", [], language)} · One IP`
     : `${t(socialTitleKeys[route])} · One IP`);
   const description = $derived(route === "/"
     ? translateHome("description", [], language)

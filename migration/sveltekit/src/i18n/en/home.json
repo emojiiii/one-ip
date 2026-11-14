@@ -1,6 +1,6 @@
 {
   "title": "Network overview",
-  "description": "IP lookup and network diagnostics",
+  "description": "Check your public IP and approximate location, test DNS and WebRTC leaks, and explore network connectivity, speed, browser details and service status.",
   "domestic": "Domestic exit",
   "overseas": "Overseas exit",
   "loading": "Checking…",
@@ -39,5 +39,6 @@
   "guide.latencyQuestion": "What does connectivity time mean?",
   "guide.latencyAnswer": "It is the time taken by a browser check to a target. Network conditions, the browser and the target affect it; it is not a measure of bandwidth or server processing time.",
   "guide.sources": "IP information and reputation sources include:",
-  "guide.locationSource": "Cloudflare: IP geolocation accuracy"
+  "guide.locationSource": "Cloudflare: IP geolocation accuracy",
+  "seoTitle": "IP Lookup and Network Diagnostics"
 }

@@ -1,6 +1,6 @@
 {
   "title": "网络概览",
-  "description": "IP 查询与网络诊断",
+  "description": "查看当前出口 IP 与归属地，检测 DNS 和 WebRTC 泄漏、网站连通性与服务状态，并使用网络测速和浏览器检测工具排查问题。",
   "domestic": "国内出口",
   "overseas": "海外出口",
   "loading": "正在检测…",
@@ -39,5 +39,6 @@
   "guide.latencyQuestion": "连通性耗时代表什么？",
   "guide.latencyAnswer": "耗时反映浏览器向目标发起检测的时间，受网络、浏览器和目标站点影响，不等同于网络带宽或服务器处理时间。",
   "guide.sources": "IP 信息与信誉数据来源包括：",
-  "guide.locationSource": "Cloudflare：IP 定位的准确性"
+  "guide.locationSource": "Cloudflare：IP 定位的准确性",
+  "seoTitle": "IP 查询与网络诊断：出口 IP、DNS 泄漏和网络测速"
 }

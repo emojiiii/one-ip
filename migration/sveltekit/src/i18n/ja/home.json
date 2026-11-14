@@ -1,6 +1,6 @@
 {
   "title": "ネットワーク概要",
-  "description": "IP アドレス検索とネットワーク診断",
+  "description": "公開 IP アドレスとおおよその所在地を確認し、DNS・WebRTC の漏えい、接続性、通信速度、ブラウザー環境、サービス状態を調べます。",
   "domestic": "国内線出口",
   "overseas": "海外出口",
   "loading": "確認中…",
@@ -39,5 +39,6 @@
   "guide.latencyQuestion": "接続時間は何を示しますか？",
   "guide.latencyAnswer": "ブラウザーから接続先への検査にかかった時間です。ネットワーク、ブラウザー、接続先の影響を受け、帯域幅やサーバー処理時間を示すものではありません。",
   "guide.sources": "IP 情報と評価のデータ提供元には以下が含まれます：",
-  "guide.locationSource": "Cloudflare：IP 位置情報の精度"
+  "guide.locationSource": "Cloudflare：IP 位置情報の精度",
+  "seoTitle": "IP アドレス検索とネットワーク診断"
 }

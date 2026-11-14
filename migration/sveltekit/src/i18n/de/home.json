@@ -1,6 +1,6 @@
 {
   "title": "Netzwerkübersicht",
-  "description": "IP-Suche und Netzwerkdiagnose",
+  "description": "Öffentliche IP und ungefähren Standort anzeigen, DNS- und WebRTC-Lecks prüfen sowie Verbindung, Geschwindigkeit, Browser und Dienststatus untersuchen.",
   "domestic": "Ausgangs-IP in China",
   "overseas": "Internationale Ausgangs-IP",
   "loading": "Wird geprüft…",
@@ -39,5 +39,6 @@
   "guide.latencyQuestion": "Was bedeutet die Verbindungszeit?",
   "guide.latencyAnswer": "Sie ist die Dauer einer Browserprüfung zum Ziel. Netzwerk, Browser und Zielseite beeinflussen sie; sie misst weder die Bandbreite noch die Verarbeitungszeit des Servers.",
   "guide.sources": "Zu den Quellen für IP-Informationen und Reputation gehören:",
-  "guide.locationSource": "Cloudflare: Genauigkeit der IP-Geolokalisierung"
+  "guide.locationSource": "Cloudflare: Genauigkeit der IP-Geolokalisierung",
+  "seoTitle": "IP-Abfrage und Netzwerkdiagnose"
 }

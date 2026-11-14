@@ -174,7 +174,7 @@
 </script>
 
 <svelte:head
-  ><title>{t("title")} · One IP</title><meta
+  ><title>{t("seoTitle")} · One IP</title><meta
     name="description"
     content={t("description")}
   /></svelte:head

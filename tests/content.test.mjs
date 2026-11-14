@@ -39,6 +39,7 @@ test('public tool pages have prerendered HTML and IP paths have a fallback', () 
       assert.equal(canonical, new URL(expectedCanonicalPath(page, id), origin).href, path);
       const socialTitle = head.match(/<meta property="og:title" content="([^"]+)"/)?.[1];
       assert.ok(socialTitle?.endsWith(' · One IP'), path);
+      if (page === '/') assert.equal(socialTitle, title, path);
       assert.equal(head.match(/<meta name="twitter:title" content="([^"]+)"/)?.[1], socialTitle, path);
       assert.equal(head.match(/<meta property="og:url" content="([^"]+)"/)?.[1], canonical, path);
       assert.equal(head.match(/<meta property="og:description" content="([^"]+)"/)?.[1], descriptions[0][1], path);

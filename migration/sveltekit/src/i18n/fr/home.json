@@ -1,6 +1,6 @@
 {
   "title": "Aperçu du réseau",
-  "description": "Consultez votre adresse IP et diagnostiquez votre connexion, les fuites DNS et l’accès aux sites web.",
+  "description": "Consultez votre IP publique et sa position approximative, détectez les fuites DNS et WebRTC et vérifiez la connectivité, la vitesse et l’état des services.",
   "domestic": "Sortie réseau nationale",
   "overseas": "Sortie réseau à l’étranger",
   "loading": "Vérification…",
@@ -39,5 +39,6 @@
   "guide.latencyQuestion": "Que signifie le temps de connectivité ?",
   "guide.latencyAnswer": "C’est le temps d’une vérification du navigateur vers la cible. Il dépend du réseau, du navigateur et du site ; il ne mesure ni le débit ni le temps de traitement du serveur.",
   "guide.sources": "Les sources d’informations et de réputation IP comprennent :",
-  "guide.locationSource": "Cloudflare : précision de la géolocalisation IP"
+  "guide.locationSource": "Cloudflare : précision de la géolocalisation IP",
+  "seoTitle": "Recherche IP et diagnostic réseau"
 }

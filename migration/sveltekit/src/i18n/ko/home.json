@@ -1,6 +1,6 @@
 {
   "title": "네트워크 개요",
-  "description": "IP 주소 조회 및 네트워크 진단",
+  "description": "공인 IP와 대략적인 위치를 확인하고 DNS 및 WebRTC 유출, 네트워크 연결과 속도, 브라우저 환경 및 서비스 상태를 점검하세요.",
   "domestic": "국내선출구",
   "overseas": "해외출국",
   "loading": "확인 중…",
@@ -39,5 +39,6 @@
   "guide.latencyQuestion": "연결 시간은 무엇을 뜻하나요?",
   "guide.latencyAnswer": "브라우저가 대상에 연결을 검사하는 데 걸린 시간입니다. 네트워크, 브라우저와 대상 사이트의 영향을 받으며 대역폭이나 서버 처리 시간을 뜻하지 않습니다.",
   "guide.sources": "IP 정보 및 평판 데이터 출처는 다음과 같습니다:",
-  "guide.locationSource": "Cloudflare: IP 위치 정보의 정확도"
+  "guide.locationSource": "Cloudflare: IP 위치 정보의 정확도",
+  "seoTitle": "IP 조회 및 네트워크 진단"
 }
