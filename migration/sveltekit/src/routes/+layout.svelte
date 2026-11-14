@@ -74,6 +74,7 @@
     "@id": `${websiteUrl}#website`,
     name: "One IP",
     url: websiteUrl,
+    sameAs: [repositoryUrl],
   } : undefined;
   const applicationData = $derived(route === "/" && canonical ? {
     "@context": "https://schema.org",

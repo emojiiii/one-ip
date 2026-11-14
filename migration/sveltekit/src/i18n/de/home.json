@@ -35,8 +35,9 @@
   "guide.exitsQuestion": "Warum können sich nationale und internationale Ausgänge unterscheiden?",
   "guide.exitsAnswer": "Verschiedene Ziele können unterschiedliche Netzwerk- oder Proxy-Routen nutzen und daher andere öffentliche IP-Adressen sehen. Ein Netzwerk- oder Proxywechsel kann das Ergebnis ändern.",
   "guide.locationQuestion": "Ist der IP-Standort genau?",
-  "guide.locationAnswer": "Die IP-Geolokalisierung ist eine Schätzung des Anbieters für die Adresse, kein genauer Gerätestandort. Angaben zu Region und Anbieter können abweichen oder veraltet sein.",
+  "guide.locationAnswer": "Nein. Die IP-Geolokalisierung ist eine Schätzung des Anbieters für die Adresse, kein genauer Gerätestandort. Angaben zu Region und Anbieter können abweichen oder veraltet sein.",
   "guide.latencyQuestion": "Was bedeutet die Verbindungszeit?",
   "guide.latencyAnswer": "Sie ist die Dauer einer Browserprüfung zum Ziel. Netzwerk, Browser und Zielseite beeinflussen sie; sie misst weder die Bandbreite noch die Verarbeitungszeit des Servers.",
-  "guide.sources": "Zu den Quellen für IP-Informationen und Reputation gehören:"
+  "guide.sources": "Zu den Quellen für IP-Informationen und Reputation gehören:",
+  "guide.locationSource": "Cloudflare: Genauigkeit der IP-Geolokalisierung"
 }

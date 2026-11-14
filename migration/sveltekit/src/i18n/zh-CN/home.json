@@ -35,8 +35,9 @@
   "guide.exitsQuestion": "为什么国内和海外出口不同？",
   "guide.exitsAnswer": "不同目标可能经过不同的网络或代理线路，因此看到的出口 IP 可以不同。切换网络或代理后，结果也可能改变。",
   "guide.locationQuestion": "IP 位置准确吗？",
-  "guide.locationAnswer": "IP 归属地是数据源对地址的估计，并非设备的精确位置。运营商和地区信息也可能存在延迟或差异。",
+  "guide.locationAnswer": "不能精确定位。IP 归属地是数据源对地址的估计，并非设备的精确位置。运营商和地区信息也可能存在延迟或差异。",
   "guide.latencyQuestion": "连通性耗时代表什么？",
   "guide.latencyAnswer": "耗时反映浏览器向目标发起检测的时间，受网络、浏览器和目标站点影响，不等同于网络带宽或服务器处理时间。",
-  "guide.sources": "IP 信息与信誉数据来源包括："
+  "guide.sources": "IP 信息与信誉数据来源包括：",
+  "guide.locationSource": "Cloudflare：IP 定位的准确性"
 }

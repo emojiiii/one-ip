@@ -35,8 +35,9 @@
   "guide.exitsQuestion": "Por que as saídas nacional e internacional podem ser diferentes?",
   "guide.exitsAnswer": "Destinos diferentes podem usar rotas de rede ou proxy diferentes, exibindo IPs públicos distintos. Os resultados também podem mudar ao trocar de rede ou proxy.",
   "guide.locationQuestion": "A localização do IP é exata?",
-  "guide.locationAnswer": "A geolocalização é uma estimativa do provedor para o endereço, não a localização precisa do dispositivo. Dados de região e operadora também podem variar ou estar desatualizados.",
+  "guide.locationAnswer": "Não. A geolocalização é uma estimativa do provedor para o endereço, não a localização precisa do dispositivo. Dados de região e operadora também podem variar ou estar desatualizados.",
   "guide.latencyQuestion": "O que significa o tempo de conectividade?",
   "guide.latencyAnswer": "É o tempo de uma verificação do navegador até o destino. Rede, navegador e site afetam o resultado; ele não mede a largura de banda nem o processamento do servidor.",
-  "guide.sources": "As fontes de informações e reputação de IP incluem:"
+  "guide.sources": "As fontes de informações e reputação de IP incluem:",
+  "guide.locationSource": "Cloudflare: precisão da geolocalização por IP"
 }

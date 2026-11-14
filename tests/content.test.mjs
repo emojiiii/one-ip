@@ -80,7 +80,7 @@ test('home explains its results and links data sources before JavaScript', () =>
     const guide = html.match(/<section class="ui-panel guide\b[\s\S]*?<p class="sources\b[\s\S]*?<\/p>\s*<\/section>/)?.[0];
     assert.ok(guide, id);
     assert.equal([...guide.matchAll(/<h3\b/g)].length, 3, id);
-    for (const source of ['https://ipquery.io/', 'https://ipwho.is/', 'https://ip.net.coffee/'])
+    for (const source of ['https://ipquery.io/', 'https://ipwho.is/', 'https://ip.net.coffee/', 'https://developers.cloudflare.com/network/ip-geolocation/#accuracy-and-limitations'])
       assert.ok(guide.includes(`href="${source}"`), `${id}: ${source}`);
   }
 });

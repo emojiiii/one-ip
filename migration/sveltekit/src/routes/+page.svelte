@@ -294,7 +294,7 @@
       </section>
       <section>
         <h3>{t("guide.locationQuestion")}</h3>
-        <p>{t("guide.locationAnswer")}</p>
+        <p>{t("guide.locationAnswer")} <a href="https://developers.cloudflare.com/network/ip-geolocation/#accuracy-and-limitations" target="_blank" rel="noreferrer">{t("guide.locationSource")}</a></p>
       </section>
       <section>
         <h3>{t("guide.latencyQuestion")}</h3>
@@ -367,7 +367,7 @@
   .guide .sources {
     margin-top: 16px;
   }
-  .sources a {
+  .guide a {
     color: var(--primary);
   }
   .exit {

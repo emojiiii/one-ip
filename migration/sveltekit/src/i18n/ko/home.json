@@ -35,8 +35,9 @@
   "guide.exitsQuestion": "국내와 해외 출구가 다른 이유는 무엇인가요?",
   "guide.exitsAnswer": "접속 대상에 따라 다른 네트워크나 프록시 경로를 사용할 수 있어 공개 IP 주소가 달라질 수 있습니다. 네트워크나 프록시를 바꾸면 결과도 바뀔 수 있습니다.",
   "guide.locationQuestion": "IP 위치는 정확한가요?",
-  "guide.locationAnswer": "IP 위치는 데이터 제공업체가 주소를 기준으로 추정한 것으로 기기의 정확한 위치가 아닙니다. 지역과 통신사 정보도 다르거나 오래되었을 수 있습니다.",
+  "guide.locationAnswer": "아니요. IP 위치는 데이터 제공업체가 주소를 기준으로 추정한 것으로 기기의 정확한 위치가 아닙니다. 지역과 통신사 정보도 다르거나 오래되었을 수 있습니다.",
   "guide.latencyQuestion": "연결 시간은 무엇을 뜻하나요?",
   "guide.latencyAnswer": "브라우저가 대상에 연결을 검사하는 데 걸린 시간입니다. 네트워크, 브라우저와 대상 사이트의 영향을 받으며 대역폭이나 서버 처리 시간을 뜻하지 않습니다.",
-  "guide.sources": "IP 정보 및 평판 데이터 출처는 다음과 같습니다:"
+  "guide.sources": "IP 정보 및 평판 데이터 출처는 다음과 같습니다:",
+  "guide.locationSource": "Cloudflare: IP 위치 정보의 정확도"
 }

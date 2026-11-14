@@ -17,6 +17,7 @@ test("home identifies the website and web application with its public repository
     assert.ok(page && website && application, path);
     assert.equal(page.isPartOf["@id"], website["@id"], path);
     assert.equal(website.name, "One IP", path);
+    assert.deepEqual(website.sameAs, ["https://github.com/emojiiii/one-ip"], path);
     assert.equal(application.url, page.url, path);
     assert.equal(application.sameAs, "https://github.com/emojiiii/one-ip", path);
   }
@@ -26,4 +27,5 @@ test("tool pages identify their website without describing every page as the app
   const data = structuredData("dist/zh/ip.html");
   assert.deepEqual(data.map((item) => item["@type"]), ["WebPage", "WebSite"]);
   assert.equal(data[0].isPartOf["@id"], data[1]["@id"]);
+  assert.deepEqual(data[1].sameAs, ["https://github.com/emojiiii/one-ip"]);
 });
