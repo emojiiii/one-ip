@@ -285,6 +285,29 @@
         {locale}
       />{/key}
   {/if}
+  <section class="ui-panel guide" aria-labelledby="guide-title">
+    <h2 id="guide-title">{t("guide.title")}</h2>
+    <div class="guide-questions">
+      <section>
+        <h3>{t("guide.exitsQuestion")}</h3>
+        <p>{t("guide.exitsAnswer")}</p>
+      </section>
+      <section>
+        <h3>{t("guide.locationQuestion")}</h3>
+        <p>{t("guide.locationAnswer")}</p>
+      </section>
+      <section>
+        <h3>{t("guide.latencyQuestion")}</h3>
+        <p>{t("guide.latencyAnswer")}</p>
+      </section>
+    </div>
+    <p class="sources">
+      {t("guide.sources")}
+      <a href="https://ipquery.io/" target="_blank" rel="noreferrer">IPQuery</a>,
+      <a href="https://ipwho.is/" target="_blank" rel="noreferrer">ipwho.is</a>,
+      <a href="https://ip.net.coffee/" target="_blank" rel="noreferrer">Net.Coffee</a>.
+    </p>
+  </section>
 </div>
 
 <style>
@@ -318,6 +341,34 @@
     display: grid;
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
     gap: 16px;
+  }
+  .guide {
+    padding: 20px;
+  }
+  .guide h2 {
+    margin: 0 0 16px;
+    font-size: 1rem;
+  }
+  .guide-questions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    gap: 16px 24px;
+  }
+  .guide h3 {
+    margin: 0 0 6px;
+    font-size: 0.85rem;
+  }
+  .guide p {
+    margin: 0;
+    color: var(--muted-foreground);
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+  .guide .sources {
+    margin-top: 16px;
+  }
+  .sources a {
+    color: var(--primary);
   }
   .exit {
     min-height: 186px;

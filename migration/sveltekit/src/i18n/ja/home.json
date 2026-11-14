@@ -30,5 +30,13 @@
   "status.major": "重大な障害",
   "status.critical": "深刻な障害",
   "status.maintenance": "メンテナンス",
-  "status.unknown": "不明"
+  "status.unknown": "不明",
+  "guide.title": "検査結果について",
+  "guide.exitsQuestion": "国内と海外の出口が異なるのはなぜですか？",
+  "guide.exitsAnswer": "接続先によって異なるネットワークやプロキシ経路を通るため、公開 IP アドレスが異なる場合があります。ネットワークやプロキシを変更すると結果も変わります。",
+  "guide.locationQuestion": "IP の位置情報は正確ですか？",
+  "guide.locationAnswer": "IP の位置情報はデータ提供元による推定であり、端末の正確な位置ではありません。地域や通信事業者の情報も異なったり古くなったりする場合があります。",
+  "guide.latencyQuestion": "接続時間は何を示しますか？",
+  "guide.latencyAnswer": "ブラウザーから接続先への検査にかかった時間です。ネットワーク、ブラウザー、接続先の影響を受け、帯域幅やサーバー処理時間を示すものではありません。",
+  "guide.sources": "IP 情報と評価のデータ提供元には以下が含まれます："
 }

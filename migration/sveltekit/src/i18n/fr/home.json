@@ -30,5 +30,13 @@
   "status.major": "Panne majeure",
   "status.critical": "Panne critique",
   "status.maintenance": "Maintenance",
-  "status.unknown": "Non confirmé"
+  "status.unknown": "Non confirmé",
+  "guide.title": "Comprendre les résultats",
+  "guide.exitsQuestion": "Pourquoi les sorties nationale et internationale peuvent-elles différer ?",
+  "guide.exitsAnswer": "Les destinations peuvent emprunter des réseaux ou proxys différents et afficher des adresses IP publiques distinctes. Le résultat peut changer si vous changez de réseau ou de proxy.",
+  "guide.locationQuestion": "La localisation IP est-elle exacte ?",
+  "guide.locationAnswer": "La géolocalisation est une estimation du fournisseur pour une adresse, pas la position précise de l’appareil. Les données de région et d’opérateur peuvent aussi varier ou dater.",
+  "guide.latencyQuestion": "Que signifie le temps de connectivité ?",
+  "guide.latencyAnswer": "C’est le temps d’une vérification du navigateur vers la cible. Il dépend du réseau, du navigateur et du site ; il ne mesure ni le débit ni le temps de traitement du serveur.",
+  "guide.sources": "Les sources d’informations et de réputation IP comprennent :"
 }

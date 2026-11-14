@@ -30,5 +30,13 @@
   "status.major": "Falla importante",
   "status.critical": "Falla crítica",
   "status.maintenance": "Mantenimiento",
-  "status.unknown": "Sin confirmar"
+  "status.unknown": "Sin confirmar",
+  "guide.title": "Entender los resultados",
+  "guide.exitsQuestion": "¿Por qué pueden diferir las salidas nacional e internacional?",
+  "guide.exitsAnswer": "Cada destino puede usar una ruta de red o proxy distinta, por lo que las direcciones IP públicas pueden ser diferentes. El resultado también puede cambiar al cambiar de red o proxy.",
+  "guide.locationQuestion": "¿Es exacta la ubicación de la IP?",
+  "guide.locationAnswer": "La geolocalización es una estimación del proveedor para la dirección, no la ubicación precisa del dispositivo. Los datos de región y operador también pueden variar o estar desactualizados.",
+  "guide.latencyQuestion": "¿Qué significa el tiempo de conectividad?",
+  "guide.latencyAnswer": "Es el tiempo de una comprobación del navegador hacia el destino. Depende de la red, el navegador y el sitio; no mide el ancho de banda ni el procesamiento del servidor.",
+  "guide.sources": "Las fuentes de información y reputación de IP incluyen:"
 }

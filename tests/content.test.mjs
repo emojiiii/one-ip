@@ -5,6 +5,7 @@ import { defaultLocale, localeDefinition, locales, localizedPath, publicPages } 
 
 const root = 'migration/sveltekit';
 const output = 'dist';
+const expectedCanonicalPath = (path, locale) => path === '/' && locale === defaultLocale ? '/' : localizedPath(path, locale);
 
 test('public tool pages have prerendered HTML and IP paths have a fallback', () => {
   assert.equal(locales.length, 10);
@@ -19,7 +20,7 @@ test('public tool pages have prerendered HTML and IP paths have a fallback', () 
       ...locales.map(({ id, dir }) => ({ path: localizedPath(page, id), id, dir })),
     ];
     const alternates = Object.fromEntries([
-      ...locales.map(({ id, hreflang }) => [hreflang, new URL(localizedPath(page, id), origin).href]),
+      ...locales.map(({ id, hreflang }) => [hreflang, new URL(expectedCanonicalPath(page, id), origin).href]),
       ['x-default', new URL(page, origin).href],
     ]);
     const results = variants.map(({ path, id, dir }) => {
@@ -35,7 +36,7 @@ test('public tool pages have prerendered HTML and IP paths have a fallback', () 
       const descriptions = [...head.matchAll(/<meta name="description" content="([^"]+)"/g)];
       assert.equal(descriptions.length, 1, path);
       const canonical = head.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
-      assert.equal(canonical, new URL(localizedPath(page, id), origin).href, path);
+      assert.equal(canonical, new URL(expectedCanonicalPath(page, id), origin).href, path);
       const socialTitle = head.match(/<meta property="og:title" content="([^"]+)"/)?.[1];
       assert.ok(socialTitle?.endsWith(' · One IP'), path);
       assert.equal(head.match(/<meta name="twitter:title" content="([^"]+)"/)?.[1], socialTitle, path);
@@ -73,6 +74,17 @@ test('localized status pages render their main content before JavaScript', () =>
   assert.match(readFileSync(`${output}/zh/status.html`, 'utf8'), /<h1[^>]*>服务状态<\/h1>/);
 });
 
+test('home explains its results and links data sources before JavaScript', () => {
+  for (const { id } of locales) {
+    const html = readFileSync(`${output}${localizedPath('/', id)}.html`, 'utf8');
+    const guide = html.match(/<section class="ui-panel guide\b[\s\S]*?<p class="sources\b[\s\S]*?<\/p>\s*<\/section>/)?.[0];
+    assert.ok(guide, id);
+    assert.equal([...guide.matchAll(/<h3\b/g)].length, 3, id);
+    for (const source of ['https://ipquery.io/', 'https://ipwho.is/', 'https://ip.net.coffee/'])
+      assert.ok(guide.includes(`href="${source}"`), `${id}: ${source}`);
+  }
+});
+
 test('DNS records do not shadow the legacy DNS leak shortcut', () => {
   assert.ok(publicPages.includes('/dns-records'));
   assert.ok(!publicPages.includes('/dns'));
@@ -90,8 +102,8 @@ test('crawler files list each localized canonical once', () => {
   assert.ok(robots.includes(`Sitemap: ${new URL('/sitemap.xml', canonical).href}\n`));
   const llms = readFileSync(`${output}/llms.txt`, 'utf8');
   assert.match(llms, /^# One IP\n/);
-  for (const path of ['/', '/ip', '/dns-records', '/leak/dns', '/leak/webrtc', '/unlock/sites', '/ping', '/status', '/privacy', '/terms']) {
-    assert.ok(llms.includes(new URL(localizedPath(path, defaultLocale), canonical).href), path);
+  for (const path of ['/', '/ip', '/dns-records', '/leak/dns', '/leak/webrtc', '/unlock/sites', '/ping', '/status', '/about', '/privacy', '/terms']) {
+    assert.ok(llms.includes(new URL(expectedCanonicalPath(path, defaultLocale), canonical).href), path);
   }
   const xml = readFileSync(`${output}/sitemap.xml`, 'utf8');
   const expected = new Map();

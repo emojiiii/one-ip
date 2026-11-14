@@ -65,5 +65,11 @@
   "tools.batchIp": "IP を比較",
   "seo.ip.batch": "最大 10 件の IP アドレスを比較します。",
   "tools.dnsRecords": "DNS レコード比較",
-  "seo.dns-records": "Cloudflare と Google の DNS レコードを比較します。"
+  "seo.dns-records": "Cloudflare と Google の DNS レコードを比較します。",
+  "about": "このサイトについて",
+  "seo.about": "One IP のネットワーク診断ツール、データソース、連絡先について。",
+  "about.intro": "One IP は、IP 検索、ネットワーク診断、ブラウザー検査、サービス状態を確認できるオープンソースのツール集です。",
+  "about.results": "結果はブラウザー、ネットワーク、外部サービスに依存し、時間、場所、データソースによって異なる場合があります。",
+  "about.source": "ソースコード、データソース、問題の報告：",
+  "about.contact": "お問い合わせ"
 }

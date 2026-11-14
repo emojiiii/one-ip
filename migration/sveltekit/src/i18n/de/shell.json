@@ -65,5 +65,11 @@
   "tools.batchIp": "IPs vergleichen",
   "seo.ip.batch": "Bis zu 10 IP-Adressen vergleichen.",
   "tools.dnsRecords": "DNS-Einträge vergleichen",
-  "seo.dns-records": "DNS-Einträge von Cloudflare und Google vergleichen."
+  "seo.dns-records": "DNS-Einträge von Cloudflare und Google vergleichen.",
+  "about": "Über",
+  "seo.about": "Über One IP, seine Netzwerkdiagnose, Datenquellen und Kontaktmöglichkeiten.",
+  "about.intro": "One IP ist eine Open-Source-Werkzeugsammlung für IP-Abfragen, Netzwerkdiagnose, Browserprüfungen und Dienststatus.",
+  "about.results": "Ergebnisse hängen von Browser, Netzwerk und Drittanbietern ab und können je nach Zeit, Ort und Datenquelle variieren.",
+  "about.source": "Quellcode, Datenquellen und Fehlermeldungen:",
+  "about.contact": "Kontakt"
 }

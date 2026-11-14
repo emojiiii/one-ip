@@ -34,7 +34,7 @@ Workers Builds 处理所连接生产分支的构建和发布。根目录的 `wra
 
 生产构建默认使用 `https://ip.kitt.tools` 生成 canonical、hreflang 和站点地图。部署到其他域名时，在 Worker 的 **Settings → Build** 中设置构建变量 `VITE_SITE_ORIGIN`。Docker Compose 使用同名环境变量，`docker build` 使用 `--build-arg VITE_SITE_ORIGIN=https://ip.example.com`。
 
-`/robots.txt` 声明 `/sitemap.xml` 的完整地址。站点地图列出 10 种语言的公开 canonical 地址和对应的 hreflang。简体中文页面的 canonical 使用 `/zh` 前缀，英文使用 `/en` 前缀。`x-default` 指向无前缀的简体中文地址。
+`/robots.txt` 声明 `/sitemap.xml` 的完整地址。站点地图列出 10 种语言的公开 canonical 地址和对应的 hreflang。简体中文首页的 canonical 为 `/`，其他简体中文页面使用 `/zh` 前缀，英文使用 `/en` 前缀。`x-default` 指向无前缀的简体中文地址。
 
 ## Docker 部署
 

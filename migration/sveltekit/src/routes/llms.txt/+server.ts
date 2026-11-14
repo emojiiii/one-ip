@@ -1,12 +1,11 @@
-import { localizedPath } from "../../lib/i18n";
-import { siteOrigin } from "../../lib/seo";
+import { canonicalPath, siteOrigin } from "../../lib/seo";
 import type { RequestHandler } from "./$types";
 
 export const prerender = true;
 
 export const GET: RequestHandler = ({ url }) => {
   const origin = siteOrigin ?? url.origin;
-  const link = (path: string) => new URL(localizedPath(path, "zh-CN"), origin).href;
+  const link = (path: string) => new URL(canonicalPath(path, "zh-CN"), origin).href;
   const text = `# One IP
 
 > One IP 是用于 IP 查询、网络诊断、浏览器检测和服务状态查询的工具箱。
@@ -26,6 +25,7 @@ export const GET: RequestHandler = ({ url }) => {
 
 ## 其他
 
+- [关于 One IP](${link("/about")}): 项目介绍与联系方式。
 - [隐私政策](${link("/privacy")}): 数据处理与联系方式。
 - [使用条款](${link("/terms")}): 服务范围和使用要求。
 - [源代码](https://github.com/emojiiii/one-ip): 项目说明、数据来源和问题反馈。

@@ -15,7 +15,7 @@
   import { onMount } from "svelte";
   import { normalizeIp } from "../lib/ip/ip-address";
   import { localeForPath, locales, localizedPath, publicPages, unlocalizedPath } from "../lib/i18n";
-  import { pageAlternates, siteOrigin } from "../lib/seo";
+  import { canonicalPath, pageAlternates, siteOrigin } from "../lib/seo";
   import { translateHome } from "../lib/ip/home-messages";
   import { translateShell } from "../lib/shell-messages";
   import ToolDirectory from "../lib/ToolDirectory.svelte";
@@ -43,6 +43,7 @@
     "/browser/privacy": "tools.browserPrivacy",
     "/terms": "terms",
     "/privacy": "privacy",
+    "/about": "about",
   };
   let { children } = $props();
   const activeLocale = $derived(localeForPath(page.url.pathname));
@@ -56,23 +57,42 @@
     ? translateHome("description", [], language)
     : t(`seo${route.replaceAll("/", ".")}`));
   const canonical = $derived(siteOrigin && indexable
-    ? new URL(localizedPath(route, language), siteOrigin).href
+    ? new URL(canonicalPath(route, language), siteOrigin).href
     : undefined);
+  const websiteUrl = siteOrigin ? new URL("/", siteOrigin).href : undefined;
   const structuredData = $derived(canonical && siteOrigin ? {
     "@context": "https://schema.org",
     "@type": "WebPage",
     url: canonical,
     description,
     inLanguage: language,
-    isPartOf: {
-      "@type": "WebSite",
-      name: "One IP",
-      url: siteOrigin,
-    },
+    isPartOf: { "@id": `${websiteUrl}#website` },
+  } : undefined);
+  const websiteData = siteOrigin ? {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${websiteUrl}#website`,
+    name: "One IP",
+    url: websiteUrl,
+  } : undefined;
+  const applicationData = $derived(route === "/" && canonical ? {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "One IP",
+    url: canonical,
+    description,
+    applicationCategory: "UtilitiesApplication",
+    sameAs: repositoryUrl,
   } : undefined);
   const structuredDataMarkup = $derived(
     `<script type="application/ld+json">${JSON.stringify(structuredData).replaceAll("<", "\\u003c")}</` + "script>",
   );
+  const websiteDataMarkup = siteOrigin
+    ? `<script type="application/ld+json">${JSON.stringify(websiteData).replaceAll("<", "\\u003c")}</` + "script>"
+    : undefined;
+  const applicationDataMarkup = $derived(applicationData
+    ? `<script type="application/ld+json">${JSON.stringify(applicationData).replaceAll("<", "\\u003c")}</` + "script>"
+    : undefined);
   let theme = $state<Theme>("system");
   let dark = $state(false);
   let hideIp = $state(false);
@@ -199,6 +219,8 @@
     <meta name="twitter:title" content={socialTitle} />
     <meta name="twitter:description" content={description} />
     {@html structuredDataMarkup}
+    {@html websiteDataMarkup}
+    {#if applicationDataMarkup}{@html applicationDataMarkup}{/if}
     {#each pageAlternates(route, siteOrigin) as { hreflang, href } (hreflang)}
       <link rel="alternate" {hreflang} {href} />
     {/each}
@@ -408,6 +430,7 @@
     <span>© {new Date().getFullYear()} One IP</span>
     <a href={localizedPath("/terms", language)}>{t("terms")}</a>
     <a href={localizedPath("/privacy", language)}>{t("privacy")}</a>
+    <a href={localizedPath("/about", language)}>{t("about")}</a>
     <a href="mailto:ip@kitt.tools">ip@kitt.tools</a>
     <a
       href={repositoryUrl}

@@ -10,7 +10,7 @@ export const publicPages = [
   "/", "/ip", "/ip/batch", "/dns-records", "/whois", "/status", "/ping", "/speedtest",
   "/leak/dns", "/leak/webrtc", "/unlock/sites", "/unlock/gpt",
   "/unlock/claude", "/browser/environment", "/browser/fingerprint",
-  "/browser/checks", "/browser/privacy", "/terms", "/privacy",
+  "/browser/checks", "/browser/privacy", "/about", "/terms", "/privacy",
 ] as const;
 
 export function localeForPath(path: string) {

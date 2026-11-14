@@ -30,5 +30,13 @@
   "status.major": "Major outage",
   "status.critical": "Critical outage",
   "status.maintenance": "Maintenance",
-  "status.unknown": "Unknown"
+  "status.unknown": "Unknown",
+  "guide.title": "Understanding the results",
+  "guide.exitsQuestion": "Why can domestic and overseas exits differ?",
+  "guide.exitsAnswer": "Different destinations can use different network or proxy routes, so their public IP addresses may differ. Results can change when your network or proxy changes.",
+  "guide.locationQuestion": "Is IP location exact?",
+  "guide.locationAnswer": "IP geolocation is a provider’s estimate for an address, not the device’s precise location. Provider and region details may also differ or be out of date.",
+  "guide.latencyQuestion": "What does connectivity time mean?",
+  "guide.latencyAnswer": "It is the time taken by a browser check to a target. Network conditions, the browser and the target affect it; it is not a measure of bandwidth or server processing time.",
+  "guide.sources": "IP information and reputation sources include:"
 }

@@ -65,5 +65,11 @@
   "tools.batchIp": "IP 비교",
   "seo.ip.batch": "최대 10개의 IP 주소를 비교합니다.",
   "tools.dnsRecords": "DNS 레코드 비교",
-  "seo.dns-records": "Cloudflare와 Google의 DNS 레코드를 비교합니다."
+  "seo.dns-records": "Cloudflare와 Google의 DNS 레코드를 비교합니다.",
+  "about": "소개",
+  "seo.about": "One IP의 네트워크 진단 도구, 데이터 출처 및 연락처를 알아보세요.",
+  "about.intro": "One IP는 IP 조회, 네트워크 진단, 브라우저 검사 및 서비스 상태 확인을 위한 오픈소스 도구 모음입니다.",
+  "about.results": "결과는 브라우저, 네트워크 및 외부 서비스에 따라 달라지며 시간, 위치와 데이터 출처에 영향을 받을 수 있습니다.",
+  "about.source": "소스 코드, 데이터 출처 및 문제 신고:",
+  "about.contact": "문의"
 }
