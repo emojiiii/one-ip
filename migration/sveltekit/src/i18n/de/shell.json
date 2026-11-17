@@ -71,5 +71,7 @@
   "about.intro": "One IP ist eine Open-Source-Werkzeugsammlung für IP-Abfragen, Netzwerkdiagnose, Browserprüfungen und Dienststatus.",
   "about.results": "Ergebnisse hängen von Browser, Netzwerk und Drittanbietern ab und können je nach Zeit, Ort und Datenquelle variieren.",
   "about.source": "Quellcode, Datenquellen und Fehlermeldungen:",
-  "about.contact": "Kontakt"
+  "about.contact": "Kontakt",
+  "tools.passport": "Digitaler Reisepass",
+  "seo.passport": "Erstelle und teile eine Karte mit deinem Netzwerkausgang und Browser."
 }

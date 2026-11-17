@@ -7,7 +7,7 @@ export const defaultLocale = "zh-CN" satisfies Locale;
 const defaultLocaleDefinition = localeDefinition(defaultLocale);
 
 export const publicPages = [
-  "/", "/ip", "/ip/batch", "/dns-records", "/whois", "/status", "/ping", "/speedtest",
+  "/", "/ip", "/ip/batch", "/dns-records", "/passport", "/whois", "/status", "/ping", "/speedtest",
   "/leak/dns", "/leak/webrtc", "/unlock/sites", "/unlock/gpt",
   "/unlock/claude", "/browser/environment", "/browser/fingerprint",
   "/browser/checks", "/browser/privacy", "/about", "/terms", "/privacy",

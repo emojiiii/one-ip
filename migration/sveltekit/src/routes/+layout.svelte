@@ -28,6 +28,7 @@
     "/ip": "tools.ip",
     "/ip/batch": "tools.batchIp",
     "/dns-records": "tools.dnsRecords",
+    "/passport": "tools.passport",
     "/whois": "tools.whois",
     "/status": "tools.status",
     "/ping": "tools.ping",

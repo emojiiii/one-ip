@@ -71,5 +71,7 @@
   "about.intro": "One IP est une boîte à outils open source pour la recherche IP, le diagnostic réseau, les contrôles du navigateur et le statut des services.",
   "about.results": "Les résultats dépendent du navigateur, du réseau et de services tiers et peuvent varier selon le moment, le lieu et la source des données.",
   "about.source": "Code source, sources de données et signalement des problèmes :",
-  "about.contact": "Contact"
+  "about.contact": "Contact",
+  "tools.passport": "Passeport numérique",
+  "seo.passport": "Créez et partagez une carte de votre sortie réseau et de votre navigateur."
 }

@@ -71,5 +71,7 @@
   "about.intro": "One IP es un conjunto de herramientas de código abierto para consultas de IP, diagnóstico de red, comprobaciones del navegador y estado de servicios.",
   "about.results": "Los resultados dependen del navegador, la red y servicios externos, y pueden variar según la hora, la ubicación y la fuente de datos.",
   "about.source": "Código fuente, fuentes de datos e informes de problemas:",
-  "about.contact": "Contacto"
+  "about.contact": "Contacto",
+  "tools.passport": "Pasaporte digital",
+  "seo.passport": "Crea y comparte una tarjeta con tu salida de red y navegador."
 }

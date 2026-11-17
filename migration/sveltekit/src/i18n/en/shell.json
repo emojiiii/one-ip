@@ -71,5 +71,7 @@
   "about.intro": "One IP is an open-source toolbox for IP lookups, network diagnostics, browser checks and service status.",
   "about.results": "Results depend on your browser, network and third-party services and may vary by time, location and data source.",
   "about.source": "Source code, data sources and issue reports:",
-  "about.contact": "Contact"
+  "about.contact": "Contact",
+  "tools.passport": "Digital Passport",
+  "seo.passport": "Create and share a card with your network exit and browser details."
 }

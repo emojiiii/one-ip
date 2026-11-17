@@ -20,6 +20,12 @@ importers:
       bits-ui:
         specifier: ^2.21.0
         version: 2.21.0(@internationalized/date@3.12.4)(@sveltejs/kit@3.2.0(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.3)(vite@8.3.8(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.3)(typescript@6.0.3)(vite@8.3.8(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.3)
+      countries-and-timezones:
+        specifier: 3.11.0
+        version: 3.11.0
+      country-flag-icons:
+        specifier: 1.6.20
+        version: 1.6.20
       i18next:
         specifier: 26.6.0
         version: 26.6.0(typescript@6.0.3)
@@ -1065,6 +1071,13 @@ packages:
   cookie@2.0.2:
     resolution: {integrity: sha512-SL0cVuEdETEp7pN0FuZb01toc3vnODEfVUCooxG1SJN0yIirh7JMb9X9bvfCFf0vzzbT68RdbKDHYTiWy7a7iw==}
     engines: {node: '>=22'}
+
+  countries-and-timezones@3.11.0:
+    resolution: {integrity: sha512-amqnHZJyuaFol6Z9gmyDb/D5cS6OSZUMfT6Ovj2HMmEBykHfwfA6dih59rulQ2kWynW7XeCAOzJr60hWL64Anw==}
+    engines: {node: '>=8.x', npm: '>=5.x'}
+
+  country-flag-icons@1.6.20:
+    resolution: {integrity: sha512-py8JiEKzjhYw6HPJ0L7SxLgCYim36UPRTZX43/kqGueUCZLSvnrqAiwW8HtQibur7mdkFQUkjOgdK+o/9FBtaw==}
 
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
@@ -2194,6 +2207,10 @@ snapshots:
   cookie@1.1.1: {}
 
   cookie@2.0.2: {}
+
+  countries-and-timezones@3.11.0: {}
+
+  country-flag-icons@1.6.20: {}
 
   debug@4.4.3:
     dependencies:

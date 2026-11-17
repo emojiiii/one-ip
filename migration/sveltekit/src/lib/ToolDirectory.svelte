@@ -5,6 +5,7 @@
   import FileSearch from "@lucide/svelte/icons/file-search";
   import Fingerprint from "@lucide/svelte/icons/fingerprint";
   import Gauge from "@lucide/svelte/icons/gauge";
+  import ContactRound from "@lucide/svelte/icons/contact-round";
   import Globe from "@lucide/svelte/icons/globe";
   import LockKeyholeOpen from "@lucide/svelte/icons/lock-keyhole-open";
   import ListFilter from "@lucide/svelte/icons/list-filter";
@@ -101,6 +102,13 @@
       label: "tools.ping",
       icon: Radar,
       tone: "green",
+    },
+    {
+      path: "/passport",
+      group: "lookup",
+      label: "tools.passport",
+      icon: ContactRound,
+      tone: "purple",
     },
     {
       path: "/browser/environment",
